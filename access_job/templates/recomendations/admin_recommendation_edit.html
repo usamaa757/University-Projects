@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="max-width:700px; margin:auto;">
+    <h2>Edit Recommendation</h2>
+    <p class="small">User: {{ recommendation.user.username }} | Job: {{ recommendation.job.title }}</p>
+    {% if saved %}
+        <p class="small" style="color:#166534;">Saved successfully.</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="row">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a href="{% url 'recomendations:admin-recommendation-list' %}" class="btn btn-muted" style="text-decoration:none;">Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

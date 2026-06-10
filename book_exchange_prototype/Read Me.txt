@@ -1,0 +1,4 @@
+Important Note:
+	Create database in Mysql name (book_exchange) same as database file name, then import sql file.
+	Create Virtual Environment 1st out side project folder (book_exchange_prototype).
+	And use pip install -r requirements.txt for required pkgs for project.

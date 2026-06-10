@@ -1,0 +1,40 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Search Form with Shadow Box -->
+    <form method="POST" action="{{ url_for('dashboard') }}" class="mx-auto shadow p-4 mt-5 rounded" style="max-width: 600px;">
+        <h3 class="mb-4 text-center">Search Below</h3>
+        <div class="form-group">
+            <label for="keyword">Keyword:</label>
+            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Enter keywords"  required>
+        </div>
+        <div class="form-group">
+            <label for="seller_type">Seller Type:</label>
+            <input type="text" id="seller_type" name="seller_type" class="form-control" placeholder="Enter seller type">
+        </div>
+        <div class="form-group">
+            <label for="seller_country">Seller Country:</label>
+            <input type="text" id="seller_country" name="seller_country" class="form-control" placeholder="Enter seller country">
+        </div>
+        <div class="text-center">
+        <button type="submit" class="btn btn-secondary">Search</button>
+    </div>
+    </form>
+
+    <!-- Display search results if available -->
+    {% if listings %}
+    <h3 class="mt-4">Search Results:</h3>
+    <ul>
+        {% for listing in listings %}
+        <li>
+            <strong>{{ listing.title }}</strong><br>
+            <a href="{{ listing.url }}" target="_blank">{{ listing.url }}</a><br>
+            <p>{{ listing.description }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}

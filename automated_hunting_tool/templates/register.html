@@ -1,0 +1,76 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="card shadow p-4" style="width: 400px;">
+        <h2 class="mb-4 text-center">Register Form</h2>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p class="texy-success">
+               
+                    {% for message in messages %}
+                    {{ message }}
+                    {% endfor %}
+               
+            </p>
+        {% endif %}
+        {% endwith %}
+
+        <form action="/register" method="POST">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(id="name", class="form-control", placeholder="Enter your name") }}
+
+                {% if form.name.errors %}
+                    <p class="text-danger">
+                        
+                            {% for error in form.name.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(id="email", class="form-control", placeholder="Enter your email") }}
+                
+                {% if form.email.errors %}
+                    <p class="text-danger">
+                        
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(id="password", class="form-control", placeholder="Enter your password") }}
+
+                {% if form.password.errors %}
+                    <p class="text-danger">
+                        
+                            {% for error in form.password.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        
+                    </p>
+                {% endif %}
+            </div>
+            
+            <div class="form-group text-center">
+                {{ form.submit(class="btn btn-dark") }}
+            </div>
+            
+           
+        </form>
+    </div>
+</div>
+{% endblock %}

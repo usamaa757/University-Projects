@@ -1,0 +1,45 @@
+{% include 'includes/header.html' %}
+
+<h2 class="mt-4 text-center form-heading">Welcome to Online Book Exchange</h2>
+
+<div class="container form-container">
+  <div class="card form-card">
+      <div class="card-header form-card-header">Login</div>
+      <div class="card-body">
+
+          <!-- Display Django Messages -->
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              {% endfor %}
+          {% endif %}
+
+          <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control input-field" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control input-field" required>
+            </div>
+
+            <button type="submit" class="btn form-btn w-100">Login</button>
+        </form>
+
+        <p class="text-center mt-3">
+          Don't have an account? <a href="{% url 'register' %}" class="form-link">Register</a>
+      </p>
+
+      </div>
+  </div>
+</div>
+
+{% include 'includes/footer.html' %}
+

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Notifications</h2>
+    <p class="small">Job alerts and important updates.</p>
+</div>
+
+{% for item in notifications %}
+<div class="card">
+    <div class="row">
+        <h3 style="margin:0; flex:1;">{{ item.title }}</h3>
+        <span class="badge">{{ item.get_notification_type_display }}</span>
+    </div>
+    <p>{{ item.message }}</p>
+    <p class="small">{{ item.created_at }}</p>
+</div>
+{% empty %}
+<div class="card">
+    <p>No notifications yet.</p>
+</div>
+{% endfor %}
+{% endblock %}

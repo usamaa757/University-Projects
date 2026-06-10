@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Recommended Jobs</h2>
+    <p class="small">AI suggestions based on your profile and activity.</p>
+    <form method="get" style="margin-bottom:10px;">
+        <div class="row">
+            <label for="min_match" class="small">Minimum Match</label>
+            <select id="min_match" name="min_match">
+                <option value="70" {% if min_match == "70" %}selected{% endif %}>70%</option>
+                <option value="80" {% if min_match == "80" %}selected{% endif %}>80%</option>
+            </select>
+            <button type="submit" class="btn btn-muted">Apply</button>
+        </div>
+    </form>
+    <a href="{% url 'recomendations:generate-recommendations' %}" class="btn btn-primary" style="text-decoration:none;">Generate / Refresh Recommendations</a>
+</div>
+
+{% for item in recommendations %}
+<div class="card">
+    <div class="row">
+        <h3 style="margin:0; flex:1;">{{ item.job.title }} at {{ item.job.company }}</h3>
+        <span class="badge">hybrid</span>
+    </div>
+    <p class="small">Match Score: {{ item.score|floatformat:2 }}</p>
+    <p>{{ item.reason|default:"Matched with your profile." }}</p>
+</div>
+{% empty %}
+<div class="card">
+    <p>No recommendations found for {{ min_match }}% threshold. Try 70% or refresh recommendations.</p>
+</div>
+{% endfor %}
+{% endblock %}

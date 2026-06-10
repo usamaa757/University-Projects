@@ -1,0 +1,102 @@
+
+
+{% include 'includes/header.html' %}
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Discover & Exchange Books</h1>
+            <p>Join a vibrant community of book lovers and start sharing books effortlessly.</p>
+            <a href="{% url 'register' %}" class="btn btn-cta mt-3">Get Started</a>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">📖</div>
+                        <h4>List Your Books</h4>
+                        <p>Upload books you’re willing to exchange or give away.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">🔍</div>
+                        <h4>Browse & Request</h4>
+                        <p>Find books that interest you and request an exchange.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">📬</div>
+                        <h4>Connect & Exchange</h4>
+                        <p>Chat with book owners and arrange the exchange.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+        <div class="container">
+            <h2>Why Join Us?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>📚 Wide Collection</h4>
+                        <p>Access a vast variety of books from different genres.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>🌱 Eco-Friendly</h4>
+                        <p>Reduce waste and promote sustainability through book sharing.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>👥 Community Driven</h4>
+                        <p>Connect with like-minded book enthusiasts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2>What Users Say</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="testimonial">
+                        <p>"This platform helped me find rare books and meet fellow book lovers!"</p>
+                        <h5>- Sarah J.</h5>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="testimonial">
+                        <p>"A fantastic initiative for book enthusiasts who love to share knowledge!"</p>
+                        <h5>- Mark L.</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Start Your Book Exchange Journey Today!</h2>
+            <a href="{% url 'register' %}" class="btn btn-cta mt-3">Join Now</a>
+        </div>
+    </section>
+
+ 
+    {% include 'includes/footer.html' %}
+

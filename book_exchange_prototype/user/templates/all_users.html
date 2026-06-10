@@ -1,0 +1,59 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidebar.html' %}
+<div class="col py-3 content-area">
+<section class="section bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4"> All Users </h2>
+  
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+  
+        <div class="card p-3 shadow">
+          <h5> Users List</h5>
+          {% if users %}
+            <table class="table table-bordered mt-3">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                  <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                    {% if user.is_approved %}
+                       <span class="badge bg-success">Approved</span>
+                    {% else %}
+                       <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+                    </td>
+                    <td>
+                        {% if user.is_approved %}
+                        <a href="{% url 'de_activate_user' user.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to deactivate this user?')">DisApprove</a>
+                        {% else %}
+                          <a href="{% url 'approve_user' user.id %}" class="btn btn-success btn-sm" onclick="return confirm('Are you sure to approve this user?')">Approve</a>
+                        {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p>No users pending approval.</p>
+          {% endif %}
+        </div>
+      </div>
+</section>
+</div>
+<!-- footer -->
+ {% include 'includes/footer.html' %}
