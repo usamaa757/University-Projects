@@ -1,0 +1,95 @@
+/* General styling */
+body {
+font-family: Arial, sans-serif;
+background-color: #f5f6f8;
+color: #333;
+margin: 0;
+padding: 0;
+}
+
+.dashboard-container {
+max-width: 1200px;
+margin: auto;
+padding: 20px;
+}
+
+/* Header */
+.dashboard-header {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.dashboard-header h1 {
+font-size: 2em;
+color: #0056b3;
+}
+
+.dashboard-header p {
+color: #666;
+}
+
+/* Profile Section */
+.profile-section {
+background-color: #e0f7fa;
+padding: 15px;
+border-radius: 8px;
+margin-bottom: 20px;
+}
+
+.profile-section h2 {
+color: #00796b;
+font-size: 1.5em;
+}
+
+.profile-card p {
+margin: 8px 0;
+}
+
+/* Event Sections */
+.rsvp-events-section,
+.upcoming-events-section {
+margin-bottom: 20px;
+}
+
+h2 {
+font-size: 1.6em;
+margin-bottom: 10px;
+}
+
+/* Event Cards */
+.events-list {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+.event-card {
+background-color: #ffffff;
+border: 1px solid #ddd;
+padding: 15px;
+border-radius: 8px;
+width: 100%;
+max-width: 300px;
+}
+
+.event-card h3 {
+color: #333;
+font-size: 1.2em;
+}
+
+.event-card p {
+color: #555;
+}
+
+.btn-rsvp {
+background-color: #007bff;
+color: white;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.btn-rsvp:hover {
+background-color: #0056b3;
+}

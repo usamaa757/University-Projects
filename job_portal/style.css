@@ -1,0 +1,326 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+/* Header Start */
+header {
+    background-color: #0073e6;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #005bb5;
+}
+
+nav a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+nav a:hover {
+    background-color: #004494;
+}
+
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: #eaf1ff;
+}
+
+.hero h1 {
+    margin-bottom: 10px;
+}
+
+
+
+/* Header End */
+
+
+/* Job Listing Start */
+
+
+.job-listings {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+}
+
+.job {
+    padding: 15px 15px;
+    border-radius: 10px;
+    border: #004494 1px solid;
+    border-left: 5px solid #004494;
+    margin-bottom: 40px;
+
+}
+
+
+
+.job h3 {
+    margin: 0;
+}
+
+.job p {
+    margin: 15px 0;
+    color: #555;
+}
+
+.search-form {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-form input,
+select,
+textarea {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+@media (max-width: 768px) {
+    .job-listings {
+        flex: 1 1 100%;
+    }
+}
+
+/* Job Listing End */
+
+.container {
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+}
+
+/* All forms sytling Start */
+
+.form-container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.forms {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-container input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: #0073e6;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #005bb5;
+}
+
+.buttons {
+    margin: 20px;
+}
+
+.buttons a {
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #0073e6;
+    color: white;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+.buttons a:hover {
+    background-color: #005bb5;
+}
+
+/* All forms sytling End */
+
+/* Dashboard Start */
+
+.dashboard-container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-container h2 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.dashboard-container p {
+    margin: 8px 0;
+    color: #555;
+}
+
+.dashboard-container a {
+    text-decoration: none;
+}
+
+.dashboard-container a:hover {
+    text-decoration: underline;
+}
+
+h3 {
+    margin-top: 30px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+li {
+    margin: 12px 0;
+}
+
+li a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+li a:hover {
+    background-color: #2980b9;
+}
+
+.logout-btn {
+    background-color: #e74c3c !important;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b !important;
+}
+
+@media (max-width: 600px) {
+    .dashboard-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    li a {
+        width: 100%;
+        text-align: center;
+        display: block;
+    }
+}
+
+
+/* Dashboard End */
+
+
+
+/* Job Seeker Application Start */
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+}
+
+thead tr {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+}
+
+/* Job Seeker Application End */
+
+
+/* Notification Start */
+
+.notification-box {
+    padding: 15px;
+    background-color: #e6f7ff;
+    border: 2px dashed #0077cc;
+    border-radius: 10px;
+    margin-bottom: 30px;
+
+}
+
+.notification-box .job {
+    padding: 15px 10px;
+    border-bottom: 1px solid #ccc;
+}
