@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Application Tracking</h2>
+    <p class="small">Track your applied jobs and status.</p>
+</div>
+
+{% for item in applications %}
+<div class="card">
+    <div class="row">
+        <h3 style="margin:0; flex:1;">{{ item.job.title }} at {{ item.job.company }}</h3>
+        <span class="badge">{{ item.get_status_display }}</span>
+    </div>
+    <p class="small">Applied on {{ item.applied_at }}</p>
+    {% if item.cover_letter %}
+        <p><strong>Cover Letter:</strong> {{ item.cover_letter|truncatechars:200 }}</p>
+    {% endif %}
+</div>
+{% empty %}
+<div class="card">
+    <p>You have not applied for any job yet.</p>
+</div>
+{% endfor %}
+{% endblock %}

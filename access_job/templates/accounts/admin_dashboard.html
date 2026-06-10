@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Admin Dashboard</h2>
+    <p class="small">System analytics and user activity overview.</p>
+</div>
+
+<div class="row">
+    <div class="card" style="flex:1; min-width:180px;">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+    </div>
+    <div class="card" style="flex:1; min-width:180px;">
+        <h3>Active Users</h3>
+        <p>{{ active_users }}</p>
+    </div>
+    <div class="card" style="flex:1; min-width:180px;">
+        <h3>Total Jobs</h3>
+        <p>{{ total_jobs }}</p>
+    </div>
+    <div class="card" style="flex:1; min-width:180px;">
+        <h3>Open Jobs</h3>
+        <p>{{ open_jobs }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="card" style="flex:1; min-width:220px;">
+        <h3>Applications</h3>
+        <p>{{ total_applications }}</p>
+    </div>
+    <div class="card" style="flex:1; min-width:220px;">
+        <h3>Recommendations</h3>
+        <p>{{ total_recommendations }}</p>
+    </div>
+    <div class="card" style="flex:1; min-width:220px;">
+        <h3>Avg Recommendation Score</h3>
+        <p>{{ avg_recommendation_score }}</p>
+    </div>
+    <div class="card" style="flex:1; min-width:220px;">
+        <h3>Recommendation Hit Rate</h3>
+        <p>{{ recommendation_to_application_rate }}%</p>
+    </div>
+    <div class="card" style="flex:1; min-width:220px;">
+        <h3>Unread Notifications</h3>
+        <p>{{ unread_notifications }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="row">
+        <a href="{% url 'jobs:admin-job-list' %}" class="btn btn-muted" style="text-decoration:none;">Manage Jobs</a>
+        <a href="{% url 'accounts:admin-user-list' %}" class="btn btn-muted" style="text-decoration:none;">Manage Users</a>
+        <a href="{% url 'accounts:admin-logs' %}" class="btn btn-muted" style="text-decoration:none;">View Logs</a>
+        <a href="{% url 'recomendations:admin-recommendation-list' %}" class="btn btn-muted" style="text-decoration:none;">Review Recommendations</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Recent Activity</h3>
+    {% for log in recent_logs %}
+        <p class="small"><strong>{{ log.created_at }}</strong> - {{ log.action }}{% if log.user %} ({{ log.user.username }}){% endif %}</p>
+    {% empty %}
+        <p>No recent activity yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

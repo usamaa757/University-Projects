@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>System Logs</h2>
+    <p class="small">Track user interactions and application actions.</p>
+</div>
+
+<div class="card">
+    {% for log in logs %}
+        <p class="small">
+            <strong>{{ log.created_at }}</strong> |
+            {{ log.action }}
+            {% if log.user %}- {{ log.user.username }}{% endif %}
+            {% if log.details %}| {{ log.details }}{% endif %}
+        </p>
+    {% empty %}
+        <p>No logs yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

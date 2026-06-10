@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="padding: 26px;">
+    <h1 style="margin-top: 0;">Access Job Recommendation System</h1>
+    <p class="small" style="font-size: 16px;">
+        AI-powered platform to help job seekers find better opportunities based on skills,
+        education, and preferences.
+    </p>
+    <div class="row" style="margin-top: 14px;">
+        <a href="{% url 'jobs:job-list' %}" class="btn btn-primary" style="text-decoration:none;">Explore Jobs</a>
+        {% if not request.user.is_authenticated %}
+            <a href="{% url 'accounts:register' %}" class="btn btn-muted" style="text-decoration:none;">Create Account</a>
+            <a href="{% url 'login' %}" class="btn btn-muted" style="text-decoration:none;">Login</a>
+        {% else %}
+            <a href="{% url 'accounts:profile' %}" class="btn btn-muted" style="text-decoration:none;">Update Profile</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="card" style="flex: 1; min-width: 220px;">
+        <h3>Smart Recommendations</h3>
+        <p class="small">Get job suggestions using your profile and activity.</p>
+    </div>
+    <div class="card" style="flex: 1; min-width: 220px;">
+        <h3>Search and Filter</h3>
+        <p class="small">Filter jobs by keyword, category, location, and salary range.</p>
+    </div>
+    <div class="card" style="flex: 1; min-width: 220px;">
+        <h3>Track Applications</h3>
+        <p class="small">Monitor your application status in one place.</p>
+    </div>
+</div>
+
+<div class="card">
+    <h2>How it works</h2>
+    <ol class="small">
+        <li>Create your account and complete profile details.</li>
+        <li>Browse jobs and apply with one click.</li>
+        <li>Check recommendations and application updates regularly.</li>
+    </ol>
+</div>
+{% endblock %}

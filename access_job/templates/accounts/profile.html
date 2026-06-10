@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Profile Management</h2>
+    <p class="small">Add your skills, education, experience, and resume.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div style="flex:1;">
+                <label>Phone</label>
+                <input name="phone" value="{{ profile.phone }}">
+            </div>
+            <div style="flex:1;">
+                <label>Location</label>
+                <input name="location" value="{{ profile.location }}">
+            </div>
+        </div>
+        <div style="margin-top: 10px;">
+            <label>Skills</label>
+            <textarea name="skills">{{ profile.skills }}</textarea>
+        </div>
+        <div style="margin-top: 10px;">
+            <label>Education</label>
+            <textarea name="education">{{ profile.education }}</textarea>
+        </div>
+        <div style="margin-top: 10px;">
+            <label>Experience</label>
+            <textarea name="experience">{{ profile.experience }}</textarea>
+        </div>
+        <div style="margin-top: 10px;">
+            <label>Resume (PDF/DOC)</label>
+            <input type="file" name="resume">
+            {% if profile.resume %}
+                <p class="small">Current file: <a href="{{ profile.resume.url }}">View Resume</a></p>
+            {% endif %}
+        </div>
+        <button class="btn btn-primary" style="margin-top: 10px;" type="submit">Save Profile</button>
+    </form>
+</div>
+{% endblock %}
