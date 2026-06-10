@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --lighting-color: #0089b7;
+    --dark-color: #084a74;
+    --darker-color: #003251;
+    --secondary-color: #fff700;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: "poppins", sans-serif;
+    background-color: var(--lighting-color);
+    margin: 0;
+    padding: 0px;
+}
+
+.header {
+    width: 100%;
+    height: 60px;
+    background-color: var(--darker-color);
+    margin-top: 0px ;
+    margin-bottom: 20px;
+    padding-left: 60px;
+    color: var(--secondary-color);
+    align-items: center;
+}
+.scroll {
+
+   
+ 
+    max-height: 500px; 
+    overflow-y: auto; 
+}
+
+.container {
+    margin: 0 auto;
+    background-color: rgb(29, 109, 173);
+    padding: 40px;
+    box-shadow: 0px 0px 10px 0px #ffdede;
+     
+}
+
+.container h1 {
+    text-align: center;
+    color: var(--secondary-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: rgb(45, 161, 255);
+    color: white;
+}
+
+td {
+    background-color: #fff2f2;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+button {
+    padding: 5px 10px;
+    margin: 5px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+button[name="approve"] {
+    background-color: green;
+}
+
+button[name="reject"] {
+    background-color: red;
+}
+
+button[name="pending"] {
+    background-color: rgb(252, 227, 9);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+}
+
+

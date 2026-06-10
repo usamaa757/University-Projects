@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --lighting-color: #0089b7;
+    --dark-color: #084a74;
+    --darker-color: #003251;
+    --secondary-color: #fff700;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Poppins, sans-serif;
+    background-color: var(--lighting-color);
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    height: 60px;
+    width: 96%;
+    background-color: var(--darker-color);
+    color: var(--secondary-color);
+    text-align: center;
+    margin-left: 20px;
+    text-align: center;
+}
+
+form {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--darker-color);
+    color: var(--secondary-color);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+fieldset {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+legend {
+    font-weight: bold;
+    padding: 0 10px;
+    color: #94ff8b;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5ac270;
+}
+
+.education-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.education-row input,
+.education-row select {
+    flex: 1;
+}
+
+fieldset label span {
+    color: red;
+}

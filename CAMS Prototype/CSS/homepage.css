@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --lighting-color: #0089b7;
+    --dark-color: #084a74;
+    --darker-color: #003251;
+    --secondary-color: #fff700;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body,
+html {
+    font-family: "poppins", sans-serif;
+    font-weight: 300;
+    line-height: 1.4;
+    scroll-behavior: smooth;
+    color: white;
+}
+
+body {
+    font-size: 1.4rem;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+ul {
+    list-style: none;
+}
+
+header {
+    background: var(--lighting-color);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 10rem 1rem 5rem;
+}
+
+nav ul {
+    display: flex;
+    gap: 1rem;
+}
+
+nav li {
+    font-size: 1.8rem;
+    border-bottom: 0.4rem transparent solid;
+    transition: 0.3s ease-in-out;
+}
+
+nav li:hover {
+    border-bottom: 0.4rem var(--secondary-color) solid;
+    transition: 0.3s ease-in-out;
+}
+    
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.logo span {
+    color: var(--secondary-color);
+}
+
+/* Dropdown Menu Styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    background: var(--lighting-color);
+    padding: 0.5rem 0;
+    border-radius: 0.5rem;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-menu li {
+    padding: 0.5rem 1.5rem;
+    white-space: nowrap; 
+    border-bottom: 0; 
+}
+
+.dropdown-menu li:hover {
+    background: var(--secondary-color);
+    border-bottom: 0; 
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block; 
+}
+
+.dropdown-menu li a:hover {
+    color: black;
+}
+
+/* main section */
+.hero {
+    background-color: var(--darker-color);
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    color: white; 
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-content {
+    max-width: 600px;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+}
+
+.hero .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    color: rgb(17, 11, 11);
+    background-color: var(--secondary-color); 
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.hero .btn:hover {
+    background-color: #8deba1;
+}
+
+/* Footer Section */
+.footer {
+    background-color: var(--dark-color); /* Dark background color */
+    color: white; /* White text color */
+    padding: 40px 20px;
+}
+
+.footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-columns {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-column {
+    flex: 1;
+    margin: 10px;
+    min-width: 200px;
+}
+
+.footer-column h4 {
+    color: var(--secondary-color);
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+}
+
+.footer-column p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-right: 18px;
+}
+
+.footer-column ul {
+    list-style-type: disc; /* Adds bullet points */
+    padding-left: 20px; /* Indents the bullet points */
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #ce602d; /* Lighter color on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Social Links */
+.social-links {
+    list-style-type: none;
+    padding-left: 0; /* Remove padding for social links list */
+}
+
+.social-links li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center; /* Align icons with text */
+}
+
+.social-links li a {
+    color: white;
+    font-size: 1.5rem; /* Font size for icons */
+    transition: color 0.3s ease;
+    text-decoration: none; /* Remove underline from text */
+}
+
+.social-links li a i {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.social-links li a:hover {
+    color: #d3ff11; /* Lighter color on hover */
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    border-top: 1px solid var(--darker-color);
+    padding-top: 20px;
+    color: #aaa; /* Lighter text color */
+}
+

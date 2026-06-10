@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --lighting-color: #0089b7;
+    --dark-color: #084a74;
+    --darker-color: #003251;
+    --secondary-color: #fff700;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: var(--lighting-color);
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: var(--dark-color);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #fff700;
+    font-size: small;
+}
+
+.profile-box h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.profile-box label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.profile-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.profile-box button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.profile-box button:hover {
+    background-color: #7fee84;
+}
+.back-button {
+    background-color: #4CAF50; /* Green background */
+    border: none; /* Remove default border */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Padding inside the button */
+    text-align: center; /* Center text inside the button */
+    text-decoration: none; /* Remove underline from text */
+    display: inline-block; /* Inline element */
+    font-size: 16px; /* Text size */
+    margin: 10px 0; /* Margin around the button */
+    cursor: pointer; /* Change cursor on hover */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.back-button a {
+    color: white; /* Make the link color white */
+    text-decoration: none; /* Remove the underline from the link */
+    display: block; /* Make the link fill the button */
+}
+
+.back-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}

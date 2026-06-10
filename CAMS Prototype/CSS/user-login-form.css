@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --lighting-color: #0089b7;
+    --dark-color: #084a74;
+    --darker-color: #003251;
+    --secondary-color: #fff700;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body,
+html {
+    font-family: "poppins", sans-serif;
+    font-weight: 300;
+    line-height: 1.4;
+    scroll-behavior: smooth;
+    color: var(--secondary-color);
+}
+
+body {
+    font-size: 1.4rem;
+}
+
+body {
+    background-color: var(--lighting-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container.access-container {
+    background-color: var(--dark-color);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 440px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 6rem;
+}
+
+.access-box {
+    width: 97%;
+}
+
+.access-box h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.access-box label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.access-box input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* To include padding in width calculation */
+}
+
+.access-box input::placeholder {
+    color: #888;
+}
+
+.access-box button {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1.75rem;
+    background-color: #51ffb6;
+    color: rgb(14, 13, 13);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.access-box button:hover {
+    background-color: #c8ff80;
+}
+
+.click {
+    display: flex;
+    margin-top: 1rem;
+    color: white;
+    align-items: baseline;
+}
+
+.click a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-left: .5rem;
+    color: rgb(0, 255, 170);
+}
+
+.click a:hover {
+    color: #5fdaff;
+    text-decoration: underline;
+}

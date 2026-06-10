@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --lighting-color: #0089b7;
+    --dark-color: #084a74;
+    --darker-color: #003251;
+    --secondary-color: #fff700;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "poppins", sans-serif;
+    background-color: var(--lighting-color);
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+header {
+    background-color: var(--darker-color);
+    color: var(--secondary-color);
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+header h1 {
+    margin: 0;
+    padding-left: 20px;
+}
+
+header button {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.buttons {
+    margin-top: 50px;
+}
+
+.buttons button {
+    background-color: var(--dark-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 20px;
+}
+
+.buttons button:hover {
+    background-color: #43803c;
+    color: black;
+}
+
+.notification {
+    display: inline-block;
+    background-color: #295F98;
+    border: 1px solid #0a0808;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.notification-list {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 30px;
+    background-color: black;
+    border: 1px solid #ddd;
+    width: 200px;
+    text-align: left;
+}
+
+.notification-list.active {
+    display: block;
+}
+
+.notification-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+}
