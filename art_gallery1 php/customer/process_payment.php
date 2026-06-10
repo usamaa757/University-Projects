@@ -7,7 +7,7 @@ require 'vendor/autoload.php';
 include '../db.php';
 
 // Stripe secret key
-\Stripe\Stripe::setApiKey('sk_test_51RGjKECa2iCGPbLUxae0yQCCxdmYkAbWT914aAvNppm2hyhlCpht6hOBkoMLLiCdIeI8NbdJ91bFbV8MYXyt9czx00JWzrbHAv');
+\Stripe\Stripe::setApiKey('');
 
 // Ensure cart exists
 if (!isset($_SESSION['cart'])) {

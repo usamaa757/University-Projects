@@ -3,7 +3,7 @@ session_start();
 require 'vendor/autoload.php';
 include '../db.php';
 
-\Stripe\Stripe::setApiKey('sk_test_51RGjKECa2iCGPbLUxae0yQCCxdmYkAbWT914aAvNppm2hyhlCpht6hOBkoMLLiCdIeI8NbdJ91bFbV8MYXyt9czx00JWzrbHAv');
+\Stripe\Stripe::setApiKey('');
 
 // Sanitize and prevent SQL injection by using prepared statements
 $order_id = (int)$_GET['order_id'];

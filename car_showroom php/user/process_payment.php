@@ -3,7 +3,7 @@ session_start();
 require 'vendor/autoload.php';
 include '../db.php';
 $user_id = $_SESSION['user_id'];
-\Stripe\Stripe::setApiKey('sk_test_51RGjKECa2iCGPbLUxae0yQCCxdmYkAbWT914aAvNppm2hyhlCpht6hOBkoMLLiCdIeI8NbdJ91bFbV8MYXyt9czx00JWzrbHAv');
+\Stripe\Stripe::setApiKey('');
 
 $token = $_POST['stripeToken'];
 
