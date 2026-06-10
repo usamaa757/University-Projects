@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}
+  Group Chat
+{% endblock %}
+
+{% block content %}
+  <div class="chat-container">
+    <!-- Sidebar -->
+    <aside class="chat-sidebar">
+      <h3 class="sidebar-title">💬 Rooms</h3>
+      <ul class="room-list">
+        {% for room in rooms %}
+          <li>
+            <a href="{% url 'chat_room' room.name %}" class="room-link {% if room.name == room_name %}active{% endif %}">{{ room.name|title }}</a>
+          </li>
+        {% empty %}
+          <li class="empty">No rooms available</li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <!-- Main Chat Window -->
+    <main class="chat-main">
+      <div class="chat-header">
+        <h2 class="chat-title">Group Chat: {{ room_name|title }}</h2>
+      </div>
+
+      <div class="chat-messages" id="chat-box">
+        {% for msg in messages %}
+          <div class="chat-message {% if msg.user == request.user %}
+              me
+            {% else %}
+              other
+            {% endif %}">
+            <div class="bubble">
+              <div class="meta">
+                <strong>{{ msg.user.username }}</strong>
+                <small>{{ msg.timestamp|date:'H:i' }}</small>
+              </div>
+              <div class="content">{{ msg.content }}</div>
+            </div>
+          </div>
+        {% empty %}
+          <p class="no-messages">No messages yet.</p>
+        {% endfor %}
+      </div>
+
+      <form method="post" class="chat-form">
+        {% csrf_token %}
+        {{ form.content }}
+        <button type="submit" class="btn-send">➤</button>
+      </form>
+    </main>
+  </div>
+{% endblock %}

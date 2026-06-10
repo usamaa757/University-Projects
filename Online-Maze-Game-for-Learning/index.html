@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maze Game</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>🕹️ Online Maze Game for Learning</h1>
+      </header>
+
+      <section class="instructions">
+        <p>
+          🔧 <strong>Use keyboard arrow keys (↑ ↓ ← →) to move.</strong> <br />
+          Reach the 🥚 egg goal to win!
+        </p>
+      </section>
+
+      <button id="newMazeBtn" aria-label="Generate a new maze">
+        🔄 Generate New Maze
+      </button>
+
+      <article>
+        <canvas id="gameCanvas"></canvas>
+      </article>
+    </main>
+
+    <script src="js/maze.js" defer></script>
+    <script src="js/player.js" defer></script>
+    <script src="js/game.js" defer></script>
+  </body>
+</html>

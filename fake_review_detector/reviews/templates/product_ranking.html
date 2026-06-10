@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <div class="container mt-5">
+    <h2>Product Ranking by Sentiment</h2>
+    <table class="table table-hover table-bordered m-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Rank</th>
+          <th>Product</th>
+          <th>Total</th>
+          <th>Positive</th>
+          <th>Neutral</th>
+          <th>Negative</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>
+            {% if forloop.counter == 1 %}🥇 1st
+            {% elif forloop.counter == 2 %}🥈 2nd
+            {% elif forloop.counter == 3 %}🥉 3rd
+            {% else %}{{ forloop.counter }}th
+            {% endif %}
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.total_reviews }}</td>
+          <td class="text-success">{{ product.positive }}</td>
+          <td class="text-secondary">{{ product.neutral }}</td>
+          <td class="text-danger">{{ product.negative }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="text-center">No products with reviews yet</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

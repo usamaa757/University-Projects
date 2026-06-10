@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        English App
+      {% endblock %}
+    </title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+      :root {
+        --primary-color: #48bb78;
+        --primary-dark: #38a169;
+        --danger-color: #e2005eff;
+        --secondary-color: #2c5282;
+        --accent-color: #63b3ed;
+        --background: #f8fafc;
+        --card-bg: #ffffff;
+        --text-primary: #2d3748;
+        --text-secondary: #4a5568;
+        --text-light: #718096;
+        --border: #e2e8f0;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Reset & global */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--background);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Header */
+      .header {
+        background: var(--secondary-color);
+        color: #fff;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      
+      .header .logo {
+        font-size: 22px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+      }
+      
+      .header .logo i {
+        margin-right: 10px;
+        color: var(--accent-color);
+        font-size: 24px;
+      }
+      
+      .header .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-info a {
+        text-decoration: none;
+        color: white;
+        padding: 10px;
+      }
+      .header .user-role {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      
+      /* Main Layout */
+      .main-container {
+        display: flex;
+        flex: 1;
+        width: 100%;
+      }
+      
+      /* Sidebar */
+      .sidebar {
+        width: 260px;
+        background-color: var(--card-bg);
+        padding: 30px 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        height: calc(100vh - 70px);
+        position: sticky;
+        top: 70px;
+        flex-shrink: 0;
+      }
+      
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 15px 30px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: 0.3s;
+        border-left: 3px solid transparent;
+      }
+      
+      .nav-link:hover,
+      .nav-link.active {
+        background-color: rgba(159, 122, 234, 0.1);
+        color: var(--primary-color);
+        border-left: 3px solid var(--primary-color);
+      }
+      
+      .nav-link i {
+        margin-right: 15px;
+        font-size: 18px;
+        color: var(--primary-color);
+      }
+      
+      .nav-link.logout {
+        margin-top: auto;
+        color: #e53e3e;
+      }
+      .nav-link.logout:hover {
+        border-left: 3px solid #e53e3e;
+      }
+      
+      /* Content */
+      .content {
+        flex: 1;
+        padding: 30px;
+      }
+      
+      /* Footer */
+      .footer {
+        background: var(--secondary-color);
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      
+      /* Responsive */
+      @media (max-width: 768px) {
+        .main-container {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+          top: 0;
+        }
+      }
+    </style>
+
+    {% block extra_css %}
+
+    {% endblock %}
+  </head>
+
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <i class="fas fa-chart-line"></i> English App
+      </div>
+      <div class="user-info">
+        {% if user.is_authenticated %}
+          <div>{{ request.user.full_name }}</div>
+          <span class="user-role">{{ request.user.role }}</span>
+        {% else %}
+          <div class="user-info">
+            <a href="{% url 'home' %}" class="nav-link"><i class="fas fa-home"></i> Home</a>
+            <a href="{% url 'accounts:signup' %}" class="nav-link"><i class="fas fa-user-plus"></i> Register</a>
+            <a href="{% url 'accounts:login' %}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <!-- Main Container -->
+    <div class="main-container">
+      {% block sidebar %}
+        {% if user.is_authenticated %}
+          <nav class="sidebar">
+            {% if request.user.role == 'STUDENT' %}
+              <a href="{% url 'accounts:student_dashboard' %}" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+              <a href="{% url 'learning:course_list' %}" class="nav-link"><i class="fas fa-book-open"></i> Courses</a>
+              <a href="{% url 'learning:student_progress' %}" class="nav-link"><i class="fas fa-chart-line"></i> Track Progress</a>
+              <a href="{% url 'accounts:forum_list' %}" class="nav-link"><i class="fas fa-comments"></i> Peer Forum</a>
+            {% elif request.user.role == 'TEACHER' %}
+              <a href="{% url 'accounts:teacher_dashboard' %}" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+              <a href="{% url 'accounts:student_list' %}" class="nav-link"><i class="fas fa-user-graduate"></i> Students</a>
+              <a href="{% url 'learning:course_list' %}" class="nav-link"><i class="fas fa-book-open"></i> Courses</a>
+              <a href="{% url 'accounts:forum_list' %}" class="nav-link"><i class="fas fa-comments"></i> Peer Forum</a>
+            {% else %}
+              <a href="{% url 'accounts:admin_dashboard' %}" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+              <a href="{% url 'accounts:student_list' %}" class="nav-link"><i class="fas fa-user-graduate"></i> Students</a>
+              <a href="{% url 'learning:course_list' %}" class="nav-link"><i class="fas fa-book-open"></i> Courses</a>
+            {% endif %}
+            <a href="{% url 'learning:leaderboard' %}" class="nav-link"><i class="fas fa-trophy"></i> Leaderboard</a>
+            <a href="{% url 'accounts:logout' %}" class="nav-link logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </nav>
+        {% endif %}
+      {% endblock %}
+
+      <div class="content">
+        {% block content %}
+          <!-- Child templates inject content here -->
+        {% endblock %}
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">© 2025 English Learning App</div>
+
+    {% block extra_js %}
+
+    {% endblock %}
+  </body>
+</html>

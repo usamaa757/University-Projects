@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+input[type="text"], input[type="email"], input[type="password"], select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+input[type="radio"] {
+    margin-right: 10px;
+}
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block; /* Make the button a block element */
+    margin: auto; /* Center the button */
+}
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+#thankYouMessage {
+    display: none; /* Initially hiding the thank you message */
+    text-align: center;
+    margin-top: 20px;
+}

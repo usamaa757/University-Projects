@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+  Create Chat Room
+{% endblock %}
+
+{% block content %}
+  <div class="create-room-page">
+    <div class="page-header">
+      <h1 class="page-title">💬 Create New Chat Room</h1>
+      <p class="subtitle">Start a new discussion by creating a chat room for your students or peers.</p>
+    </div>
+
+    <div class="form-card">
+      <form method="post" class="create-room-form">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create Room</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

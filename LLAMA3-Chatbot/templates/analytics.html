@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="user-info">
+                <div class="user-avatar">{{ user.name[0]|upper }}</div>
+                <div class="user-name">{{ user.name }}</div>
+            </div>
+            <a href="/chat" class="nav-link">← Back to Chat</a>
+            <a href="/logout" class="nav-link logout">🚪 Logout</a>
+        </div>
+        
+        <div class="analytics-container">
+            <h1>📊 Analytics Dashboard</h1>
+            
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <div class="stat-value" id="total-users">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Sessions</h3>
+                    <div class="stat-value" id="total-sessions">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Messages</h3>
+                    <div class="stat-value" id="total-messages">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Avg Rating</h3>
+                    <div class="stat-value" id="avg-rating">-</div>
+                </div>
+            </div>
+            
+            <div class="analytics-grid">
+                <div class="chart-card">
+                    <h3>📈 Daily Activity</h3>
+                    <img id="daily-chart" src="/static/plots/daily_stats.png" alt="Daily Stats" style="width:100%">
+                </div>
+                
+                <div class="chart-card">
+                    <h3>⭐ Feedback Analysis</h3>
+                    <img id="feedback-chart" src="/static/plots/feedback_analytics.png" alt="Feedback" style="width:100%">
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>ℹ️ About This Chatbot</h3>
+                <ul>
+                    <li><strong>Model:</strong> LLaMA 3 70B</li>
+                    <li><strong>Inference:</strong> Groq LPU Cloud</li>
+                    <li><strong>Response Time:</strong> Typically 0.5-2 seconds</li>
+                    <li><strong>Context Window:</strong> 8K tokens</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/analytics/dashboard');
+                const data = await response.json();
+                
+                document.getElementById('total-users').textContent = data.summary.total_users || 0;
+                document.getElementById('total-sessions').textContent = data.summary.total_sessions || 0;
+                document.getElementById('total-messages').textContent = data.summary.total_messages || 0;
+                document.getElementById('avg- rating').textContent = data.summary.avg_rating || 'N/A';
+                
+                // Refresh images with timestamp to avoid cache
+                const timestamp = new Date().getTime();
+                const dailyImg = document.getElementById('daily-chart');
+                if (dailyImg) dailyImg.src = `/static/plots/daily_stats.png?t=${timestamp}`;
+                
+                const feedbackImg = document.getElementById('feedback-chart');
+                if (feedbackImg) feedbackImg.src = `/static/plots/feedback_analytics.png?t=${timestamp}`;
+                
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+        
+        loadAnalytics();
+        setInterval(loadAnalytics, 30000);
+    </script>
+</body>
+</html>

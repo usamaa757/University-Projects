@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}
+  Assignments
+{% endblock %}
+{% block extra_css %}
+  <style>
+    .page-header {
+      background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+      color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 20px;
+    }
+    
+    /* Assignments Table Styles */
+    .table-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+    
+    .custom-table th,
+    .custom-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .custom-table th {
+      background: #f9fafc;
+      color: #333;
+      font-weight: 600;
+    }
+    
+    .custom-table tr:hover {
+      background-color: #f5f9ff;
+      transition: background 0.3s;
+    }
+    
+    .custom-table td .btn {
+      font-size: 0.8rem;
+    }
+    
+    /* Empty State inside Table */
+    .custom-table .empty-state {
+      padding: 2rem;
+      text-align: center;
+      color: #666;
+      background: #fafafa;
+      border-radius: 6px;
+    }
+    
+    .custom-table .empty-state i {
+      display: block;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #bbb;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .btn-primary {
+      background: #007bff;
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #6c757d;
+      color: #6c757d;
+    }
+    
+    .btn-outline:hover {
+      background: #6c757d;
+      color: white;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>📚 Available Assignments</h1>
+    </div>
+
+    <!-- Assignments Table -->
+    <div class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Due Date</th>
+            <th>Marks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sub in submissions %}
+            <tr>
+              <td>{{ sub.assignment.title }}</td>
+              <td>{{ sub.assignment.due_date }}</td>
+              <td>
+                {% if sub.marks %}
+                  <span class="badge badge-level">{{ sub.marks }}</span>
+                {% else %}
+                  <span class="badge badge-category">Not graded yet</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="{{ sub.file.url }}" class="btn btn-primary" download>Download</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="4" class="empty-state">
+                <i>📭</i>
+                <p>No submissions available.</p>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

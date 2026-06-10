@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <div class="container mt-4">
+    <div class="card shadow">
+      <div class="card-header bg-warning text-white text-center">
+        <h4>Edit Activity</h4>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+
+          <div class="d-flex justify-content-between">
+            <a href="{% url 'activity_list' %}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-success">Update Activity</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

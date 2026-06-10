@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}
+  Create Lesson
+{% endblock %}
+
+{% block content %}
+  <div class="lesson-create-page">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="page-title">📘 Create New Lesson</h2>
+      <p class="page-subtitle">Fill in the details and attach multimedia resources.</p>
+    </div>
+
+    <!-- Form -->
+    <div class="form-card">
+      <form method="post" enctype="multipart/form-data" class="styled-form">
+        {% csrf_token %}
+        {{ lesson_form.as_p }}
+
+        <h3 class="section-title">Multimedia</h3>
+        {{ formset.management_form }}
+        <div id="formset-area" class="media-formset">
+          {% for form in formset %}
+            <div class="media-form">
+              {{ form.media_type }}
+
+              <div class="file-field">{{ form.file.label_tag }} {{ form.file }}</div>
+
+              <div class="flashcard-fields" style="display:none;">{{ form.flashcard_front.label_tag }} {{ form.flashcard_front }}
+                {{ form.flashcard_back.label_tag }} {{ form.flashcard_back }}</div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <button type="button" id="add-more" class="btn btn-primary">➕ Add More</button>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">💾 Save Lesson</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleMediaFields(container) {
+      const typeSelect = container.querySelector("select");
+      const fileField = container.querySelector(".file-field");
+      const flashcardFields = container.querySelector(".flashcard-fields");
+
+      if (typeSelect.value === "flashcard") {
+        fileField.style.display = "none";
+        flashcardFields.style.display = "block";
+      } else {
+        fileField.style.display = "block";
+        flashcardFields.style.display = "none";
+      }
+    }
+
+    // Initial toggle for existing forms
+    document.querySelectorAll(".media-form").forEach(container => {
+      toggleMediaFields(container);
+      container.querySelector("select").addEventListener("change", () => toggleMediaFields(container));
+    });
+
+    // Add More button
+    let formIdx = {{ formset.total_form_count }};
+    document.getElementById("add-more").onclick = function () {
+      const formArea = document.getElementById("formset-area");
+      const newForm = formArea.children[0].cloneNode(true);
+
+      newForm.querySelectorAll("input, select, textarea").forEach(el => {
+        el.name = el.name.replace(/-\d+-/, `-${formIdx}-`);
+        el.id = el.id.replace(/-\d+-/, `-${formIdx}-`);
+        if (el.type !== "hidden") el.value = "";
+      });
+
+      formArea.appendChild(newForm);
+      document.getElementById("id_form-TOTAL_FORMS").value = ++formIdx;
+
+      // Bind toggle to new form
+      toggleMediaFields(newForm);
+      newForm.querySelector("select").addEventListener("change", () => toggleMediaFields(newForm));
+    }
+  </script>
+{% endblock %}

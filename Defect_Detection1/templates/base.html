@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Defect Detection System</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        {% if current_user.is_authenticated %}
+          <a class="brand" href="{{ url_for('dashboard') }}">Defect Detection</a>
+          <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('upload_image') }}">Upload</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+          </div>
+        {% else %}
+          <a class="brand" href="">Defect Detection</a>
+          <div class="nav-links">
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+          </div>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="container">
+      {% with messages=get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert">
+              {{ message }}
+              <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}
+
+      {% endblock %}
+    </div>
+  </body>
+</html>

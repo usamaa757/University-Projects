@@ -1,0 +1,23 @@
+<h2>My Quiz Results</h2>
+<table border="1">
+  <tr>
+    <th>Quiz Title</th>
+    <th>Lesson Title</th>
+    <th>Score</th>
+    <th>Percentage</th>
+    <th>Taken At</th>
+  </tr>
+  {% for result in results %}
+    <tr>
+      <td>{{ result.quiz.title }}</td>
+      <td>{{ result.quiz.lesson.title }}</td>
+      <td>{{ result.score }}/{{ result.total }}</td>
+      <td>{{ result.percentage }}%</td>
+      <td>{{ result.taken_at }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <td colspan="5">You have not taken any quizzes yet.</td>
+    </tr>
+  {% endfor %}
+</table>

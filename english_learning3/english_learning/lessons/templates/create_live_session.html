@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Create Live Session
+{% endblock %}
+
+{% block content %}
+  <div class="live-session-page">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">📅 Create Live Session</h1>
+      <p class="page-subtitle">Schedule a new session for your students.</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <form method="post" class="create-session-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create Session</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

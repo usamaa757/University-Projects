@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Travel Tips</h2>
+    <ul class="list-group">
+        {% for tip in travel_tips %}
+        <li class="list-group-item">
+            <h4>{{ tip.title }}</h4>
+            <p>{{ tip.content }}</p>
+            <small>Posted on: {{ tip.created_at|date:"d M, Y" }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

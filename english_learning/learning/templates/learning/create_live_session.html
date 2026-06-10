@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    /* Container */
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header p {
+      font-size: 16px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+    .intro-text {
+      font-size: 16px;
+      color: #4a5568;
+      margin-bottom: 25px;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group label {
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: #2d3748;
+    }
+    
+    .form-group input {
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e0;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #48bb78;
+      box-shadow: 0 0 0 2px rgba(72, 187, 120, 0.2);
+    }
+    
+    .error {
+      color: #e53e3e;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+    
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary i {
+      margin-right: 8px;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #38a169, #2f855a);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(72, 187, 120, 0.3);
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 25px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      color: #48bb78;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+    
+    .back-link i {
+      margin-right: 6px;
+    }
+    
+    .back-link:hover {
+      background-color: rgba(72, 187, 120, 0.1);
+      transform: translateX(-4px);
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 30px auto;
+      }
+    
+      h1 {
+        font-size: 24px;
+      }
+    
+      .intro-text {
+        font-size: 15px;
+      }
+    
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+  <div class="page-header">
+    <h1>Host New Live Session</h1>
+  </div>
+
+  <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.title.label_tag }}
+        {{ form.title }}
+        {% if form.title.errors %}
+          <div class="error">{{ form.title.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        {{ form.url.label_tag }}
+        {{ form.url }}
+        {% if form.url.errors %}
+          <div class="error">{{ form.url.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        {{ form.scheduled_at.label_tag }}
+        {{ form.scheduled_at }}
+        {% if form.scheduled_at.errors %}
+          <div class="error">{{ form.scheduled_at.errors }}</div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Schedule Session</button>
+    </form>
+
+    <a href="{% url 'learning:live_sessions' %}" class="back-link"><i class="fas fa-arrow-left"></i> Back to Live Sessions</a>
+  </div>
+{% endblock %}

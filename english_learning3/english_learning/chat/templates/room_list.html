@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Chat Rooms
+{% endblock %}
+
+{% block content %}
+  <div class="chat-rooms-page">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="page-title">💬 Available Chat Rooms</h2>
+      <a href="{% url 'create_room' %}" class="btn btn-primary">➕ Create New Room</a>
+    </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <!-- Rooms List -->
+    <div class="rooms-grid">
+      {% for room in rooms %}
+        <div class="room-card">
+          <h3 class="room-name">{{ room.name|title }}</h3>
+          <a href="{% url 'chat_room' room.name %}" class="btn btn-primary btn-join">Enter Room</a>
+        </div>
+      {% empty %}
+        <p class="empty-msg">No chat rooms available. Create one to start chatting!</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <div class="admin-dashboard">
+      <!-- Dashboard Header -->
+      <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome back, {{ request.user.get_full_name|default:request.user.username }}! Here's an overview of your platform.</p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="action-card">
+          <span class="action-icon">👥</span>
+          <h3 class="action-title">Manage Users</h3>
+          <p class="action-description">View and manage all users</p>
+          <a href="{% url 'user_list' %}" class="btn btn-primary btn-sm">Go to Users</a>
+        </div>
+
+        <div class="action-card">
+          <span class="action-icon">📚</span>
+          <h3 class="action-title">Manage Lessons</h3>
+          <p class="action-description">Create and edit lessons</p>
+          <a href="{% url 'lesson_list' %}" class="btn btn-primary btn-sm">Go to Lessons</a>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card stat-users">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ total_users }}</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-admins">
+          <div class="stat-icon">👑</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ total_admins }}</div>
+            <div class="stat-label">Administrators</div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-teachers">
+          <div class="stat-icon">👨‍🏫</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ total_teachers }}</div>
+            <div class="stat-label">Teachers</div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-students">
+          <div class="stat-icon">👨‍🎓</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ total_students }}</div>
+            <div class="stat-label">Students</div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-lessons">
+          <div class="stat-icon">📚</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ total_lessons }}</div>
+            <div class="stat-label">Lessons</div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-quizes">
+          <div class="stat-icon">📝</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ total_quizzes }}</div>
+            <div class="stat-label">Quizes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-section">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>User Growth</h2>
+            <p>Platform growth over the last 30 days</p>
+          </div>
+          <div class="chart-container">
+            <canvas id="userGrowthChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>User Distribution</h2>
+            <p>Breakdown by user roles</p>
+          </div>
+          <div class="chart-container">
+            <canvas id="userDistributionChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Users Section -->
+      <div class="recent-users">
+        <div class="section-header">
+          <h2>Recent Users</h2>
+          <a href="{% url 'user_list' %}">View All Users</a>
+        </div>
+
+        {% if recent_users %}
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th>Join Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in recent_users %}
+                <tr>
+                  <td>
+                    <div class="user-info">
+                      <div class="user-avatar">{{ user.get_full_name|default:user.username|first|upper }}</div>
+                      <div>
+                        <div class="user-name">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="user-email">{{ user.email }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="status-badge status-{{ user.role }}">{{ user.get_role_display }}</span>
+                  </td>
+                  <td>{{ user.date_joined|date:'M d, Y' }}</td>
+                  <td>
+                    <span style="color: #28a745;">●</span> Active
+                  </td>
+                  <td>
+                    <a href="{% url 'user_detail' user.id %}" class="btn btn-primary btn-sm">View</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="empty-state">
+            <div>👥</div>
+            <h3>No users yet</h3>
+            <p>There are no users registered on the platform.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+   const growthCtx = document.getElementById('userGrowthChart').getContext('2d');
+const growthChart = new Chart(growthCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ chart_labels|safe }},
+        datasets: [{
+            label: 'New Users',
+            data: {{ chart_data|safe }},
+            backgroundColor: '#4a6fa5',
+            borderRadius: 6, // rounded bars
+        }]
+    },
+    options: { 
+        responsive: true, 
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'Daily Signups', font: { size: 16 } }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+const distributionCtx = document.getElementById('userDistributionChart').getContext('2d');
+const distributionChart = new Chart(distributionCtx, {
+    type: 'polarArea',
+    data: {
+        labels: ['Students', 'Teachers', 'Admins'],
+        datasets: [{
+            data: [{{ total_students }}, {{ total_teachers }}, {{ total_admins }}],
+            backgroundColor: ['#20c997','#fd7e14','#6f42c1'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: { display: true, text: 'User Role Breakdown', font: { size: 16 } }
+        }
+    }
+});
+
+</script>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Assignments
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .page-header {
+      background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+      color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .custom-table th,
+    .custom-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    
+    .custom-table thead {
+      background: #007bff;
+      color: #fff;
+      font-weight: 600;
+    }
+    
+    .custom-table tbody tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    
+    .custom-table tbody tr:hover {
+      background: #e6f0ff;
+      transition: background 0.3s;
+    }
+    
+    @media (max-width: 768px) {
+      .custom-table th,
+      .custom-table td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h2>Available Assignments</h2>
+      {% if request.user.role == 'teacher' %}
+        <a href="{% url 'create_assignment' %}" class="btn btn-primary"><i>➕</i> Create New Assignment</a>
+      {% endif %}
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Due Date</th>
+          <th>Total Marks</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for assignment in assignments %}
+          <tr>
+            <td>{{ assignment.title }}</td>
+            <td>{{ assignment.due_date|date:'M d, Y' }}</td>
+            <td>{{ assignment.total_marks }}</td>
+
+            <td>
+              {% if user.role == 'teacher' %}
+                <a href="{% url 'edit_assigment' assignment.id %}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{% url 'view_submissions' assignment.id %}" class="btn btn-primary btn-sm">View Submissions</a>
+              {% else %}
+                {% if assignment.id in submitted_ids %}
+                  <span class="badge bg-success">Submitted</span>
+                  <a href="{% url 'view_submissions' assignment.id %}" class="btn btn-primary btn-sm">View Submissions</a>
+                {% elif assignment.due_date < today %}
+                  <span class="badge bg-danger">Expired</span>
+                {% else %}
+                  <a href="{% url 'submit_assignment' assignment.id %}" class="btn btn-primary btn-sm">Submit</a>
+                {% endif %}
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3" style="text-align:center;">No assignments available.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

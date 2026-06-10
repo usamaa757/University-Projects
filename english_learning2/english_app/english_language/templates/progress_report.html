@@ -1,0 +1,757 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Progress Report
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Progress Report Specific Styles */
+    .progress-report {
+      margin-top: 20px;
+    }
+    
+    .report-header {
+      background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+      color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 20px;
+    }
+    
+    .report-header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .report-header p {
+      opacity: 0.9;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      color: #4a6fa5;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .summary-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .summary-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4a6fa5;
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    /* Section Styles */
+    .report-section {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    
+    .section-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid #eaeaea;
+      background-color: #f8f9fa;
+    }
+    
+    .section-header h2 {
+      color: #4a6fa5;
+      font-size: 1.3rem;
+    }
+    
+    .section-body {
+      padding: 1.5rem;
+    }
+    
+    /* Table Styles */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .results-table th,
+    .results-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .results-table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #495057;
+    }
+    
+    .results-table tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    /* Score Indicators */
+    .score {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .score-high {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .score-medium {
+      background-color: #fff3e0;
+      color: #f57c00;
+    }
+    
+    .score-low {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    /* Progress Bars */
+    .progress-container {
+      width: 100%;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      height: 8px;
+      margin-top: 0.5rem;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      border-radius: 4px;
+      background-color: #4a6fa5;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #ccc;
+    }
+    
+    /* Print Styles */
+    @media print {
+      .back-link {
+        display: none;
+      }
+    
+      .report-header {
+        background: none;
+        color: black;
+        border: 1px solid #ddd;
+      }
+    
+      .summary-card {
+        border: 1px solid #ddd;
+      }
+    
+      .report-section {
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+      }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    
+      .results-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="progress-report">
+      <!-- Back Link for Teachers -->
+      {% if request.user.role == 'teacher' %}
+        <a href="{% url 'student_list' %}" class="back-link">← Back to Student List</a>
+      {% endif %}
+
+      <!-- Report Header -->
+      <div class="report-header">
+        <h1>Progress Report</h1>
+        <p>
+          {% if request.user.role == 'teacher' %}
+            Viewing progress for {{ student.get_full_name|default:student.username }}
+          {% else %}
+            Your Learning Progress
+          {% endif %}
+        </p>
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-icon">📚</div>
+          <div class="summary-value">{{ lessons_completed.count }}</div>
+          <div class="summary-label">Lessons Completed</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon">🧪</div>
+          <div class="summary-value">{{ quiz_results.count }}</div>
+          <div class="summary-label">Quizzes Taken</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon">📝</div>
+          <div class="summary-value">{{ assignment_results.count }}</div>
+          <div class="summary-label">Assignments Submitted</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon">🎤</div>
+          <div class="summary-value">{{ speaking_results.count }}</div>
+          <div class="summary-label">Speaking Exercises</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon">✏️</div>
+          <div class="summary-value">{{ writing_results.count }}</div>
+          <div class="summary-label">Writing Exercises</div>
+        </div>
+      </div>
+
+      <!-- Quiz Results Section -->
+      <div class="report-section">
+        <div class="section-header">
+          <h2>Quiz Results</h2>
+        </div>
+        <div class="section-body">
+          {% if quiz_results %}
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Quiz</th>
+                  <th>Lesson</th>
+                  <th>Score</th>
+                  <th>Date Taken</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for result in quiz_results %}
+                  <tr>
+                    <td>{{ result.quiz.title }}</td>
+                    <td>{{ result.quiz.lesson.title }}</td>
+                    <td>
+                      <span class="score {% if result.percentage >= 80 %}
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                        score-high
+
+
+
+
+
+
+
+
+
+
+                        {% elif result.percentage >= 60 %}
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                        score-medium
+
+
+
+
+
+
+
+
+
+
+                        {% else %}
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                        score-low
+
+
+
+
+
+
+
+
+
+
+                        {% endif %}">
+                        {{ result.percentage|floatformat:0 }}%
+                      </span>
+                      <div class="progress-container">
+                        <div class="progress-bar" style="width: {{ result.percentage }}%;"></div>
+                      </div>
+                    </td>
+
+                    <td>{{ result.taken_at|date:'M d, Y' }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="empty-state">
+              <div>🧪</div>
+              <h3>No quiz results yet</h3>
+              <p>Complete some quizzes to see your results here.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Assignment Results Section -->
+      <div class="report-section">
+        <div class="section-header">
+          <h2>Assignment Results</h2>
+        </div>
+        <div class="section-body">
+          {% if assignment_results %}
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Assignment</th>
+                  <th>Submitted On</th>
+                  <th>Status</th>
+                  <th>Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for result in assignment_results %}
+                  <tr>
+                    <td>{{ result.assignment.title }}</td>
+                    <td>{{ result.submitted_at|date:'M d, Y' }}</td>
+
+                    <td>
+                      {% if result.marks %}
+                        <span class="score score-high">Graded</span>
+                      {% else %}
+                        <span class="score score-medium">Pending</span>
+                      {% endif %}
+                    </td>
+
+                    <td>
+                      {% if result.marks %}
+                        <span class="score 
+      {% if result.percentage >= 80 %}
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+        score-high
+
+
+
+
+
+
+
+
+
+
+
+
+                          {% elif result.percentage >= 60 %}
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+        score-medium
+
+
+
+
+
+
+
+
+
+
+
+
+                          {% else %}
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+        score-low
+
+
+
+
+
+
+
+
+
+
+
+
+                          {% endif %}
+    ">
+                          {{ result.marks }} / {{ result.assignment.total_marks }} ({{ result.percentage|floatformat:2 }}%)
+                        </span>
+                      {% else %}
+                        <span>-</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="empty-state">
+              <div>📝</div>
+              <h3>No assignment submissions yet</h3>
+              <p>Submit some assignments to see your results here.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% comment %}
+      <!-- Speaking Results Section -->
+      <div class="report-section">
+        <div class="section-header">
+          <h2>Speaking Exercises</h2>
+        </div>
+        <div class="section-body">
+          {% if speaking_results %}
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Exercise</th>
+                  <th>Score</th>
+                  <th>Fluency</th>
+                  <th>Pronunciation</th>
+                  <th>Date Completed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for result in speaking_results %}
+                  <tr>
+                    <td>{{ result.exercise.title }}</td>
+                    <td>
+                      <span class="score {% if result.score >= 80 %}
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          score-high
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        {% elif result.score >= 60 %}
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          score-medium
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        {% else %}
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          score-low
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        {% endif %}">
+                        {{ result.score }}%
+                      </span>
+                    </td>
+                    <td>{{ result.fluency_score }}/10</td>
+                    <td>{{ result.pronunciation_score }}/10</td>
+                    <td>{{ result.completed_at|date:'M d, Y' }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="empty-state">
+              <div>🎤</div>
+              <h3>No speaking exercises completed yet</h3>
+              <p>Complete some speaking exercises to see your results here.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div> {% endcomment %}
+
+      <!-- Writing Results Section -->
+      <div class="report-section">
+        <div class="section-header">
+          <h2>Writing Exercises</h2>
+        </div>
+        <div class="section-body">
+          {% if writing_results %}
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Exercise</th>
+
+                  <th>Date Completed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for result in writing_results %}
+                  <tr>
+                    <td>{{ result.exercise.title }}</td>
+                    <td>{{ result.submitted_at|date:'M d, Y' }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="empty-state">
+              <div>✏️</div>
+              <h3>No writing exercises completed yet</h3>
+              <p>Complete some writing exercises to see your results here.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Print Button -->
+      <div style="text-align: center; margin: 2rem 0;">
+        <button onclick="window.print()" class="btn btn-primary">Print Report</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    // Add any JavaScript needed for the progress report here
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('Progress report loaded')
+    })
+  </script>
+{% endblock %}

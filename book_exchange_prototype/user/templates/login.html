@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login | Online Book Exchange</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  </head>
+  <body class="">
+    <h2 class="mt-5 text-center">Welcome to Online Book Exchange</h2>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+      <div class="card p-4 shadow-lg" style="width: 450px;">
+        <h3 class="text-center">Login</h3>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <input type="text" name="username" class="form-control" placeholder="Username" required />
+          </div>
+          <div class="mb-3">
+            <input type="password" name="password" class="form-control" placeholder="Password" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <p class="text-center mt-3">
+          Don't have an account? <a href="{% url 'register' %}">Register</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

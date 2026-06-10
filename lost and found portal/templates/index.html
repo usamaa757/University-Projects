@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Lost & Found Portal</h1>
+    <p>Help others find their lost items or reunite found items with their owners.</p>
+    
+    <div style="margin: 30px 0; text-align: center;">
+        <a href="{{ url_for('post_lost') }}" class="btn btn-danger" style="margin-right: 10px;">Report Lost Item</a>
+        <a href="{{ url_for('post_found') }}" class="btn btn-success">Report Found Item</a>
+    </div>
+    
+    <h2>Recent Lost Items</h2>
+    <div class="grid">
+        {% for item in recent_lost %}
+            <div class="card">
+                <h3>{{ item.title }}</h3>
+                <p><strong>Category:</strong> {{ item.category }}</p>
+                <p><strong>Location:</strong> {{ item.location }}</p>
+                <p><strong>Date Lost:</strong> {{ item.date_lost_found }}</p>
+                <p><strong>Posted by:</strong> {{ item.full_name }}</p>
+                <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn">View Details</a>
+            </div>
+        {% else %}
+            <p>No lost items reported yet.</p>
+        {% endfor %}
+    </div>
+    
+    <h2>Recent Found Items</h2>
+    <div class="grid">
+        {% for item in recent_found %}
+            <div class="card">
+                <h3>{{ item.title }}</h3>
+                <p><strong>Category:</strong> {{ item.category }}</p>
+                <p><strong>Location:</strong> {{ item.location }}</p>
+                <p><strong>Date Found:</strong> {{ item.date_lost_found }}</p>
+                <p><strong>Posted by:</strong> {{ item.full_name }}</p>
+                <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn">View Details</a>
+            </div>
+        {% else %}
+            <p>No found items reported yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

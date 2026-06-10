@@ -1,0 +1,458 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    /* Page header */
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header p {
+      font-size: 16px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Main Content */
+    main {
+      padding: 40px 0;
+    }
+    
+    /* Lesson Actions */
+    .lesson-actions {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 25px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    /* Lesson Container */
+    .lesson-container {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 25px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .lesson-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .lesson-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 25px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .lesson-header::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+    
+    .lesson-header::after {
+      content: '';
+      position: absolute;
+      bottom: -70px;
+      left: -70px;
+      width: 250px;
+      height: 250px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+    }
+    
+    .lesson-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .lesson-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .lesson-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .lesson-content {
+      padding: 25px 30px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #495057;
+    }
+    
+    .lesson-content p {
+      margin-bottom: 15px;
+    }
+    
+    .lesson-image {
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .lesson-image img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      transition: transform 0.5s;
+    }
+    
+    .lesson-image img:hover {
+      transform: scale(1.02);
+    }
+    
+    /* Media Section */
+    .media-section {
+      padding: 0 30px 30px;
+    }
+    
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .media-card {
+      background: var(--light);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .media-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .media-card-header {
+      background: var(--primary-color);
+      color: white;
+      padding: 12px 15px;
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .media-card-content {
+      padding: 15px;
+    }
+    
+    iframe,
+    audio {
+      width: 100%;
+      border-radius: 8px;
+    }
+    
+    iframe {
+      height: 180px;
+    }
+    
+    audio {
+      height: 45px;
+    }
+    
+    /* Lesson Detail Actions */
+    .lesson-detail-actions {
+      padding: 20px 30 (--light);
+    
+      background: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .lesson-detail-actions h3 {
+      font-size: 18px;
+      color: var(--primary-dark);
+      margin: 0;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #3aa6c4;
+      transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger-color);
+      color: white;
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .header-container {
+        padding: 15px 20px;
+      }
+    
+      nav ul li {
+        margin-left: 20px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        padding: 15px;
+      }
+    
+      .logo {
+        margin-bottom: 15px;
+      }
+    
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+      }
+    
+      nav ul li {
+        margin: 5px 0;
+      }
+    
+      .page-header h1 {
+        font-size: 24px;
+      }
+    
+      .lesson-header h1 {
+        font-size: 20px;
+      }
+    
+      .lesson-meta {
+        flex-direction: column;
+        gap: 8px;
+      }
+    
+      .media-grid {
+        grid-template-columns: 1fr;
+      }
+    
+      .lesson-actions,
+      .lesson-detail-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Course: {{ course.title }}</h1>
+      <p>Manage and view all lessons for this course</p>
+    </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <!-- Lesson Actions -->
+    <div class="lesson-actions">
+      <a href="{% url 'learning:course_list' %}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to courses</a>
+      <div>
+        {% if user.role == 'TEACHER' or user.role == 'ADMIN' or user.is_superuser %}
+          <a href="{% url 'learning:lesson_create' course.id %}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Add Lesson</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Lessons Loop -->
+    {% for lesson in lessons %}
+      <!-- Lesson Container -->
+      <div class="lesson-container">
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+          <h1><a style="text-decoration: none;" href="{% url 'accounts:student_lesson_detail' lesson.id %}">{{ lesson.title }}</a></h1>
+          <div class="lesson-meta">
+            <div class="lesson-meta-item">
+              <i class="fas fa-book"></i>
+              <span>{{ lesson.course.title }}</span>
+            </div>
+            <div class="lesson-meta-item">
+              <i class="fas fa-sort-numeric-up"></i>
+              <span>Lesson {{ lesson.order }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lesson Content -->
+        <div class="lesson-content">
+          {% if lesson.image %}
+            <div class="lesson-image">
+              <img src="{{ lesson.image.url }}" alt="{{ lesson.title }}" />
+            </div>
+          {% endif %}
+
+          {{ lesson.content|linebreaks }}
+        </div>
+
+        <!-- Media Section -->
+        {% if lesson.video_url or lesson.audio_url %}
+          <div class="media-section">
+            <div class="media-grid">
+              {% if lesson.embed_url %}
+                <div class="media-card">
+                  <div class="media-card-header">
+                    <i class="fas fa-video"></i>
+                    Lesson Video
+                  </div>
+                  <div class="media-card-content">
+                    <a href="{{ lesson.video_url }}" target="_blank">Watch on YouTube</a>
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if lesson.audio_url %}
+                <div class="media-card">
+                  <div class="media-card-header">
+                    <i class="fas fa-headphones"></i>
+                    Lesson Audio
+                  </div>
+                  <div class="media-card-content">
+                    <audio controls>
+                      <source src="{{ lesson.audio_url }}" type="audio/mpeg" />Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Lesson Detail Actions -->
+        <div class="lesson-detail-actions">
+          <div>
+            <a href="{% url 'learning:exercise_list' lesson.id %}" class="btn btn-primary"><i class="fas fa-tasks"></i> View Exercises</a>
+            <a href="{% url 'learning:assignment_list' lesson.id %}" class="btn btn-primary"><i class="fas fa-tasks"></i> View Assignments</a>
+            {% if user.role == 'TEACHER' or user.role == 'ADMIN' or user.is_superuser %}
+              <a href="{% url 'learning:lesson_edit' course.id lesson.id %}" class="btn btn-secondary"><i class="fas fa-edit"></i> Edit</a>
+              <a href="{% url 'learning:lesson_delete' course.id lesson.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this lesson?');"><i class="fas fa-trash"></i> Delete</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

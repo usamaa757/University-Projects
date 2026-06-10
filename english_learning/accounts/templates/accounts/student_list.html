@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+    
+    h1 {
+      color: #2c5282;
+      font-size: 28px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 i {
+      margin-right: 12px;
+      color: #48bb78;
+      font-size: 32px;
+    }
+    
+    .student-list {
+      display: grid;
+      gap: 15px;
+    }
+    
+    .student-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s;
+    }
+    
+    .student-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      background: #edf2f7;
+    }
+    
+    .student-item span {
+      font-size: 16px;
+      color: #2d3748;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .student-item i {
+      color: #4299e1;
+      font-size: 18px;
+    }
+    
+    .student-item a {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: white;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .student-item a:hover {
+      background: linear-gradient(135deg, #38a169, #2f855a);
+    }
+    
+    @media (max-width: 768px) {
+      .student-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    
+      .student-item a {
+        align-self: flex-end;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <h1><i class="fas fa-users"></i> Your Students</h1>
+    <div class="student-list">
+      {% for student in students %}
+        <div class="student-item">
+          <span><i class="fas fa-user-graduate"></i> {{ student.full_name }}</span>
+          <a href="{% url 'learning:student_detail_progress' student.id %}">View Progress <i class="fas fa-arrow-right"></i></a>
+        </div>
+      {% empty %}
+        <p>No students have progress yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

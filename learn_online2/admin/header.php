@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>E-Learning</title>
+    <!-- Bootstrap CSS -->
+    <link href="../styles/bootstrap/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="admin_dashboard.php">E - Learning</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+			<li  class="nav-item active">
+			<a class="nav-link" href="admin_dashboard.php">Home</a>
+                   
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" href="quiz_list.php">Quiz List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="assignment_list.php">Assignment List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="lesson_record.php">Lesson List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../logout.php">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+<!-- Bootstrap JS and dependencies -->
+<script src="../js/jquery-3.5.1.slim.min.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>

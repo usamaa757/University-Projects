@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+  Quiz Result
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Result Container */
+    .result-box {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .score {
+      font-size: 1.25rem;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+    
+    .score strong {
+      font-size: 1.5rem;
+      color: #28a745; /* Green highlight for score */
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="page-header">
+      <h1>{{ quiz.title }} - Result</h1>
+    </div>
+
+    <div class="result-box">
+      <p class="score">
+        Your score: <strong>{{ score }}</strong> / {{ total }}
+      </p>
+      <a href="{% url 'quiz_list' %}" class="btn btn-primary">Back to Quizzes</a>
+    </div>
+  </div>
+{% endblock %}

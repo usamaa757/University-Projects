@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Form Container */
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            background-color: teal;
+            color: white;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Form Fields */
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: teal;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100px;
+        }
+
+        button:hover {
+            background-color: #00796b;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Stock and Sell Buttons */
+        .stock-sale-container {
+            margin-top: 20px;
+        }
+
+        .stock-sale-container button {
+            width: 120px;
+        }
+    </style>
+    <script>
+      function handleExit() {
+          // Attempt to close the window
+          window.open('', '_self', '');
+          window.close();
+  
+          // Fallback: If the window is not closed, try navigating away
+          window.location.href = "about:blank"; 
+      }
+  </script>
+  
+    
+</head>
+<body>
+
+    <div class="container">
+        <h2>Login Form</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+            {{ form.password.errors }}
+
+            <div class="button-container">
+                <button type="submit">Login</button>
+                <button type="reset">Reset</button>
+                <button type="button" onclick="handleExit()">Exit</button>
+            </div>
+        </form>
+
+        <div class="stock-sale-container">
+            <button type="button" {% if not logged_in %}disabled{% endif %}>Stock</button>
+            <button type="button" {% if not logged_in %}disabled{% endif %}>Sell</button>
+        </div>
+    </div>
+
+</body>
+</html>

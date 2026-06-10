@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    background-color: #15260f;
+    transition: left 0.3s ease;
+}
+
+.navbar.open {
+    left: 0;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navbar li {
+    padding: 10px;
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+/* Make links clickable */
+.navbar li a:hover {
+    background-color: #b5dd7c;
+}
+
+/* Hamburger menu icon */
+.menu-icon {
+    padding: 10px;
+    background-color: #15260f;
+    color: white;
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.menu-icon:hover {
+    background-color: #15260f;
+}
+
+/* Top bar */
+.top-bar {
+    background-color: #15260f;
+    color: white;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 998; /* Ensure top bar is behind the hamburger icon */
+}
+
+/* Logo text */
+.logo {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-left: 40px; /* Adjust this as needed */
+}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #2d3748;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #4a5568;
+      line-height: 1.5;
+    }
+    
+    ol {
+      padding-left: 20px;
+    }
+    
+    li {
+      margin-bottom: 20px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 15px;
+      transition: all 0.3s;
+    }
+    
+    li:hover {
+      background: #edf2f7;
+    }
+    
+    .user-answer {
+      font-weight: 500;
+    }
+    
+    .correct {
+      color: #38a169; /* green */
+      font-weight: 600;
+    }
+    
+    .incorrect {
+      color: #e53e3e; /* red */
+      font-weight: 600;
+    }
+    
+    .correct-answer {
+      color: #2d3748;
+      font-style: italic;
+      margin-top: 5px;
+    }
+    
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #4a5568;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #cbd5e0;
+    }
+  </style>
+
+  <div class="container">
+    <h2>{{ quiz.title }} - Results</h2>
+    <p>
+      Score: <strong>{{ correct_count }} / {{ total_questions }}</strong>
+    </p>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <ol>
+      {% for q in question_feedback %}
+        <li>
+          <p>
+            <strong>{{ q.question.text }}</strong>
+          </p>
+
+          {% if not q.correct %}
+            <p class="correct-answer">Correct answer: {{ q.correct_answer }}</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+
+    <a href="{% url 'learning:exercise_list' quiz.lesson.id %}" class="btn-secondary">Back to Exercises</a>
+  </div>
+{% endblock %}

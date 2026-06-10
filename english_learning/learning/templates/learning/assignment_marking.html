@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% block content %}
+  <style>
+    /* Container for content */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Page header */
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header .exercise-type {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Exercise container */
+    .exercise-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    /* Question section */
+    .question-section {
+      margin-bottom: 30px;
+    }
+    
+    .question-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    
+    .question-text {
+      font-size: 20px;
+      line-height: 1.5;
+      color: #2d3748;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+    
+    /* Choices for MCQ / MATCH */
+    .quiz-options {
+      margin-bottom: 15px;
+    }
+    
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .quiz-option:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+    
+    .quiz-option input[type='checkbox'],
+    .quiz-option input[type='radio'] {
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
+      accent-color: #4299e1;
+    }
+    
+    form input[type='text'],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background-color: #f8fafc;
+    }
+    
+    /* Correct answer for FILL */
+    #correct-answer-container input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 5px;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+    }
+    
+    .btn-primary {
+      background-color: #4299e1;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3182ce;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-header h2 {
+        font-size: 24px;
+      }
+    
+      .question-text {
+        font-size: 18px;
+      }
+    
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    /* New Styling Added */
+    table.table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    
+    table.table th,
+    table.table td {
+      padding: 12px 15px;
+      border: 1px solid #e2e8f0;
+      text-align: left;
+    }
+    
+    table.table th {
+      background-color: #edf2f7;
+      font-weight: 600;
+    }
+    
+    a {
+      color: #3182ce;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    .alert {
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .alert-success {
+      background-color: #c6f6d5;
+      color: #276749;
+    }
+    
+    .alert-error {
+      background-color: #fed7d7;
+      color: #9b2c2c;
+    }
+  </style>
+
+  <div class="container">
+    <h2>{{ assignment.title }}</h2>
+    <p>Due: {{ assignment.due_date|date:'M d, Y' }}</p>
+    <p>Total Marks: {{ assignment.total_marks }}</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <table class="table">
+        <tr>
+          <th>Student</th>
+          <th>File</th>
+          <th>Marks Obtained</th>
+        </tr>
+        {% for sub in submissions %}
+          <tr>
+            <td>{{ sub.student.full_name }}</td>
+            <td>
+              {% if sub.submitted_file %}
+                <a href="{{ sub.submitted_file.url }}" target="_blank">Download</a>
+              {% else %}
+                Not Submitted
+              {% endif %}
+            </td>
+            <td>
+              <input type="number" name="marks_{{ sub.id }}" value="{{ sub.marks_awarded|default_if_none:0 }}" min="0" max="{{ assignment.total_marks }}" />
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3">No submissions yet.</td>
+          </tr>
+        {% endfor %}
+      </table>
+      <button type="submit" class="btn btn-primary">Save Marks</button>
+    </form>
+
+    {% if messages %}
+      <div style="margin-top:15px;">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

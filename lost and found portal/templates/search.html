@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Search Items{% endblock %}
+
+{% block content %}
+    <h1>Search Lost & Found Items</h1>
+    
+    <form method="POST" style="max-width: 800px; margin: 0 auto;">
+        <div class="form-group">
+            <label for="keyword">Keyword:</label>
+            <input type="text" id="keyword" name="keyword" placeholder="Search by title or description">
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Documents">Documents</option>
+                    <option value="Keys">Keys</option>
+                    <option value="Wallet/Purse">Wallet/Purse</option>
+                    <option value="Phone">Phone</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Jewelry">Jewelry</option>
+                    <option value="Bag/Backpack">Bag/Backpack</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" placeholder="Enter location">
+            </div>
+            
+            <div class="form-group">
+                <label for="date_from">From Date:</label>
+                <input type="date" id="date_from" name="date_from">
+            </div>
+            
+            <div class="form-group">
+                <label for="item_type">Item Type:</label>
+                <select id="item_type" name="item_type">
+                    <option value="">All Items</option>
+                    <option value="lost">Lost Items</option>
+                    <option value="found">Found Items</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn">Search</button>
+    </form>
+    
+    {% if search_performed %}
+        <h2 style="margin-top: 30px;">Search Results</h2>
+        
+        {% if results %}
+            <div class="grid">
+                {% for item in results %}
+                    <div class="card">
+                        <h3>{{ item.title }}</h3>
+                        <p><span class="badge {% if item.type == 'lost' %}badge-lost{% else %}badge-found{% endif %}">{{ item.type|upper }}</span></p>
+                        <p><strong>Category:</strong> {{ item.category }}</p>
+                        <p><strong>Location:</strong> {{ item.location }}</p>
+                        <p><strong>Date:</strong> {{ item.date_lost_found }}</p>
+                        <p><strong>Posted by:</strong> {{ item.full_name }}</p>
+                        <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn">View Details</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No items found matching your criteria.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    /* Page header */
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header p {
+      font-size: 16px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .btn-primary {
+      background-color: #4299e1;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3182ce;
+    }
+    
+    .btn-danger {
+      background-color: #e53e3e;
+      color: white;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c53030;
+    }
+    
+    .btn-outline {
+      border: 2px solid #4299e1;
+      color: #4299e1;
+      background-color: transparent;
+    }
+    
+    .btn-outline:hover {
+      background-color: #4299e1;
+      color: white;
+    }
+    
+    /* Main Content */
+    main {
+      flex: 1;
+      padding: 40px 0;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .page-title {
+      font-size: 32px;
+      color: #2d3748;
+    }
+    
+    /* Course Grid */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    
+    .course-card {
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .course-image {
+      height: 180px;
+      background-color: #ebf8ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4299e1;
+      font-size: 48px;
+    }
+    
+    .course-content {
+      padding: 20px;
+    }
+    
+    .course-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 10px;
+    }
+    
+    .course-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 14px;
+      color: #718096;
+    }
+    
+    .course-level {
+      background-color: #edf2f7;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    
+    .course-category {
+      background-color: #e6fffa;
+      color: #319795;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    
+    .course-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+    }
+    
+    .course-actions a {
+      text-decoration: none;
+      color: #4299e1;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.3s;
+    }
+    
+    .course-actions a:hover {
+      color: #3182ce;
+    }
+    
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .admin-actions a {
+      color: #4299e1;
+      font-size: 14px;
+    }
+    
+    .admin-actions a:hover {
+      color: #3182ce;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .empty-state i {
+      font-size: 64px;
+      color: #cbd5e0;
+      margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+      font-size: 24px;
+      color: #4a5568;
+      margin-bottom: 10px;
+    }
+    
+    .empty-state p {
+      color: #718096;
+      margin-bottom: 20px;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        padding: 15px;
+      }
+    
+      .logo {
+        margin-bottom: 15px;
+      }
+    
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+      }
+    
+      nav ul li {
+        margin: 5px 0;
+      }
+    
+      .user-menu {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: center;
+      }
+    
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+    
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">All Courses</h1>
+        {% if user.role in 'TEACHER ADMIN' or user.is_superuser %}
+          <a href="{% url 'learning:create_course' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Course</a>
+        {% endif %}
+      </div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% if courses %}
+        <div class="courses-grid">
+          {% for course in courses %}
+            <div class="course-card">
+              <div class="course-image">
+                <i class="fas fa-book-open"></i>
+              </div>
+              <div class="course-content">
+                <h3 class="course-title">{{ course.title }}</h3>
+                <div class="course-meta">
+                  <span class="course-level">{{ course.skill_level }}</span>
+                  <span class="course-category">{{ course.category }}</span>
+                </div>
+                <div class="course-actions">
+                  <a href="{% url 'learning:lesson_list' course.id %}"><i class="fas fa-play-circle"></i> View Lessons</a>
+                  {% if user.role in 'TEACHER ADMIN' or user.is_superuser %}
+                    <div class="admin-actions">
+                      <a href="{% url 'learning:course_edit' course.id %}"><i class="fas fa-edit"></i> Edit</a>
+                      <form action="{% url 'learning:course_delete' course.id %}" method="post" style="display:inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this course?')"><i class="fas fa-trash"></i> Delete</button>
+                      </form>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <i class="fas fa-book-open"></i>
+          <h3>No courses available</h3>
+          <p>There are no courses available at the moment. Check back later or create a new course if you have permission.</p>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+{% endblock %}

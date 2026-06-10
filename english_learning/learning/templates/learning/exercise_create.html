@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+  <style>
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header p {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-top: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .exercise-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+    
+    .exercise-types {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 0;
+      margin-top: 20px;
+    }
+    
+    .exercise-types a {
+      display: block;
+      padding: 12px 20px;
+      background: #4299e1;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    
+    .exercise-types a:hover {
+      background: #2b6cb0;
+    }
+    
+    .btn-primary {
+      padding: 10px 18px;
+      border-radius: 8px;
+      background: #3182ce;
+      color: white;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .btn-primary:hover {
+      background: #245ea8;
+    }
+    form input[type='text'],
+    input[type='file'],
+    input[type='date'],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background-color: #f8fafc;
+    }
+  </style>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <h2>Create Exercise</h2>
+    <p>Lesson: {{ lesson.title }}</p>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  <div class="exercise-container">
+    {% if not exercise_type %}
+      <h3>Select Exercise Type</h3>
+
+      <ul class="exercise-types">
+        <li>
+          <a href="?type=quiz">Quiz</a>
+        </li>
+        <li>
+          <a href="?type=speaking">Speaking</a>
+        </li>
+        <li>
+          <a href="?type=listening">Listening</a>
+        </li>
+        <li>
+          <a href="?type=writing">Writing</a>
+        </li>
+      </ul>
+    {% else %}
+      <h3>{{ exercise_type|capfirst }} Exercise</h3>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Save</button>
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}

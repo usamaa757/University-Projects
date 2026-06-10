@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .delete-container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .delete-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+    
+    .delete-header {
+      background: linear-gradient(135deg, #fc8181, #e53e3e);
+      padding: 25px;
+      text-align: center;
+      color: white;
+    }
+    
+    .delete-header i {
+      font-size: 48px;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .delete-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .delete-body {
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .user-info {
+      background-color: #f7fafc;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #e53e3e;
+    }
+    
+    .user-info p {
+      margin: 0;
+      color: #4a5568;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .user-email {
+      font-weight: 600;
+      color: #2d3748;
+      font-size: 18px;
+    }
+    
+    .user-role {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: #e2e8f0;
+      color: #4a5568;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .delete-form {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    
+    .delete-btn {
+      background: linear-gradient(135deg, #e53e3e, #c53030);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(229, 62, 62, 0.2);
+    }
+    
+    .delete-btn:hover {
+      background: linear-gradient(135deg, #c53030, #9b2c2c);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(229, 62, 62, 0.3);
+    }
+    
+    .delete-btn i {
+      margin-right: 8px;
+    }
+    
+    .cancel-btn {
+      background: white;
+      color: #4a5568;
+      border: 2px solid #e2e8f0;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .cancel-btn:hover {
+      background: #f7fafc;
+      border-color: #cbd5e0;
+      transform: translateY(-2px);
+    }
+    
+    .cancel-btn i {
+      margin-right: 8px;
+    }
+    
+    .warning-text {
+      color: #718096;
+      font-size: 15px;
+      margin-top: 20px;
+      font-style: italic;
+    }
+    
+    @media (max-width: 768px) {
+      .delete-container {
+        margin: 30px 20px;
+      }
+    
+      .delete-form {
+        flex-direction: column;
+        align-items: center;
+      }
+    
+      .delete-btn,
+      .cancel-btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <div class="delete-container">
+    <div class="delete-card">
+      <div class="delete-header">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Delete User</h2>
+      </div>
+
+      <div class="delete-body">
+        <p>Are you sure you want to permanently delete this user account?</p>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <div class="user-info">
+          <p class="user-email">{{ user.email }}</p>
+          <span class="user-role">{{ user.role }}</span>
+        </div>
+
+        <p class="warning-text">This action cannot be undone. All data associated with this user will be permanently removed.</p>
+
+        <form method="post" class="delete-form">
+          {% csrf_token %}
+          <button type="submit" class="delete-btn"><i class="fas fa-trash-alt"></i> Yes, Delete</button>
+          <a href="{% url 'accounts:user_list' %}" class="cancel-btn"><i class="fas fa-times"></i> Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

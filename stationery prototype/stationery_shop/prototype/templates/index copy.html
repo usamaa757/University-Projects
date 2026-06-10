@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #d3d3d3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      
+      .container {
+        background-color: #c0c0c0;
+        border-radius: 10px;
+        padding: 20px;
+        width: 400px;
+        text-align: center;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      
+      h1 {
+        background-color: teal;
+        color: white;
+        padding: 10px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 10px 10px 0 0;
+      }
+      
+      label {
+        font-weight: bold;
+      }
+      
+      input {
+        width: 90%;
+        padding: 8px;
+        margin: 10px 0;
+        border: 1px solid #999;
+        border-radius: 5px;
+      }
+      
+      button {
+        background-color: #dcdcdc;
+        border: 2px solid #999;
+        padding: 8px 15px;
+        margin: 10px 5px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      
+      .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .stock-sale-container {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  {% block content %}
+    <body>
+      <div class="container">
+        <h1>Login Page</h1>
+        <form method="post">
+          {% csrf_token %}
+          <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <div class="button-container">
+            <button type="submit" name="login">Login</button>
+            <button type="reset">Reset</button>
+            <button type="button" onclick="window.close()">Exit Window</button>
+          </div>
+        </form>
+        <div class="stock-sale-container">
+          <button id="stockButton" disabled>Stock</button>
+          <button id="saleButton" disabled>Sale</button>
+        </div>
+      </div>
+    </body>
+  {% endblock %}
+</html>

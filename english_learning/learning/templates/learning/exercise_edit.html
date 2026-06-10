@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+    
+    h2 {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 25px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    
+    h2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    form {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+    }
+    
+    form p {
+      margin-bottom: 25px;
+    }
+    
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #2d3748;
+      font-size: 16px;
+    }
+    
+    form input[type='text'],
+    form input[type='file'],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background-color: #f8fafc;
+      margin-bottom: 20px;
+    }
+    
+    form input:focus,
+    form textarea:focus,
+    form select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+      outline: none;
+      background-color: white;
+    }
+    
+    .btn {
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-right: 15px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3182ce, #2b6cb0);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, #e2e8f0, #cbd5e0);
+      color: #4a5568;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #cbd5e0, #a0aec0);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    @media (max-width: 768px) {
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <h2>Edit {{ exercise_type|capfirst }} Exercise for Lesson: {{ lesson.title }}</h2>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+        <a href="{% url 'learning:exercise_list' lesson.id %}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

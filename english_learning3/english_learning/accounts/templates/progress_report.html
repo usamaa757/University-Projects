@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block title %}
+  Progress Report
+{% endblock %}
+
+{% block content %}
+  <div class="progress-report">
+    <h1 class="page-title">📊 Progress Report for {{ student.username }}</h1>
+    <p>Review your overall performance in lessons, quizzes, and assignments.</p>
+
+    <hr />
+
+    <!-- Lessons -->
+    <h3>📖 Lessons Completed</h3>
+    {% if lessons_completed %}
+      <ul>
+        {% for lesson in lessons_completed %}
+          <li>{{ lesson.title }} ✅</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No lessons completed yet.</p>
+    {% endif %}
+
+    <hr />
+
+    <!-- Quizzes -->
+    <h3>📝 Quiz Performance</h3>
+    {% if quiz_results %}
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Quiz</th>
+            <th>Lesson</th>
+            <th>Score</th>
+            <th>Quiz Type</th>
+            <th>Date Taken</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in quiz_results %}
+            <tr>
+              <td>{{ result.quiz.title }}</td>
+              <td>{{ result.quiz.lesson.title }}</td>
+              <td>{{ result.score }} / {{ result.total }}</td>
+              <td>{{ result.quiz.quiz_type }}</td>
+              <td>{{ result.taken_at|date:'M d, Y' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No quizzes taken yet.</p>
+    {% endif %}
+
+    <hr />
+
+    <!-- Assignments -->
+    <h3>📚 Assignment Performance</h3>
+    {% if assignment_results %}
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Assignment</th>
+            <th>Marks</th>
+            <th>Status</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for submission in assignment_results %}
+            <tr>
+              <td>{{ submission.assignment.title }}</td>
+              <td>
+                {% if submission.marks %}
+                  {{ submission.marks }} / {{ submission.assignment.total_marks }}
+                {% else %}
+                  Not graded yet
+                {% endif %}
+              </td>
+              <td>
+                {% if submission.marks %}
+                  <span class="status success">Graded</span>
+                {% else %}
+                  <span class="status pending">⏳ Pending</span>
+                {% endif %}
+              </td>
+              <td>{{ submission.submitted_at|date:'M d, Y H:i' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No assignments submitted yet.</p>
+    {% endif %}
+
+    <hr />
+
+    <!-- Speaking Results -->
+    <h3>🎤 Speaking Results</h3>
+    {% if speaking_results %}
+      <table class="custom-table">
+        <tr>
+          <th>Sentence</th>
+          <th>Transcript</th>
+          <th>Feedback</th>
+          <th>Created</th>
+        </tr>
+        {% for s in speaking_results %}
+          <tr>
+            <td>{{ s.exercise.text }}</td>
+            <td>{{ s.transcript|default:'-' }}</td>
+            <td>{{ s.feedback|default:'-' }}</td>
+            <td>{{ s.created_at|date:'M d, Y' }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>No speaking practice yet.</p>
+    {% endif %}
+
+    <!-- Writing Results -->
+    <h3>✍️ Writing Results</h3>
+    {% if writing_results %}
+      <table class="custom-table">
+        <tr>
+          <th>Exercise</th>
+          <th>Score</th>
+          <th>Feedback</th>
+          <th>Submitted</th>
+        </tr>
+        {% for w in writing_results %}
+          <tr>
+            <td>{{ w.exercise.title }}</td>
+            <td>
+              {% if w.score %}
+                {{ w.score }}
+              {% else %}
+                Pending
+              {% endif %}
+            </td>
+            <td>{{ w.feedback|default:'-' }}</td>
+            <td>{{ w.submitted_at|date:'M d, Y' }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>No writing practice yet.</p>
+    {% endif %}
+
+    <hr />
+
+    <!-- Overall Summary -->
+    <h3>📈 Overall Summary</h3>
+    <div class="summary-box">
+      <p>
+        <strong>Total Lessons Completed:</strong> {{ lessons_completed|length }}
+      </p>
+      <p>
+        <strong>Total Quizzes Taken:</strong> {{ quiz_results|length }}
+      </p>
+      <p>
+        <strong>Total Assignments Submitted:</strong> {{ assignment_results|length }}
+      </p>
+    </div>
+  </div>
+{% endblock %}

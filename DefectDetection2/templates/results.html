@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="analysis-container">
+    <!-- Header -->
+    <div class="analysis-header">
+      <h4>Analysis Results</h4>
+      <a href="{{ url_for('generate_report', analysis_id=analysis.id) }}" class="btn action-btn">Generate Report</a>
+    </div>
+
+    <!-- Images -->
+    <div class="image-row">
+      <div class="image-col">
+        <h5>Original Image</h5>
+        <img src="{{ url_for('static', filename='uploads/' + analysis.original_path) }}" class="thumbnail" alt="Original Image" />
+      </div>
+      <div class="image-col">
+        <h5>Processed Image</h5>
+        <img src="{{ url_for('static', filename=result.annotated_image_path) }}" class="thumbnail" alt="Processed Image" />
+      </div>
+    </div>
+
+    <!-- Defect Analysis Summary -->
+    <div class="summary-section">
+      <h5>Defect Analysis Summary</h5>
+      <table class="summary-table">
+        <tr>
+          <th>Total Defects Detected</th>
+          <td>{{ result.defects|length }}</td>
+        </tr>
+        <tr>
+          <th>Defect Types</th>
+          <td>
+            {% for defect_type, count in result.counts.items() %}
+              <span class="badge">{{ defect_type }}: {{ count }}</span>
+            {% endfor %}
+          </td>
+        </tr>
+        <tr>
+          <th>Analysis Date</th>
+          <td>{{ analysis.analysis_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Action Button -->
+    <div class="action-row">
+      <a href="{{ url_for('upload_image') }}" class="btn action-btn">Analyze Again</a>
+    </div>
+  </div>
+{% endblock %}

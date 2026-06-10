@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <div class="container mt-4 border rounded shadow p-3">
+    <h3 class="text-center">Your Travel Interests</h3>
+    <ul class="list-group">
+      {% for interest in interests %}
+        <li class="list-group-item">
+          <h5>{{ interest.title }} ({{ interest.destination }})</h5>
+          <p>
+            <strong>Dates:</strong> {{ interest.start_date }} to {{ interest.end_date }}
+          </p>
+          <p>
+            <strong>Accommodation:</strong> {{ interest.accommodation }}
+          </p>
+          <p>
+            <strong>Activities:</strong> {{ interest.activities }}
+          </p>
+          <p>
+            <strong>Travel Type:</strong> {{ interest.travel_type }}
+          </p>
+        </li>
+      {% empty %}
+        <li class="list-group-item">No travel interests yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

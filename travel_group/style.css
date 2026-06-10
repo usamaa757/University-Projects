@@ -1,0 +1,561 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+/* Header Start */
+header {
+    background-color: #e67b00;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Navigation */
+nav {
+    background: #1e3d59;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+nav a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Hero Section */
+.hero {
+    background: url('rendy-novantino-LJEZHhiOtyo-unsplash.jpg') no-repeat center center/cover;
+    padding: 100px 20px;
+    text-align: center;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.hero a {
+    padding: 12px 25px;
+    background: #ff6600;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+.hero a:hover {
+    background: #e65c00;
+}
+
+/* Features Section */
+.features {
+    padding: 50px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background: white;
+}
+
+.feature-box {
+    width: 300px;
+    margin: 15px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box h3 {
+    margin-bottom: 10px;
+    color: #1e3d59;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #1e3d59;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+}
+
+.search-form {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.search-form input,
+.search-form select,
+.search-form button {
+    width: 30%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.group {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.group h3 {
+    margin: 0 0 10px;
+}
+
+.group p {
+    margin: 5px 0;
+}
+
+.group .actions a {
+    margin-right: 10px;
+    margin-top: 10px;
+    background: #ff6600;
+    color: white;
+    padding: 8px 14px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.request-box .actions a {
+    margin-right: 10px;
+    margin-top: 10px;
+    color: white;
+    padding: 8px 14px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.actions {
+
+    margin-top: 15px;
+
+}
+
+.request-box {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.request-box p {
+    margin: 6px 0;
+}
+
+
+.chat-container {
+    max-width: 700px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-box {
+    max-height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    min-height: 300px;
+}
+
+.message {
+    display: flex;
+    margin: 10px 0;
+}
+
+.message.mine {
+    justify-content: flex-end;
+}
+
+.message.other {
+    justify-content: flex-start;
+}
+
+.message .bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    position: relative;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message.mine .bubble {
+    background-color: #dcf8c6;
+    text-align: right;
+    border-bottom-right-radius: 0;
+}
+
+.message.other .bubble {
+    background-color: #ffffff;
+    text-align: left;
+    border-bottom-left-radius: 0;
+}
+
+.name {
+    font-weight: bold;
+    color: #075e54;
+}
+
+.timestamp {
+    font-size: 0.75em;
+    color: #777;
+    margin-top: 4px;
+    display: block;
+}
+
+.chat-box form textarea {
+    width: 100%;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-bottom: 10px;
+}
+
+.chat-link {
+    display: block;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #f9f9f9;
+    text-decoration: none;
+    color: #333;
+}
+
+.chat-link:hover {
+    background-color: #e1f0ff;
+}
+
+.group-type {
+    font-size: 12px;
+    color: #777;
+    float: right;
+}
+
+.container {
+    width: 90%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+main {
+    padding: 40px;
+    text-align: center;
+}
+
+.box {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.message {
+    margin-bottom: 12px;
+}
+
+.message span.name {
+    font-weight: bold;
+    color: #1e3d59;
+}
+
+.timestamp {
+    font-size: 11px;
+    color: #777;
+}
+
+form textarea {
+    width: 100%;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-bottom: 10px;
+}
+
+a.back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #1e3d59;
+    text-decoration: none;
+}
+
+.member {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.member:last-child {
+    border-bottom: none;
+}
+
+/* All forms sytling Start */
+
+.form-container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.forms {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.form-container label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-container input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn {
+    background: #ff6600;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #be5813;
+}
+
+.buttons {
+    margin: 20px;
+}
+
+.buttons a {
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #ff6600;
+    color: white;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+.buttons a:hover {
+    background-color: #be5813;
+}
+
+/* All forms sytling End */
+
+/* Dashboard Start */
+
+.dashboard-container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-container h2 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.dashboard-container p {
+    margin: 8px 0;
+    color: #555;
+}
+
+.dashboard-container a {
+    text-decoration: none;
+}
+
+.dashboard-container a:hover {
+    text-decoration: underline;
+}
+
+h3 {
+    margin-top: 30px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+li {
+    margin: 12px 0;
+}
+
+li a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+li a:hover {
+    background-color: #2980b9;
+}
+
+.logout-btn {
+    background-color: #e74c3c !important;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b !important;
+}
+
+@media (max-width: 600px) {
+    .dashboard-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    li a {
+        width: 100%;
+        text-align: center;
+        display: block;
+    }
+}
+
+
+/* Dashboard End */
+
+
+
+/* Job Seeker Application Start */
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+}
+
+thead tr {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+}
+
+/* Job Seeker Application End */
+
+
+/* Notification Start */
+
+.notification-box {
+    padding: 15px;
+    background-color: #e6f7ff;
+    border: 2px dashed #0077cc;
+    border-radius: 10px;
+    margin-bottom: 30px;
+
+}
+
+.notification-box .job {
+    padding: 15px 10px;
+    border-bottom: 1px solid #ccc;
+}

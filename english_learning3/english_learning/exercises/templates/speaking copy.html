@@ -1,0 +1,75 @@
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+  <div class="speaking-container">
+    <h2>🎤 Speaking Practice</h2>
+
+    <div style="text-align:center;">
+      <button id="start" class="btn-record btn-start">🎙️ Start Recording</button>
+      <button id="stop" class="btn-record btn-stop">⏹️ Stop</button>
+    </div>
+
+    <div class="transcript-box">
+      <strong>Your Answer:</strong>
+      <span id="transcript"></span>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" action="{% url 'check_pronunciation' %}" class="speaking-form">
+      {% csrf_token %}
+      <input type="file" name="audio_file" id="audioFile" hidden />
+      <button type="submit">✅ Check Pronunciation</button>
+    </form>
+
+    {% if score %}
+      <div class="score-card">
+        <h3>✅ Your Pronunciation Score: {{ score }}%</h3>
+        <p>
+          <strong>You said:</strong> "{{ transcript }}"
+        </p>
+        <p>
+          <strong>Expected:</strong> "The capital of France is Paris"
+        </p>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+{% endcomment %}
+<h2>Speaking Practice</h2>
+<button id="start">🎙️ Start Recording</button>
+<button id="stop">⏹️ Stop</button>
+
+<p>
+  <strong>Your Answer:</strong> <span id="transcript"></span>
+</p>
+
+<form method="POST" enctype="multipart/form-data" action="{% url 'check_pronunciation' %}">
+  {% csrf_token %}
+  <input type="file" name="audio_file" id="audioFile" hidden />
+  <button type="submit">Check Pronunciation</button>
+</form>
+
+<script>
+  let mediaRecorder
+  let audioChunks = []
+  
+  document.getElementById('start').onclick = async () => {
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    mediaRecorder = new MediaRecorder(stream)
+    mediaRecorder.start()
+  
+    audioChunks = []
+    mediaRecorder.ondataavailable = (event) => {
+      audioChunks.push(event.data)
+    }
+  }
+  
+  document.getElementById('stop').onclick = () => {
+    mediaRecorder.stop()
+    mediaRecorder.onstop = () => {
+      let audioBlob = new Blob(audioChunks, { type: 'audio/wav' })
+      let file = new File([audioBlob], 'speech.wav')
+      let dataTransfer = new DataTransfer()
+      dataTransfer.items.add(file)
+      document.getElementById('audioFile').files = dataTransfer.files
+    }
+  }
+</script>

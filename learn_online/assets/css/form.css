@@ -1,0 +1,284 @@
+.main-heading,
+.sub-heading {
+  text-align: center;
+}
+
+.form-container {
+  width: 500px;
+  /* padding: 10px 30px; */
+
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
+  margin: auto;
+
+  /* margin-top: 50px; */
+}
+
+.lecture-container {
+  width: 700px;
+  /* padding: 10px 30px; */
+
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
+  margin: auto;
+
+  /* margin-top: 50px; */
+}
+
+.dmc-container {
+  width: 1000px;
+
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+.form {
+
+  padding: 10px;
+
+  margin: auto;
+
+  /* margin-top: 50px; */
+}
+
+.lecture-form {
+
+  padding: 20px;
+
+  margin: auto;
+
+  /* margin-top: 50px; */
+}
+
+.lecture-form input[type='text'],
+.lecture-form input[type='date'],
+.lecture-form select {
+  display: block;
+
+
+  width: 40%;
+
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid gray
+}
+
+.form-container h3,
+.heading h3,
+#quiz-container h3,
+#container h3,
+.lecture-container h3,
+.container h3,
+.dmc-container h3 {
+
+  background-color: #653DC7;
+  /* Background color */
+  color: white;
+  padding: 5px;
+}
+
+.header-icons input[type='text'] {
+
+
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: -5px;
+  border: 1px solid gray
+}
+
+.form input[type='text'],
+.form input[type='email'],
+.form input[type='password'],
+.form input[type='tel'],
+.form input[type='number'] {
+
+  width: 100%;
+
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid gray
+}
+
+label {
+  margin-right: 10px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.form select,
+.form input[type='date'],
+.form input[type='month'],
+.form input[type='time'] {
+  padding: 7px;
+  width: 30%;
+  margin: 5px 0;
+  border-radius: 5px;
+  display: block;
+  border: 1px solid gray
+}
+
+/* input[type='date'], input[type='month'] {
+  padding: 5px;
+  width: 30%;
+  margin: 5px 0;
+  border-radius: 5px;
+  display: block;
+  border: 1px solid gray
+ } */
+.form textarea {
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.lecture-form input[type='file'] {
+
+  width: 100%;
+  margin: 8px 0;
+}
+
+.quiz-content input[type='text'] {
+  display: block;
+  width: 70%;
+  margin: 8px 0;
+  padding: 10px 1px;
+}
+
+.quiz-content {
+  padding: 10px;
+}
+
+.quiz-content select {
+  display: block;
+  width: 30%;
+  margin: 8px 0;
+  padding: 5px 1px;
+}
+
+.filter-section {
+  padding: 10px;
+  margin-left: 5px;
+}
+
+.filter-section select {
+  padding: 7px;
+  width: 30%;
+  margin: 5px 0;
+  border-radius: 5px;
+  margin-right: 17px;
+  border: 1px solid gray
+}
+.filter-section select,
+input[type='date'],
+.filter-form select {
+  padding: 7px;
+  width: 20%;
+  margin: 5px 0;
+  border-radius: 5px;
+  margin-right: 17px;
+  border: 1px solid gray
+}
+.filter-section select,
+input[type='text'],
+.filter-form select {
+  padding: 7px;
+  width: 40%;
+  margin: 5px 0;
+  border-radius: 5px;
+  margin-right: 17px;
+  border: 1px solid gray
+}
+
+#subject {
+  padding: 10px;
+  margin: 0 10px;
+}
+
+#subject input {
+  padding: 7px;
+  width: 30%;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+
+#subject li {
+  padding: 2px;
+
+  margin: 5px 0;
+
+}
+
+.submit-btn button,
+button {
+  outline: none;
+  color: #fff;
+  background: #653DC7;
+  border: none;
+  padding: .6rem 1rem;
+  margin-left: 1rem;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  font-weight: 600;
+}
+
+.submit-btn {
+  text-align: center;
+  margin-top: 10px;
+
+}
+
+.submit-btn button {
+  width: auto;
+
+}
+
+.register-btn {
+  margin: 5px 0;
+}
+
+.register-btn button {
+  outline: none;
+  color: #fff;
+  background: #653DC7;
+  border: none;
+  padding: .6rem 1rem;
+  margin-left: 1rem;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  font-weight: 600;
+}
+
+
+.register-btn button {
+  width: 150px;
+  margin-left: 0;
+
+
+}
+
+#approve {
+  background-color: #449d44;
+  color: white;
+}
+
+button:hover {
+  color: #ff512f;
+  background: #23a2f6;
+}

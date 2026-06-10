@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #4299e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .btn-danger {
+      background-color: #e53e3e;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c53030;
+    }
+    
+    .btn-outline {
+      border: 2px solid #4299e1;
+      color: #4299e1;
+      background-color: transparent;
+    }
+    
+    .btn-outline:hover {
+      background-color: #4299e1;
+      color: white;
+    }
+    
+    /* Main Content */
+    main {
+      flex: 1;
+      padding: 40px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .delete-confirmation {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+    
+    .delete-icon {
+      width: 80px;
+      height: 80px;
+      background-color: #fed7d7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+    }
+    
+    .delete-icon i {
+      font-size: 36px;
+      color: #e53e3e;
+    }
+    
+    .delete-confirmation h1 {
+      font-size: 28px;
+      color: #2d3748;
+      margin-bottom: 15px;
+    }
+    
+    .delete-confirmation p {
+      color: #718096;
+      margin-bottom: 30px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .course-title {
+      font-weight: 600;
+      color: #2d3748;
+    }
+    
+    .delete-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        padding: 15px;
+      }
+    
+      .logo {
+        margin-bottom: 15px;
+      }
+    
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+      }
+    
+      nav ul li {
+        margin: 5px 0;
+      }
+    
+      .user-menu {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: center;
+      }
+    
+      .delete-actions {
+        flex-direction: column;
+      }
+    
+      .delete-actions .btn {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <main>
+    <div class="container">
+      <div class="delete-confirmation">
+        <div class="delete-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1>Delete Course</h1>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <p>
+          Are you sure you want to delete "<span class="course-title">{{ course.title }}</span>"? This action cannot be undone and will permanently remove all associated lessons and exercises.
+        </p>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="delete-actions">
+            <a href="{% url 'learning:course_list' %}" class="btn btn-outline"><i class="fas fa-times"></i> Cancel</a>
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Yes, delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+{% endblock %}

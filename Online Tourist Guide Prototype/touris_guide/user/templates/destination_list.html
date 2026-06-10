@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Destinations</h2>
+    <ul>
+        {% for destination in destinations %}
+        <li>
+            <strong>{{ destination.name }}</strong> - {{ destination.location }} <br>
+            <p>{{ destination.description }}</p>
+            {% if destination.image %}
+                <img src="{{ destination.image.url }}" alt="{{ destination.name }}" width="200">
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

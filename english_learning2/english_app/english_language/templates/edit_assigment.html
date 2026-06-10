@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}
+  Extend Due Date
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Styled Form */
+    .styled-form {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+    }
+    
+    .styled-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #444;
+    }
+    
+    .styled-form input[type='date'] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h2>Extend Due Date for {{ assignment.title }}</h2>
+    </div>
+
+    <form method="post" class="styled-form">
+      {% csrf_token %}
+      <label for="total_marks">Total Marks:</label>
+      <input type="number" name="total_marks" id="total_marks" required value="{{ assignment.total_marks }}" min="1" />
+      <label for="due_date">New Due Date:</label>
+      <input type="date" name="due_date" id="due_date" required value="{{ assignment.due_date|date:'Y-m-d' }}" />
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+{% endblock %}

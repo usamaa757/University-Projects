@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="writing-practice container mt-2">
+
+  <h2 class="text-center">📝 Writing Practice</h2>
+
+  <form method="post" class="mt-2">
+    {% csrf_token %}
+    <textarea name="essay" rows="10" placeholder="Write your essay here..." class="form-control">{{ essay }}</textarea>
+    <button type="submit" class="btn btn-primary mt-1">Check Essay</button>
+  </form>
+
+  {% if essay %}
+  <!-- Corrected Essay Card -->
+  <div class="action-card mt-2">
+    <h3 class="action-title">Corrected Essay:</h3>
+    <p>{{ corrected_text }}</p>
+  </div>
+
+  <!-- Grammar & Spelling Feedback Card -->
+  <div class="action-card mt-2">
+    <h3 class="action-title">🔎 Grammar & Spelling Feedback:</h3>
+    {% if matches %}
+      <ul>
+        {% for match in matches %}
+        <li>
+          <strong>Issue:</strong> {{ match.message }}<br>
+          <strong>Suggestion:</strong>
+          {% if match.replacements %}
+            {{ match.replacements.0 }}
+            {% if match.replacements|length > 1 %}
+              (alternatives: {{ match.replacements|join:", " }})
+            {% endif %}
+          {% else %}
+            No suggestion
+          {% endif %}
+          <br>
+          <em>Context:</em> {{ match.context }}
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="success-msg">✅ No issues found! Great job!</p>
+    {% endif %}
+  </div>
+
+  <!-- Readability Analysis Card -->
+  <div class="stats-grid mt-2">
+    <div class="stat-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ readability.flesch_reading_ease }}</div>
+        <div class="stat-label">Flesch</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ readability.grade_level }}</div>
+        <div class="stat-label">Grade</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ readability.word_count }}</div>
+        <div class="stat-label">Words</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

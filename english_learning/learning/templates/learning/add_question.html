@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <style>
+    /* Container for content */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Page header */
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header .exercise-type {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Exercise container */
+    .exercise-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    /* Question section */
+    .question-section {
+      margin-bottom: 30px;
+    }
+    
+    .question-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    
+    .question-text {
+      font-size: 20px;
+      line-height: 1.5;
+      color: #2d3748;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+    
+    /* Choices for MCQ / MATCH */
+    .quiz-options {
+      margin-bottom: 15px;
+    }
+    
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .quiz-option:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+    
+    .quiz-option input[type='checkbox'],
+    .quiz-option input[type='radio'] {
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
+      accent-color: #4299e1;
+    }
+    form input[type='text'],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background-color: #f8fafc;
+    }
+    /* Correct answer for FILL */
+    #correct-answer-container input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 5px;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+    }
+    
+    .btn-primary {
+      background-color: #4299e1;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3182ce;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-header h2 {
+        font-size: 24px;
+      }
+    
+      .question-text {
+        font-size: 18px;
+      }
+    
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>Add Question to Quiz: {{ quiz.title }}</h2>
+      <span class="exercise-type">{{ quiz.title }}</span>
+    </div>
+    <p>
+      <strong>Total Questions:</strong> {{ q_count }}
+    </p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Question Form -->
+    <div class="exercise-container">
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Question Text -->
+        <div class="question-section">
+          <label class="question-label" for="{{ form.text.id_for_label }}">Question Text</label>
+          {{ form.text }}
+        </div>
+
+        <!-- Question Type -->
+        <div class="question-section">
+          <label class="question-label" for="{{ form.question_type.id_for_label }}">Question Type</label>
+          {{ form.question_type }}
+        </div>
+
+        <!-- Correct Answer for Fill-in-the-Blank -->
+        <div id="correct-answer-container" class="question-section" style="display:none;">
+          <label class="question-label" for="{{ form.correct_answer.id_for_label }}">Correct Answer</label>
+          {{ form.correct_answer }}
+        </div>
+
+        <!-- Choices for MCQ or MATCH -->
+        <div id="choices-container" class="question-section" style="display:none;">
+          <h4>Choices (for MCQ or Matching)</h4>
+          {{ formset.management_form }}
+          {% for f in formset %}
+            <div class="quiz-option">
+              {{ f.is_correct }}
+              <label class="option-label">{{ f.text }}</label>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Question</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const questionTypeField = document.getElementById('id_question_type')
+    const choicesContainer = document.getElementById('choices-container')
+    const correctAnswerContainer = document.getElementById('correct-answer-container')
+    
+    function toggleFields() {
+      const type = questionTypeField.value
+      if (type === 'MCQ' || type === 'MATCH') {
+        choicesContainer.style.display = 'block'
+        correctAnswerContainer.style.display = 'none'
+      } else if (type === 'FILL') {
+        choicesContainer.style.display = 'none'
+        correctAnswerContainer.style.display = 'block'
+      } else {
+        choicesContainer.style.display = 'none'
+        correctAnswerContainer.style.display = 'none'
+      }
+    }
+    
+    // Run on page load
+    toggleFields()
+    
+    // Run on change
+    questionTypeField.addEventListener('change', toggleFields)
+  </script>
+{% endblock %}

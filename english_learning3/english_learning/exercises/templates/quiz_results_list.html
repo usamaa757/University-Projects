@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>All Quiz Results</h2>
+  <table class="custom-table">
+    <tr>
+      <th>Student ID</th>
+      <th>Quiz Title</th>
+      <th>Lesson Title</th>
+      <th>Score</th>
+      <th>Taken At</th>
+    </tr>
+    {% for result in results %}
+      <tr>
+        <td>{{ result.student.id }}</td>
+        <td>{{ result.quiz.title }}</td>
+        <td>{{ result.quiz.lesson.title }}</td>
+        <td>{{ result.score }}/{{ result.total }}</td>
+        <td>{{ result.taken_at }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="5">No quiz results yet.</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

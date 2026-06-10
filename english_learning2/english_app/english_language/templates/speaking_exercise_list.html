@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}
+  Speaking Exercises
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .exercise-list {
+      margin-top: 2rem;
+    }
+    
+    .exercise-item {
+      background: #f9f9f9;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+    }
+    
+    .exercise-item li {
+      list-style: none;
+      display: flex;
+      justify-content: space-between; /* text left, button right */
+      align-items: center;
+      padding: 0.5rem 0;
+    }
+    
+    .exercise-text {
+      font-size: 1rem;
+      color: #2c3e50;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="page-header">
+      <h1>Speaking Exercises</h1>
+    </div>
+
+    <div class="exercise-list">
+      {% for exercise in exercises %}
+        <div class="exercise-item">
+          <li>
+            {{ exercise.text }}
+            <a href="{% url 'practice_speaking' exercise.id %}" class="btn btn-primary">🎤 Practice</a>
+          </li>
+        </div>
+      {% empty %}
+        <p>No exercises available.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

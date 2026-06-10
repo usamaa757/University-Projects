@@ -1,0 +1,57 @@
+/* CSS code for both login and signup forms */
+
+/* Style the form container */
+.login-container, .signup-container {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Style the form heading */
+  .login-container h2, .signup-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Style the form inputs */
+  .login-container input[type="text"],
+  .login-container input[type="password"],
+  .signup-container input[type="radio"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  
+  /* Style the login button */
+  .login-container button, .signup-container input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  /* Change button color on hover */
+  .login-container button:hover, .signup-container input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Style the link to password reset */
+  .login-container .forgot-password, .signup-container .forgot-password {
+    text-align: right;
+  }
+  
+  /* Style the error message */
+  .login-container .error-message, .signup-container .error-message {
+    color: #ff0000;
+    margin-top: 10px;
+  }
+  

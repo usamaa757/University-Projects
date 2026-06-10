@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+    <h1>My Messages</h1>
+    
+    <h2>Received Messages</h2>
+    {% if received %}
+        <table>
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>About Item</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for msg in received %}
+                    <tr>
+                        <td>{{ msg.sender_name }}</td>
+                        <td><a href="{{ url_for('item_detail', item_id=msg.post_id) }}">{{ msg.post_title }}</a></td>
+                        <td>{{ msg.message }}</td>
+                        <td>{{ msg.created_at }}</td>
+                        <td>
+                            {% if msg.is_read == 0 %}
+                                <span class="badge badge-danger">Unread</span>
+                                <a href="{{ url_for('mark_read', message_id=msg.id) }}" class="btn" style="padding: 2px 5px; font-size: 12px;">Mark Read</a>
+                            {% else %}
+                                <span class="badge badge-success">Read</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No messages received.</p>
+    {% endif %}
+    
+    <h2 style="margin-top: 30px;">Sent Messages</h2>
+    {% if sent %}
+        <table>
+            <thead>
+                <tr>
+                    <th>To</th>
+                    <th>About Item</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for msg in sent %}
+                    <tr>
+                        <td>{{ msg.receiver_name }}</td>
+                        <td><a href="{{ url_for('item_detail', item_id=msg.post_id) }}">{{ msg.post_title }}</a></td>
+                        <td>{{ msg.message }}</td>
+                        <td>{{ msg.created_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No messages sent.</p>
+    {% endif %}
+{% endblock %}

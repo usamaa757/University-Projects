@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ lesson.title }}
+{% endblock %}
+
+{% block content %}
+  <div class="lesson-detail container">
+    <!-- Lesson Header -->
+    <div class="lesson-header">
+      <h2 class="lesson-title">{{ lesson.title }}</h2>
+      <div class="lesson-meta">
+        <span class="badge">{{ lesson.get_level_display }}</span>
+        <span class="badge badge-secondary">{{ lesson.get_category_display }}</span>
+        {% if lesson.difficulty %}
+          <span class="badge badge-info">{{ lesson.get_difficulty_display }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Lesson Description -->
+    <div class="lesson-description mt-3">
+      <h3 class="section-title">📝 Description</h3>
+      <div class="lesson-content">{{ lesson.description|linebreaks }}</div>
+    </div>
+
+    <hr />
+
+    <!-- Multimedia Section -->
+    <div class="lesson-media mt-4">
+      <h3 class="section-title">🎬 Multimedia</h3>
+      {% if lesson.media.exists %}
+        <div class="media-grid">
+          {% for media in lesson.media.all %}
+            {% if media.media_type == 'video' %}
+              <div class="media-card video-box">
+                <video controls>
+                  <source src="{{ media.file.url }}" type="video/mp4" />Your browser does not support video playback.
+                </video>
+              </div>
+            {% elif media.media_type == 'audio' %}
+              <div class="media-card audio-box">
+                <audio controls>
+                  <source src="{{ media.file.url }}" type="audio/mpeg" />Your browser does not support audio playback.
+                </audio>
+              </div>
+            {% elif media.media_type == 'flashcard' %}
+              <div class="media-card flashcard">
+                <div class="flashcard-front">{{ media.flashcard_front }}</div>
+                <div class="flashcard-back">{{ media.flashcard_back }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty-state">No multimedia added yet.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Teacher Dashboard
+{% endblock %}
+
+{% block content %}
+  <div class="teacher-dashboard">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <h1 class="page-title">👩‍🏫 Teacher Dashboard</h1>
+      <p class="subtitle">Welcome back, {{ request.user.get_full_name|default:request.user.username }}! Manage your assignments and track deadlines here.</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-cards">
+      <div class="stat-card total">
+        <div class="stat-value">{{ total_assignments }}</div>
+        <div class="stat-label">Total Assignments</div>
+      </div>
+
+      <div class="stat-card active">
+        <div class="stat-value">{{ active_assignments }}</div>
+        <div class="stat-label">Active Assignments</div>
+      </div>
+
+      <div class="stat-card expired">
+        <div class="stat-value">{{ expired_assignments }}</div>
+        <div class="stat-label">Expired Assignments</div>
+      </div>
+    </div>
+
+    <!-- Upcoming Assignments -->
+    <div class="dashboard-section">
+      <h3>📅 Upcoming Assignments</h3>
+      {% if upcoming %}
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for assignment in upcoming %}
+              <tr>
+                <td>{{ assignment.title }}</td>
+                <td>{{ assignment.due_date|date:'M d, Y' }}</td>
+                <td>
+                  {% if assignment.due_date < today %}
+                    <span class="status overdue">Expired</span>
+                  {% else %}
+                    <span class="status success">Active</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'view_submissions' assignment.id %}" class="btn btn-primary btn-sm">View</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-msg">No upcoming assignments.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

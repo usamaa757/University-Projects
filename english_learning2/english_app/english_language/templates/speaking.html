@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block title %}
+  Speaking Practice
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Container */
+    
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #4a6fa5, #2c3e50);
+      color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Exercise Text */
+    .exercise-text {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1.2rem;
+      font-size: 1.1rem;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Recording Buttons */
+    .btn-record {
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0 0.5rem;
+    }
+    .btn-start {
+      background: linear-gradient(135deg, #28a745, #218838);
+    }
+    .btn-start:hover {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      transform: translateY(-2px);
+    }
+    .btn-stop {
+      background: linear-gradient(135deg, #dc3545, #a71d2a);
+    }
+    .btn-stop:hover {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      transform: translateY(-2px);
+    }
+    
+    /* Audio Preview */
+    .audio-preview {
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    
+    /* Form */
+    .speaking-form {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .btn-primary {
+      background: #007bff;
+      color: #fff;
+      border-radius: 6px;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+    
+    /* Result Card */
+    .score-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .score-card h3 {
+      color: #28a745;
+      margin-bottom: 1rem;
+    }
+    
+    .score-card p {
+      margin: 0.5rem 0;
+      color: #333;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <!-- Header -->
+    <div class="page-header">
+      <h2>🎤 Speaking Practice</h2>
+    </div>
+
+    <!-- Exercise -->
+    <div class="exercise-text">
+      <strong>Sentence to practice:</strong> {{ exercise.text }}
+    </div>
+
+    <!-- Recording Buttons -->
+    <div style="text-align:center; margin: 15px 0;">
+      <button id="start" class="btn-record btn-start">🎙️ Start Recording</button>
+      <button id="stop" class="btn-record btn-stop">⏹️ Stop</button>
+    </div>
+
+    <!-- Audio Preview -->
+    <div class="audio-preview">
+      <audio id="player" controls></audio>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="speaking-form">
+      {% csrf_token %}
+      <input type="file" name="audio_file" id="audioFile" hidden />
+      <button type="submit" class="btn btn-primary">✅ Check Pronunciation</button>
+    </form>
+
+    <!-- Results -->
+    {% if transcript %}
+      <div class="score-card">
+        <h3>✅ Your Results</h3>
+        <p>
+          <strong>Pronunciation Score:</strong> {{ pronunciation_score }}%
+        </p>
+        <p>
+          <strong>Matching Score:</strong> {{ matching_score }}%
+        </p>
+        <p>
+          <strong>Your Answer:</strong> {{ transcript }}
+        </p>
+        <p>
+          <strong>Expected:</strong> {{ exercise.text }}
+        </p>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    let mediaRecorder
+    let audioChunks = []
+    
+    const startBtn = document.getElementById('start')
+    const stopBtn = document.getElementById('stop')
+    const audioFileInput = document.getElementById('audioFile')
+    const player = document.getElementById('player')
+    
+    startBtn.onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        mediaRecorder = new MediaRecorder(stream)
+    
+        audioChunks = []
+    
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunks.push(event.data)
+          }
+        }
+    
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' })
+          const file = new File([audioBlob], 'speech.wav', { type: 'audio/wav' })
+    
+          // Assign to hidden input
+          const dataTransfer = new DataTransfer()
+          dataTransfer.items.add(file)
+          audioFileInput.files = dataTransfer.files
+    
+          // Preview audio
+          player.src = URL.createObjectURL(audioBlob)
+        }
+    
+        mediaRecorder.start()
+      } catch (err) {
+        console.error('Mic access error:', err)
+        alert('Microphone access denied or not available.')
+      }
+    }
+    
+    stopBtn.onclick = () => {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop()
+      }
+    }
+  </script>
+{% endblock %}

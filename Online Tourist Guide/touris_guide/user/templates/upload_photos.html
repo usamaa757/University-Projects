@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card shadow-lg border-0">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Upload Photos for {{ destination.name }}</h4>
+      </div>
+
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="photos" class="form-label">Select Photos</label>
+            {{ form.photos }}
+            {% if form.photos.errors %}
+              <div class="text-danger">{{ form.photos.errors }}</div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-success">Upload</button>
+          {% comment %} <a href="{% url 'popular_destinations' %}" class="btn btn-secondary">Cancel</a> {% endcomment %}
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

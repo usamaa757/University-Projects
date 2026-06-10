@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        English Learning App
+      {% endblock %}
+    </title>
+    <style>
+      /* Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      :root {
+        --primary: #4a6fa5;
+        --primary-dark: #3a5dc9;
+        --secondary: #6c63ff;
+        --accent: #ff6b6b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --success: #28a745;
+        --success-dark: #218838;
+        --warning: #ffc107;
+        --danger-dark: #c82333;
+        --gray-dark: #5a6268;
+      }
+      
+      /* 🔹 Primary */
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+      }
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+      
+      /* 🔹 Danger */
+      .btn-danger {
+        background-color: var(--accent);
+        color: white;
+        border: none;
+      }
+      .btn-danger:hover {
+        background-color: var(--danger-dark);
+        color: white;
+        transform: translateY(-1px);
+      }
+      
+      /* 🔹 Warning */
+      .btn-warning {
+        background-color: var(--warning);
+        color: var(--dark);
+        border: none;
+      }
+      .btn-warning:hover {
+        background-color: var(--warning);
+        color: white;
+        transform: translateY(-1px);
+      }
+      
+      /* 🔹 Success */
+      .btn-success {
+        background-color: var(--success);
+        color: white;
+        border: none;
+      }
+      .btn-success:hover {
+        background-color: var(--success-dark);
+        color: white;
+        transform: translateY(-1px);
+      }
+      
+      /* 🔹 Gray (secondary) */
+      .btn-secondary {
+        background-color: var(--gray);
+        color: white;
+        border: none;
+      }
+      .btn-secondary:hover {
+        background-color: var(--gray-dark);
+        color: white;
+        transform: translateY(-1px);
+      }
+      
+      /* 🔹 Small button */
+      .btn-sm {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.85rem;
+      }
+      /* Buttons */
+      
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+      }
+      li a,
+      a {
+        color: white;
+        text-decoration: none;
+      }
+      /* Header Styles */
+      header {
+        background-color: #4a6fa5;
+        color: white;
+        padding: 0.5rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      /* Page Header */
+      
+      .page-header {
+        background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+        color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .page-header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
+      
+      .page-header p {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      
+      .logo a {
+        color: white;
+        text-decoration: none;
+      }
+      
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+      
+      .nav-links li {
+        margin-left: 1.5rem;
+      }
+      
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      
+      .nav-links a:hover {
+        color: #e2e2e2;
+      }
+      
+      /* Main Content */
+      main {
+        flex: 1;
+      }
+      
+      /* Form Styles */
+      .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+      
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #444;
+      }
+      
+      form input[type='text'],
+      form input[type='email'],
+      form input[type='password'],
+      form input[type='select'],
+      form input[type='number'],
+      form textarea,
+      .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+      
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        border-color: #4a6fa5;
+        outline: none;
+      }
+      
+      /* Badge */
+      .badge {
+        display: inline-block;
+        padding: 0.4rem 0.7rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      
+      .bg-success {
+        background: #28a745;
+        color: white;
+      }
+      
+      /* Footer Styles */
+      footer {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+        margin-top: auto;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+      
+        .mobile-menu-btn {
+          display: block;
+          color: white;
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
+      }
+      .btn-logout {
+        background-color: #dc3545;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      
+      .btn-logout:hover {
+        background-color: #c82333;
+      }
+    </style>
+    {% block extra_css %}
+
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            {% if user.is_authenticated %}
+              {% if user.role == 'student' %}
+                <a href="{% url 'student_dashboard' %}">English App</a>
+              {% elif user.role == 'teacher' %}
+                <a href="{% url 'teacher_dashboard' %}">English App</a>
+              {% elif user.role == 'admin' %}
+                <a href="{% url 'admin_dashboard' %}">English App</a>
+              {% endif %}
+            {% else %}
+              <a href="{% url 'index' %}">English App</a>
+            {% endif %}
+          </div>
+
+          <ul class="nav-links">
+            {% if user.is_authenticated %}
+              <li style="margin-top:5px;">Welcome, {{ user.username }}</li>
+              <li>
+                <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-logout">Logout</button>
+                </form>
+              </li>
+            {% else %}
+              <li>
+                <a href="{% url 'login' %}">Login</a>
+              </li>
+              <li>
+                <a href="{% url 'register' %}">Register</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}
+
+      {% endblock %}
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; English Learning App. All rights reserved. Developed by [Rimsha]</p>
+      </div>
+    </footer>
+
+    {% block extra_js %}
+
+    {% endblock %}
+  </body>
+</html>

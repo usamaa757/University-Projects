@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Create Assignment
+{% endblock %}
+
+{% block content %}
+  <div class="assignment-create">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="page-title">📚 Create a New Assignment</h2>
+      <p class="page-subtitle">Fill in the details below to create and assign work to students.</p>
+    </div>
+
+    <!-- Form -->
+    <form method="post" enctype="multipart/form-data" class="styled-form">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% csrf_token %}
+      <div class="form-fields">{{ form.as_p }}</div>
+      <button type="submit" class="btn btn-primary">Create Assignment</button>
+    </form>
+  </div>
+{% endblock %}

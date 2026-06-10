@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% block title %}
+  Group Chat
+{% endblock %}
+{% block extra_css %}
+  <style>
+    /* Container */
+    .chat-container {
+      display: flex;
+      height: 80vh;
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: #f5f7fa;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Sidebar */
+    .chat-sidebar {
+      width: 250px;
+      background: #2c3e50;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar-title {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    
+    .room-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+    }
+    
+    .room-list li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .room-link {
+      display: block;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .room-link:hover {
+      background: #4a6fa5;
+    }
+    
+    .room-link.active {
+      background: #007bff;
+    }
+    
+    /* Main Chat */
+    .chat-main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+    
+    .chat-header {
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+      background: linear-gradient(135deg, #4a6fa5, #2c3e50);
+      color: white;
+    }
+    
+    .chat-title {
+      margin: 0;
+    }
+    
+    /* Messages */
+    .chat-messages {
+      flex-grow: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      background: #f0f2f5;
+    }
+    
+    .chat-message {
+      margin-bottom: 1rem;
+      display: flex;
+    }
+    
+    .chat-message.me {
+      justify-content: flex-end;
+    }
+    
+    .chat-message.other {
+      justify-content: flex-start;
+    }
+    
+    .bubble {
+      max-width: 70%;
+      padding: 0.75rem 1rem;
+      border-radius: 15px;
+      position: relative;
+      background: #e1f5fe;
+    }
+    
+    .chat-message.me .bubble {
+      background: #007bff;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
+    
+    .chat-message.other .bubble {
+      background: #f1f1f1;
+      color: #333;
+      border-bottom-left-radius: 0;
+    }
+    
+    .bubble .meta {
+      font-size: 0.75rem;
+      margin-bottom: 0.25rem;
+      opacity: 0.8;
+    }
+    
+    .no-messages {
+      text-align: center;
+      color: #888;
+      margin-top: 2rem;
+    }
+    
+    /* Form */
+    .chat-form {
+      display: flex;
+      padding: 0.5rem;
+      border-top: 1px solid #ddd;
+      background: #fff;
+    }
+    
+    .chat-form input,
+    .chat-form textarea {
+      flex-grow: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      outline: none;
+      margin-right: 0.5rem;
+    }
+    
+    .chat-form input:focus,
+    .chat-form textarea:focus {
+      border-color: #4a6fa5;
+    }
+    
+    .btn-send {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, transform 0.2s;
+    }
+    
+    .btn-send:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+    
+    /* Scrollbar for messages */
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .chat-container {
+        flex-direction: column;
+        height: auto;
+      }
+    
+      .chat-sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+    
+      .room-list {
+        display: flex;
+      }
+    
+      .room-list li {
+        margin-right: 0.5rem;
+      }
+    
+      .chat-main {
+        height: 60vh;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="chat-container">
+    <!-- Sidebar -->
+    <div class="chat-sidebar">
+      <h3 class="sidebar-title">💬 Rooms</h3>
+      <ul class="room-list">
+        {% for room in rooms %}
+          <li>
+            <a href="{% url 'chat_room' room.name %}" class="room-link {% if room.name == room_name %}active{% endif %}">{{ room.name|title }}</a>
+          </li>
+        {% empty %}
+          <li class="empty">No rooms available</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Main Chat Window -->
+    <div class="chat-main">
+      <div class="chat-header">
+        <h2 class="chat-title">Group Chat: {{ room_name|title }}</h2>
+      </div>
+
+      <div class="chat-messages" id="chat-box">
+        {% for msg in messages %}
+          <div class="chat-message {% if msg.user == request.user %}
+              
+              
+              
+              
+              me
+
+
+
+
+            {% else %}
+              
+              
+              
+              
+              other
+
+
+
+
+            {% endif %}">
+            <div class="bubble">
+              <div class="meta">
+                <strong>{{ msg.user.username }}</strong>
+                <small>{{ msg.timestamp|date:'H:i' }}</small>
+              </div>
+              <div class="content">{{ msg.content }}</div>
+            </div>
+          </div>
+        {% empty %}
+          <p class="no-messages">No messages yet.</p>
+        {% endfor %}
+      </div>
+
+      <form method="post" class="chat-form">
+        {% csrf_token %}
+        {{ form.content }}
+        <button type="submit" class="btn-send">➤</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

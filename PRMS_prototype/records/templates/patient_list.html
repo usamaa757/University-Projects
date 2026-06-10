@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container mt-4 round border shadow p-3">
+    <h3 class="text-center">Patient Record</h3>
+
+    {% if user.role == 'admin' or user.role == 'operator' %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Residence</th>
+            <th>Disease</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for patient in patients %}
+            <tr>
+              <td>{{ patient.name }}</td>
+              <td>{{ patient.age }}</td>
+              <td>{{ patient.residence }}</td>
+              <td>{{ patient.disease }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="alert alert-danger">You do not have permission to view this page.</p>
+    {% endif %}
+  </div>
+{% endblock %}

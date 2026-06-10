@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+  My Submissions
+{% endblock %}
+
+{% block content %}
+  <div class="submissions-page">
+    <div class="page-header">
+      <h2 class="page-title">📄 Submitted Assignments</h2>
+      <p class="page-subtitle">View assignment submissions and manage marks.</p>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            {% if user.role == 'teacher' %}
+              <th>Student</th>
+            {% endif %}
+            <th>Description</th>
+            <th>Due Date</th>
+            {% if user.role == 'teacher' %}
+              <th>Marks</th>
+            {% endif %}
+            <th>Submitted File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sub in submissions %}
+            <tr>
+              <td>{{ sub.assignment.title }}</td>
+
+              {% if user.role == 'teacher' %}
+                <td>{{ sub.student.get_full_name|default:sub.student.username }}</td>
+              {% endif %}
+
+              <td>{{ sub.assignment.description }}</td>
+              <td>{{ sub.assignment.due_date|date:'M d, Y' }}</td>
+
+              {% if user.role == 'teacher' %}
+                <td>
+                  {% if sub.marks is not None %}
+                    <span class="badge scored">{{ sub.marks }}</span>
+                  {% else %}
+                    <form method="post" class="marks-form">
+                      {% csrf_token %}
+                      <input type="number" name="mark_{{ sub.id }}" class="input-marks" placeholder="Enter marks" min="0" />
+                      <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </form>
+                  {% endif %}
+                </td>
+              {% endif %}
+
+              <td>
+                <a href="{{ sub.file.url }}" download class="btn btn-primary btn-sm">Download</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6" class="empty-message">No assignments submitted yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

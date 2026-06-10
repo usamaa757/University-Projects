@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Create Assignment
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Styled Form */
+    .styled-form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+      gap: 1.5rem;
+    }
+    
+    /* Form Fields */
+    .styled-form input,
+    .styled-form textarea,
+    .styled-form select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.3s;
+    }
+    
+    .styled-form input:focus,
+    .styled-form textarea:focus,
+    .styled-form select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .btn {
+      margin-top: 10px;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .assignment-container {
+        padding: 1rem;
+      }
+      .styled-form {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h2>Create Assignment</h2>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="styled-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+  </div>
+{% endblock %}

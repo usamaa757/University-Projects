@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Extend Due Date
+{% endblock %}
+
+{% block content %}
+  <div class="extend-due-date">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="page-title">⏳ Extend Due Date</h2>
+      <p class="page-subtitle">
+        Update the deadline for <strong>{{ assignment.title }}</strong>.
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form method="post" class="styled-form">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="due_date">New Due Date:</label>
+        <input type="date" name="due_date" id="due_date" required value="{{ assignment.due_date|date:'Y-m-d' }}" />
+        <label for="total_marks">Total Marks:</label>
+
+        <input type="number" name="total_marks" id="total_marks" required value="{{ assignment.total_marks }}" />
+      </div>
+      <button type="submit" class="btn btn-primary">Update Due Date</button>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}
+  My Submissions
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .page-title {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .custom-table th,
+    .custom-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle;
+    }
+    .custom-table th {
+      background: #007bff;
+      color: #fff;
+      text-align: left;
+    }
+    .custom-table tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    
+    .mt-1 {
+      margin-top: 0.5rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h2>Submitted Assignments</h2>
+    </div>
+
+    <table class="custom-table">
+      {% if message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endif %}
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Due Date</th>
+          <th>Marks</th>
+          <th>Submitted File</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sub in submissions %}
+          <tr>
+            <td>{{ sub.student.get_full_name|default:sub.student.username }}</td>
+            <td>{{ sub.assignment.title }}</td>
+            <td>{{ sub.assignment.description }}</td>
+            <td>{{ sub.assignment.due_date|date:'M d, Y' }}</td>
+            <td>
+              {% if user.role == 'teacher' %}
+                {% if sub.marks is not None %}
+                  {{ sub.marks }}
+                {% else %}
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="submission_id" value="{{ sub.id }}" />
+                    <input type="number" name="marks" class="form-control" placeholder="Marks" min="0" max="{{ sub.assignment.total_marks|default:100 }}" required />
+                    <button type="submit" class="btn btn-primary btn-sm mt-1">Save</button>
+                  </form>
+                {% endif %}
+              {% else %}
+                {% if sub.marks is not None %}
+                  {{ sub.marks }}
+                {% else %}
+                  ⏳ Pending
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ sub.file.url }}" download class="btn btn-success btn-sm">Download</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" style="text-align:center;">No assignments submitted yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

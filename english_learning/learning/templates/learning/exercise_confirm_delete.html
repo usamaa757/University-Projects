@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+    
+    h2 {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 25px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+      font-size: 28px;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    h2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .card p {
+      font-size: 16px;
+      margin: 20px 0;
+      color: #2d3748;
+    }
+    
+    .card h3 {
+      margin: 20px 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: #4a5568;
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .btn {
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background: linear-gradient(135deg, #38a169, #2f855a);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, #e2e8f0, #cbd5e0);
+      color: #4a5568;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #cbd5e0, #a0aec0);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    @media (max-width: 768px) {
+      .form-actions {
+        flex-direction: column;
+      }
+    
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <h2>Confirm Delete</h2>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <div class="card">
+      <p>Are you sure you want to delete the following exercise?</p>
+      <h3>{{ exercise.title }}</h3>
+      <p>Type: {{ exercise_type|capfirst }}</p>
+
+      <form method="POST" class="form-actions">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success"><i class="fas fa-trash"></i> Yes, Delete</button>
+        <a href="{% url 'learning:exercise_list' lesson.id %}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

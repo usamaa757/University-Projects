@@ -1,0 +1,443 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    /* Container for content */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Page header */
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header .exercise-type {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Exercise container */
+    .exercise-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    /* Question section */
+    .question-section {
+      margin-bottom: 30px;
+    }
+    
+    .question-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    
+    .question-text {
+      font-size: 20px;
+      line-height: 1.5;
+      color: #2d3748;
+      font-weight: 500;
+    }
+    
+    /* Form styling */
+    .answer-form {
+      margin-bottom: 30px;
+    }
+    
+    .answer-form label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 15px;
+      color: #4a5568;
+    }
+    
+    .quiz-options {
+      margin-bottom: 20px;
+    }
+    
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 15px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .quiz-option:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+    
+    .quiz-option input[type='radio'] {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      accent-color: #4299e1;
+    }
+    
+    .quiz-option label {
+      margin: 0;
+      cursor: pointer;
+      flex: 1;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    textarea:focus {
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+      outline: none;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+    }
+    
+    .btn-primary {
+      background-color: #4299e1;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3182ce;
+    }
+    
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #4a5568;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #cbd5e0;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    /* Feedback section */
+    .feedback-section {
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    
+    .feedback-correct {
+      background: #f0fff4;
+      border-left: 4px solid #48bb78;
+    }
+    
+    .feedback-incorrect {
+      background: #fff5f5;
+      border-left: 4px solid #e53e3e;
+    }
+    
+    .feedback-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .feedback-correct .feedback-title {
+      color: #38a169;
+    }
+    
+    .feedback-incorrect .feedback-title {
+      color: #e53e3e;
+    }
+    
+    .feedback-title i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    .user-answer {
+      margin-bottom: 15px;
+      color: #4a5568;
+    }
+    
+    .correct-answer {
+      color: #4a5568;
+    }
+    
+    /* Back button */
+    .back-button {
+      margin-top: 20px;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .page-header h2 {
+        font-size: 24px;
+      }
+    
+      .question-text {
+        font-size: 18px;
+      }
+    
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>{{ exercise.title }}</h2>
+      <p>Lesson: {{ lesson.title }}</p>
+      <span class="exercise-type">{{ exercise.exercise_type }}</span>
+    </div>
+
+    <div class="exercise-container">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      {% if exercise_type == 'quiz' %}
+        {% if questions %}
+          <form method="post">
+            {% csrf_token %}
+            <ol>
+              {% for question in questions %}
+                <li>
+                  <p>
+                    <strong>{{ question.text }}</strong>
+                  </p>
+
+                  {% if question.question_type == 'FILL' %}
+                    <input type="text" name="question_{{ question.id }}" placeholder="Your answer" />
+                  {% else %}
+                    {% for choice in question.choices.all %}
+                      <div class="quiz-option">
+                        <input type="radio" id="choice_{{ choice.id }}" name="question_{{ question.id }}" value="{{ choice.id }}" />
+                        <label for="choice_{{ choice.id }}">{{ choice.text }}</label>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ol>
+            <button type="submit" class="btn btn-primary">Submit Quiz</button>
+          </form>
+        {% else %}
+          <p>No questions added yet.</p>
+        {% endif %}
+      {% elif exercise_type == 'speak' %}
+        <p>{{ exercise.prompt }}</p>
+
+        {% if submission %}
+          <p>Your submitted recording:</p>
+          <audio controls>
+            <source src="{{ submission.audio_file.url }}" type="audio/mpeg" />
+          </audio>
+          <p>Score: {{ submission.score }}</p>
+          <p>Feedback: {{ submission.feedback }}</p>
+        {% endif %}
+
+        <div>
+          <button id="recordButton" class="btn btn-primary">Start Recording</button>
+          <button id="stopButton" class="btn btn-secondary" disabled>Stop Recording</button>
+        </div>
+
+        <form id="audioForm" method="post" enctype="multipart/form-data" style="display:none;">
+          {% csrf_token %}
+          <input type="file" name="audio" id="audioInput" accept="audio/*" />
+        </form>
+
+        <script>
+          recordButton.addEventListener('click', async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            mediaRecorder = new MediaRecorder(stream)
+            mediaRecorder.start()
+            audioChunks = []
+          
+            mediaRecorder.addEventListener('dataavailable', (e) => {
+              audioChunks.push(e.data)
+            })
+          
+            mediaRecorder.addEventListener('stop', () => {
+              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' })
+              const file = new File([audioBlob], 'recording.wav', { type: 'audio/wav' })
+          
+              // Assign to file input
+              const audioInput = document.getElementById('audioInput')
+              const dataTransfer = new DataTransfer()
+              dataTransfer.items.add(file)
+              audioInput.files = dataTransfer.files
+          
+              // Submit form
+              audioForm.submit()
+            })
+          
+            recordButton.disabled = true
+            stopButton.disabled = false
+          })
+          
+          stopButton.addEventListener('click', () => {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+              mediaRecorder.stop()
+              recordButton.disabled = false
+              stopButton.disabled = true
+            }
+          })
+        </script>
+      {% elif exercise_type == 'write' %}
+        <p>{{ exercise.prompt }}</p>
+
+        <textarea id="writing-box" rows="10" style="width:100%; padding:10px;">{{ initial_text }}</textarea>
+        <div style="margin-top:10px;">
+          <button id="check-btn" class="btn btn-primary">Check & Submit</button>
+        </div>
+
+        <h3>
+          Score: <span id="score">
+            {% if submission %}
+              {{ submission.score }}
+            {% else %}
+              0
+            {% endif %}%
+          </span>
+        </h3>
+        <div id="suggestions" style="margin-top:20px;"></div>
+
+        <script>
+          document.getElementById('check-btn').addEventListener('click', function () {
+            const text = document.getElementById('writing-box').value
+          
+            fetch("{% url 'learning:exercise_detail' lesson.id 'write' exercise.id %}", {
+              method: 'POST',
+              headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body: new URLSearchParams({
+                content: text
+              })
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                const suggestionsDiv = document.getElementById('suggestions')
+                suggestionsDiv.innerHTML = ''
+          
+                if (data.matches.length === 0) {
+                  suggestionsDiv.innerHTML = '<p>✅ No mistakes found!</p>'
+                } else {
+                  data.matches.forEach((m) => {
+                    const msg = `<p>❌ "${m.error_text}" → ${m.message}<br>Suggestions: ${m.replacements.join(', ')}</p>`
+                    suggestionsDiv.innerHTML += msg
+                  })
+                }
+          
+                document.getElementById('score').innerText = data.score + '%'
+              })
+              .catch((err) => {
+                console.error('Error submitting writing:', err)
+              })
+          })
+        </script>
+      {% elif exercise_type == 'listen' %}
+        <p>{{ exercise.title }}</p>
+
+        {% if exercise.audio %}
+          <audio controls>
+            <source src="{{ exercise.audio.url }}" type="audio/mpeg" />
+          </audio>
+        {% endif %}
+
+        {% if exercise.video %}
+          <video width="100%" controls>
+            <source src="{{ exercise.video.url }}" type="video/mp4" />
+          </video>
+        {% endif %}
+        <form method="POST">
+          {% csrf_token %}
+          <div>
+            <strong>Question</strong><p>{{ exercise.question }}</p>
+            <textarea name="answer" id="answer" value="{{ submission.answer }}" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      {% else %}
+        <p>Invalid exercise type.</p>
+      {% endif %}
+    </div>
+
+    <!-- Back Button -->
+    <a href="{% url 'learning:exercise_list' lesson.id %}" class="btn btn-secondary" style="margin-top:20px;"><i class="fas fa-arrow-left"></i> Back to Exercises</a>
+  </div>
+{% endblock %}

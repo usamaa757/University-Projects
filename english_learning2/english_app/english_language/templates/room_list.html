@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Chat Rooms
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+      color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* Create Room Button */
+    .create-room-btn {
+      padding: 0.5rem 1rem;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    
+    .create-room-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+    
+    /* Rooms List */
+    .room-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .room-item {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+    
+    .room-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    /* Room Link */
+    .room-link {
+      color: #2c3e50;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+    
+    .room-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .chat-rooms-header {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="chat-rooms-container">
+      <div class="page-header">
+        <h2>Available Chat Rooms</h2>
+
+        <a href="{% url 'create_room' %}" class="create-room-btn">➕ Create New Room</a>
+      </div>
+
+      <ul class="room-list">
+        {% for room in rooms %}
+          <li class="room-item">
+            <a href="{% url 'chat_room' room.name %}" class="room-link">{{ room.name|title }}</a>
+          </li>
+        {% empty %}
+          <li class="room-item">No chat rooms available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

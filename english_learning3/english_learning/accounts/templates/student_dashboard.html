@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Student Dashboard
+{% endblock %}
+
+{% block content %}
+  <div class="dashboard">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <h1 class="page-title">👋 Welcome, {{ request.user.username }}!</h1>
+      <p class="subtitle">Track your learning, access lessons, quizzes, and assignments all in one place.</p>
+    </div>
+
+    <!-- Lessons -->
+    <div class="dashboard-section">
+      <h3>📖 Lessons</h3>
+      {% if lessons %}
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lesson in lessons %}
+              <tr>
+                <td>{{ lesson.title }}</td>
+                <td>{{ lesson.description|truncatewords:15 }}</td>
+                <td>
+                  <a href="{% url 'lesson_detail' lesson.id %}" class="btn btn-info">View Lesson</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-msg">No lessons assigned yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Quizzes -->
+    <div class="dashboard-section">
+      <h3>📝 Quizzes</h3>
+      {% if quizzes %}
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Quiz</th>
+              <th>Lesson</th>
+              <th>Status</th>
+              <th>Last Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for quiz in quizzes %}
+              <tr>
+                <td>{{ quiz.title }}</td>
+                <td>{{ quiz.lesson.title }}</td>
+                <td>
+                  {% if quiz.id in taken_quiz_ids %}
+                    <span class="status success">Completed</span>
+                  {% else %}
+                    <span class="status pending">⏳ Pending</span>
+                  {% endif %}
+                </td>
+                <td>{{ quiz.due_date|date:'M d, Y' }}</td>
+                <td>
+                  {% if quiz.id in taken_quiz_ids %}
+                    <a href="{% url 'quiz_result_detail' quiz.id %}" class="btn btn-secondary">View Result</a>
+                  {% else %}
+                    {% if quiz.due_date < today %}
+                      <span class="status overdue">Expired</span>
+                    {% else %}
+                      <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-primary">Take Quiz</a>
+                    {% endif %}
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-msg">No quizzes assigned yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Assignments -->
+    <div class="dashboard-section">
+      <h3>📚 Assignments</h3>
+
+      <h4 class="section-subtitle">Open Assignments</h4>
+      {% if open_assignments %}
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Due Date</th>
+              <th>Marks</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for assignment in open_assignments %}
+              <tr>
+                <td>{{ assignment.title }}</td>
+                <td>{{ assignment.due_date }}</td>
+                <td>
+                  {% for sub in submitted_assignments %}
+                    {% if sub.marks %}
+                      {{ sub.marks }} / {{ sub.assignment.total_marks }}
+                    {% else %}
+                      Not graded yet
+                    {% endif %}
+                  {% endfor %}
+                </td>
+                <td>
+                  {% if assignment.due_date < today %}
+                    <span class="status overdue">Expired</span>
+                  {% else %}
+                    <a href="{% url 'submit_assignment' assignment.id %}" class="btn btn-primary">Submit</a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-msg">No active assignments right now ✅</p>
+      {% endif %}
+
+      <h4 class="section-subtitle">Submitted Assignments</h4>
+      {% if submitted_assignments %}
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Assignment</th>
+              <th>Submitted At</th>
+              <th>File</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for submission in submitted_assignments %}
+              <tr>
+                <td>{{ submission.assignment.title }}</td>
+                <td>{{ submission.submitted_at }}</td>
+                <td>
+                  <a href="{{ submission.file.url }}" class="btn btn-secondary" download>Download</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-msg">No submissions yet</p>
+      {% endif %}
+    </div>
+
+    <!-- Practice -->
+    <div class="dashboard-section">
+      <h3>🎤 Practice</h3>
+      <div class="practice-links">
+        <a href="{% url 'speaking_exercise_list' %}" class="btn btn-warning">Practice Speaking</a>
+        <a href="{% url 'writing_practice' %}" class="btn btn-success">Practice Writing</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

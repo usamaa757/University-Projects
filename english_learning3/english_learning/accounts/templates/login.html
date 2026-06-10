@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block content %}
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <h2>Welcome Back 👋</h2>
+      <p class="subtitle">Login to continue</p>
+
+      <form method="post" class="auth-form">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        {% csrf_token %}
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>
+          Don’t have an account? <a href="{% url 'register' %}">Register</a>
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

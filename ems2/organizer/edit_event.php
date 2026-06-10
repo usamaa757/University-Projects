@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="mb-3">
                             <label for="event_date" class="form-label">Event Date</label>
                             <input type="date" name="event_date" id="event_date" class="form-control"
-                                value="<?= $event['start_date'] ?>" required>
+                                value="<?= $event['event_date'] ?>" required>
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Update Event</button>

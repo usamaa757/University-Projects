@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="card shadow p-0">
+        <div class="card-header bg-dark text-white text-center">
+          <h4>Edit Profile</h4>
+        </div>
+        {% if messages %}
+          <div class="mt-3">
+            {% for message in messages %}
+              <div class="text-success">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+              <!-- First Name & Last Name -->
+              <div class="col-md-6">
+                <label for="username" class="form-label"><strong>Username</strong></label>
+                {{ form.username }}
+              </div>
+              <!-- Nationality & City -->
+              <div class="col-md-6">
+                <label for="nationality" class="form-label"><strong>Nationality</strong></label>
+                {{ form.nationality }}
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label for="mobile_no" class="form-label"><strong>Mobile No.</strong></label>
+                {{ form.mobile_no }}
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label"><strong>Email</strong></label>
+                {{ form.email }}
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <label for="city" class="form-label"><strong>City</strong></label>
+                {{ form.city }}
+              </div>
+              <!-- Postal Address -->
+              <div class="col-md-12">
+                <label for="postal_address" class="form-label"><strong>Postal Address</strong></label>
+                {{ form.postal_address }}
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <!-- Preferences -->
+              <div class="col-md-6">
+                <label for="preferred_season" class="form-label"><strong>Preferred Season</strong></label>
+                {{ form.preferred_season }}
+              </div>
+              <div class="col-md-6">
+                <label for="preferred_travel_type" class="form-label"><strong>Preferred Travel Type</strong></label>
+                {{ form.preferred_travel_type }}
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <!-- Age Range & Budget Range -->
+              <div class="col-md-6">
+                <label for="age_range" class="form-label"><strong>Age Range</strong></label>
+                {{ form.age_range }}
+              </div>
+              <div class="col-md-6">
+                <label for="budget_range" class="form-label"><strong>Budget Range</strong></label>
+                {{ form.budget_range }}
+              </div>
+            </div>
+
+            <div class="mt-4 text-center">
+              <button type="submit" class="btn btn-success">Update</button>
+              <a href="{% url 'user_dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

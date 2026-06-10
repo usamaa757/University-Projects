@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+  <style>
+    /* Main Content */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 0;
+    }
+    
+    .auth-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 450px;
+      padding: 2rem;
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .auth-header h2 {
+      color: #4a6fa5;
+      margin-bottom: 0.5rem;
+    }
+    
+    .auth-header p {
+      color: #666;
+    }
+    
+    .errorlist {
+      color: #dc3545;
+      margin-top: 0.5rem;
+      list-style: none;
+      font-size: 0.9rem;
+    }
+    
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+    
+    .auth-footer a {
+      color: #4a6fa5;
+      text-decoration: none;
+    }
+    
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .auth-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+      }
+    
+      .nav-links {
+        display: none;
+      }
+    
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+  </style>
+{% endblock %}
+<!-- Base Template Structure -->
+{% block content %}
+  <main>
+    <div class="auth-container">
+      <div class="auth-header">
+        <h2>Create Account</h2>
+        <p>Join us today and access all features</p>
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <ul class="errorlist">
+                {% for error in field.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if field.help_text %}
+              <small style="color: #666; display: block; margin-top: 0.5rem;">{{ field.help_text }}</small>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>
+          Already have an account? <a href="{% url 'login' %}">Sign In</a>
+        </p>
+      </div>
+    </div>
+  </main>
+{% endblock %}

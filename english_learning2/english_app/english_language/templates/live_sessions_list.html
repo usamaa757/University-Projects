@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Live Sessions
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .session-info {
+      background-color: #f9f9f9;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .session-info h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      color: #2c3e50;
+    }
+    
+    .session-info p {
+      margin: 0.3rem 0;
+      color: #666;
+    }
+    
+    .session-actions {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h2>Upcoming Live Sessions</h2>
+      {% if user.role == 'teacher' %}
+        <a href="{% url 'create_live_session' %}" class="btn btn-primary">Create Live Session</a>
+      {% endif %}
+    </div>
+
+    {% if sessions %}
+      {% for session in sessions %}
+        <div class="container">
+          <div class="session-info">
+            <h3>{{ session.title }}</h3>
+            <p>📅 {{ session.date_time|date:'M d, Y H:i' }}</p>
+            <p>👨‍🏫 Hosted by {{ session.teacher.username }}</p>
+          </div>
+
+          <div class="session-actions">
+            <!-- Student & Teacher both see "Join/Watch" -->
+            {% if user.role == 'student' %}
+              <a href="{{ session.meeting_link }}" target="_blank" class="btn btn-primary">Join / Watch</a>
+            {% else %}
+              {% if request.user.role == 'teacher' %}
+                <a href="{% url 'edit_session' session.id %}" class="btn btn-secondary">Edit</a>
+                <form action="{% url 'delete_session' session.id %}" method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this session?')">Delete</button>
+                </form>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No upcoming live sessions.</p>
+    {% endif %}
+  </div>
+{% endblock %}

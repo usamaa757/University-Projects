@@ -1,0 +1,672 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .teacher-dashboard {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+    
+    .dashboard-header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .welcome-section h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    
+    .welcome-section p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+    
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+    .stat-icon.students {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+    .stat-icon.courses {
+      background: linear-gradient(135deg, #10b981, #047857);
+    }
+    .stat-icon.assignments {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+    .stat-icon.sessions {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .main-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .card-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    
+    .card-description {
+      color: var(--text-secondary);
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+    }
+    
+    .btn-secondary {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-light);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(79, 70, 229, 0.2);
+    }
+    
+    .sidebar-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    
+    .quick-actions {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .section-title i {
+      margin-right: 10px;
+      color: var(--primary-color);
+    }
+    
+    .action-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .action-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(79, 70, 229, 0.05);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    
+    .action-item:hover {
+      background: rgba(79, 70, 229, 0.1);
+      border-color: var(--primary-light);
+      transform: translateX(5px);
+    }
+    
+    .action-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      color: white;
+      font-size: 1rem;
+    }
+    
+    .action-text {
+      font-weight: 500;
+    }
+    
+    .recent-activity {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 15px;
+      background: rgba(79, 70, 229, 0.03);
+      border-radius: 10px;
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    .activity-icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 8px;
+      background: rgba(79, 70, 229, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      color: var(--primary-color);
+      font-size: 0.9rem;
+    }
+    
+    .activity-content {
+      flex: 1;
+    }
+    
+    .activity-title {
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+    
+    .activity-time {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    
+    .upcoming-sessions {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .session-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 15px;
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .session-time {
+      background: var(--success-color);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-right: 15px;
+      min-width: 80px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+    
+    .session-details {
+      flex: 1;
+    }
+    
+    .session-title {
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    
+    .session-desc {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    
+    .session-url {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary-color);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      word-break: break-all;
+      margin-top: 8px;
+      display: inline-block;
+    }
+    
+    .session-status {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .status-upcoming {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+    
+    .status-live {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+    
+    .status-completed {
+      background: rgba(107, 114, 128, 0.1);
+      color: #6b7280;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: var(--text-light);
+    }
+    
+    @media (max-width: 768px) {
+      .teacher-dashboard {
+        padding: 10px;
+      }
+    
+      .dashboard-header {
+        padding: 20px;
+      }
+    
+      .welcome-section h1 {
+        font-size: 2rem;
+      }
+    
+      .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    
+      .main-cards {
+        grid-template-columns: 1fr;
+      }
+    
+      .card-actions {
+        flex-direction: column;
+      }
+    
+      .btn {
+        text-align: center;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+    
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+
+  <div class="teacher-dashboard">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div class="header-content">
+        <div class="welcome-section">
+          <h1>Welcome back, Professor!</h1>
+          <p>Manage your courses and host live sessions with students</p>
+        </div>
+        <div class="header-actions">
+          <a href="{% url 'learning:create_course' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Create Course</a>
+          <a href="{% url 'learning:create_live_session' %}" class="btn btn-secondary"><i class="fas fa-video"></i> Schedule Session</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Overview -->
+    <div class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon students">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+        <div class="stat-value">{{ total_students }}</div>
+        <div class="stat-label">Total Students</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon courses">
+            <i class="fas fa-book-open"></i>
+          </div>
+        </div>
+        <div class="stat-value">{{ my_courses_count }}</div>
+        <div class="stat-label">My Courses</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon sessions">
+            <i class="fas fa-video"></i>
+          </div>
+        </div>
+        <div class="stat-value">{{ upcoming_sessions }}</div>
+        <div class="stat-label">Upcoming Sessions</div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Main Features -->
+      <div class="main-cards">
+        <!-- Course Management -->
+        <div class="feature-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <h3 class="card-title">Course Management</h3>
+          </div>
+          <p class="card-description">Create and manage your courses, add lessons with multimedia content, and organize learning materials for your students.</p>
+          <div class="card-actions">
+            <a href="{% url 'learning:course_list' %}" class="btn btn-primary"><i class="fas fa-cog"></i> Manage Courses</a>
+            <a href="{% url 'learning:create_course' %}" class="btn btn-secondary"><i class="fas fa-plus"></i> New Course</a>
+          </div>
+        </div>
+
+        <!-- Live Sessions -->
+        <div class="feature-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-video"></i>
+            </div>
+            <h3 class="card-title">Live Sessions</h3>
+          </div>
+          <p class="card-description">Schedule and host live interactive sessions with your students. Share meeting links and manage scheduled classes.</p>
+          <div class="card-actions">
+            <a href="{% url 'learning:live_sessions' %}" class="btn btn-primary"><i class="fas fa-list"></i> Manage Sessions</a>
+            <a href="{% url 'learning:create_live_session' %}" class="btn btn-secondary"><i class="fas fa-plus"></i> Schedule Session</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Cards -->
+      <div class="sidebar-cards">
+        <!-- Today's Live Sessions -->
+        <div class="upcoming-sessions">
+          <h3 class="section-title">
+            <i class="fas fa-calendar-day"></i>
+            Today's Sessions
+          </h3>
+          {% if todays_sessions %}
+            {% for session in todays_sessions %}
+              <div class="session-item">
+                <div class="session-time {% if session.scheduled_at < now %}past{% endif %}">{{ session.scheduled_at|time:'H:i' }}</div>
+                <div class="session-details">
+                  <div class="session-title">{{ session.title }}</div>
+                  <div class="session-desc">
+                    <span class="session-status {% if session.scheduled_at < now %}
+                        
+                        
+                        
+                        
+                        
+                        
+                        status-completed
+
+
+
+
+
+
+                      {% else %}
+                        
+                        
+                        
+                        
+                        
+                        
+                        status-upcoming
+
+
+
+
+
+
+                      {% endif %}">
+                      {% if session.scheduled_at < now %}
+                        Completed
+                      {% else %}
+                        Upcoming
+                      {% endif %}
+                    </span>
+                  </div>
+                  {% if session.scheduled_at >= now %}
+                    <div class="session-url">
+                      <i class="fas fa-link"></i>
+                      <a href="{{ session.url }}" target="_blank" style="color: inherit;">Join Session</a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty-state">
+              <i class="fas fa-video-slash"></i>
+              <p>No sessions scheduled for today</p>
+              <a href="{% url 'learning:create_live_session' %}" class="btn btn-primary" style="margin-top: 10px;">Schedule Session</a>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Upcoming Sessions -->
+        <div class="upcoming-sessions">
+          <h3 class="section-title">
+            <i class="fas fa-calendar-alt"></i>
+            Upcoming Sessions
+          </h3>
+          {% if all_upcoming_sessions %}
+            {% for session in all_upcoming_sessions %}
+              <div class="session-item">
+                <div class="session-time">{{ session.scheduled_at|date:'M d' }}</div>
+                <div class="session-details">
+                  <div class="session-title">{{ session.title }}</div>
+                  <div class="session-desc">
+                    {{ session.scheduled_at|time:'H:i' }}
+                    <span class="session-status status-upcoming">Upcoming</span>
+                  </div>
+                  <div class="session-url">
+                    <i class="fas fa-link"></i>
+                    <a href="{{ session.url }}" target="_blank" style="color: inherit;">Join Link</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty-state">
+              <i class="fas fa-calendar-times"></i>
+              <p>No upcoming sessions</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

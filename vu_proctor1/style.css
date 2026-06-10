@@ -1,0 +1,316 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h2,
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+/* Forms */
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background: #1E2426;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border: none;
+}
+
+
+button:hover {
+    background: #2b2e30;
+}
+
+/* Messages */
+.msg {
+    text-align: center;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+/* Tables */
+.table-container {
+    width: 90%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #0C1D27;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+
+a.delete {
+    color: red;
+    font-weight: bold;
+}
+
+/* Navbar */
+nav {
+    background: #000;
+    padding: 20px;
+    text-align: center;
+}
+
+nav a {
+    color: #fff;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: rgb(23, 108, 206)
+}
+
+nav .nav-right {
+    float: right;
+}
+
+/* Dashboard */
+
+/* Container */
+.header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.header h1 {
+    font-size: 20px;
+    margin: 0
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* layout */
+.grid {
+    padding: 20px;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+/* KPI cards */
+.kpi {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.kpi h3 {
+    margin: 0;
+    font-size: 13px;
+    color: #6b7280
+}
+
+.kpi .value {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 8px
+}
+
+/* make cards span */
+.card-1 {
+    grid-column: span 3
+}
+
+.card-2 {
+    grid-column: span 3
+}
+
+.card-3 {
+    grid-column: span 3
+}
+
+.card-4 {
+    grid-column: span 3
+}
+
+/* charts area */
+.charts {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 2fr 1fr;
+    grid-column: span 8;
+}
+
+.sidepan {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* chart cards */
+.chart-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06)
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 260px !important
+}
+
+/* tables */
+.table-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    max-height: 420px;
+    overflow: auto
+}
+
+.table-card table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px
+}
+
+.table-card th,
+.table-card td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid #eef2f7
+}
+
+.table-card th {
+    position: sticky;
+    top: 0;
+    background: #fff
+}
+
+/* small */
+.badge {
+    display: inline-block;
+    padding: 6px 10px;
+    background: #eef2ff;
+    color: #0f172a;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* responsive */
+@media (max-width:1000px) {
+    .grid {
+        grid-template-columns: repeat(6, 1fr)
+    }
+
+    .card-1,
+    .card-2,
+    .card-3,
+    .card-4 {
+        grid-column: span 3
+    }
+
+    .charts {
+        grid-column: span 6;
+        grid-template-columns: 1fr
+    }
+
+    .sidepan {
+        grid-column: span 6
+    }
+}
+
+@media (max-width:640px) {
+    body {
+        padding: 12px
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px
+    }
+}

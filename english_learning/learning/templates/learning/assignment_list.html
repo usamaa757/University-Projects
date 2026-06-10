@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% block content %}
+  <!-- ========== STYLES ========== -->
+  <style>
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* PAGE HEADER */
+    .page-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    
+    .page-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 10px;
+    }
+    
+    /* ASSIGNMENT TABLE */
+    .assignment-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    
+    table.assignment-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    
+    .assignment-table th {
+      background: #f7fafc;
+      padding: 14px;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 600;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .assignment-table td {
+      padding: 12px;
+      border-bottom: 1px solid #edf2f7;
+      font-size: 15px;
+    }
+    
+    /* BADGES */
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-block;
+    }
+    
+    .badge-submitted {
+      background: #3182ce;
+      color: white;
+    }
+    .badge-not-submitted {
+      background: #e53e3e;
+      color: white;
+    }
+    .badge-scored {
+      background: #38a169;
+      color: white;
+    }
+    .badge-pending {
+      background: #d69e2e;
+      color: white;
+    }
+    .badge-teacher {
+      background: #6b46c1;
+      color: white;
+    }
+    
+    /* BUTTONS */
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+      transition: 0.3s;
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+    }
+    
+    .btn-primary {
+      background: #4299e1;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #3182ce;
+    }
+    
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #4a5568;
+    }
+    .btn-secondary:hover {
+      background: #cbd5e0;
+    }
+    
+    .btn-disabled {
+      background: #a0aec0;
+      color: white;
+      cursor: not-allowed;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .assignment-table,
+      .assignment-table thead,
+      .assignment-table tbody,
+      .assignment-table th,
+      .assignment-table td,
+      .assignment-table tr {
+        display: block;
+      }
+      .assignment-table thead {
+        display: none;
+      }
+      .assignment-table tr {
+        margin-bottom: 15px;
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+      }
+      .assignment-table td {
+        border-bottom: none;
+        padding: 8px 0;
+        display: block;
+        text-align: right;
+      }
+      .assignment-table td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: #4a5568;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>Assignments for {{ lesson.title }}</h2>
+    </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <!-- Assignment Table -->
+    <div class="assignment-container">
+      <table class="assignment-table">
+        <thead>
+          <tr>
+            <th>Assignment</th>
+            <th>Due Date</th>
+            <th>Total Marks</th>
+            <th>Obtained Marks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for assignment in assignments %}
+            <tr>
+              <td data-label="Assignment">{{ assignment.title }}</td>
+              <td data-label="Due Date">
+                {{ assignment.due_date|date:'d M, Y' }}
+                {% if assignment.due_date < today %}
+                  <br /><small style="color: #e53e3e;">(Overdue)</small>
+                {% endif %}
+              </td>
+              <td data-label="Total Marks">{{ assignment.total_marks }}</td>
+              <td data-label="Obtained Marks">
+                {% if user.role == 'TEACHER' %}
+                  <span class="badge badge-teacher">Teacher View</span>
+                {% else %}
+                  {% if assignment.submission %}
+                    {% if assignment.submission.marks_awarded is not None %}
+                      <span class="badge badge-scored">{{ assignment.submission.marks_awarded }}</span>
+                    {% else %}
+                      <span class="badge badge-pending">Pending</span>
+                    {% endif %}
+                  {% else %}
+                    <span class="badge badge-not-submitted">Not Submitted</span>
+                  {% endif %}
+                {% endif %}
+              </td>
+              <td data-label="Action">
+                {% if user.role == 'TEACHER' %}
+                  <a href="{% url 'learning:assignment_detail' assignment.id %}" class="btn btn-primary">View Submissions</a>
+                {% else %}
+                  {% if assignment.submission %}
+                    {% if assignment.submission.marks_awarded is not None %}
+                      <span class="badge badge-scored">Submitted</span>
+                    {% else %}
+                      <a href="{% url 'learning:assignment_detail' assignment.id %}" class="btn btn-secondary">View Submission</a>
+                    {% endif %}
+                  {% else %}
+                    {% if assignment.due_date < today %}
+                      <span class="badge badge-not-submitted">Submission Closed</span>
+                    {% else %}
+                      <a href="{% url 'learning:assignment_detail' assignment.id %}" class="btn btn-primary">Submit</a>
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 20px;">No assignments available for this lesson.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if user.role == 'TEACHER' %}
+        <a href="{% url 'learning:create_assignment' lesson.id %}" class="btn btn-primary" style="margin-top:20px;">+ Create Assignment</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

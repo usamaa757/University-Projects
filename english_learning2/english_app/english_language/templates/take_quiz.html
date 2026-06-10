@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}
+  {{ quiz.title }}
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+      color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 20px;
+    }
+    /* Container */
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Question */
+    .question {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border-left: 4px solid #4a6fa5;
+      background: #f9fbff;
+      border-radius: 6px;
+    }
+    
+    .question-text {
+      font-weight: bold;
+      margin-bottom: 0.8rem;
+      color: #2c3e50;
+    }
+    
+    /* Inputs */
+    label {
+      display: block;
+      margin: 0.3rem 0;
+      cursor: pointer;
+    }
+    
+    input[type='radio'],
+    input[type='text'],
+    select {
+      margin-right: 0.5rem;
+    }
+    
+    select {
+      padding: 0.5rem;
+      width: 30%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    
+    /* Matching Pairs */
+    .matching-pair {
+      margin-bottom: 0.8rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="quiz-container">
+    <div class="page-header">
+      <h1>{{ quiz.title }}</h1>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for question in quiz.questions.all %}
+        <div class="question">
+          <p class="question-text">Q{{ forloop.counter }}. {{ question.question_text }}</p>
+
+          {% if question.question_type == 'mcq' %}
+            {% for choice in question.choices.all %}
+              <label>
+                <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" required />
+                {{ choice.text }}
+              </label>
+            {% endfor %}
+          {% elif question.question_type == 'fill' %}
+            <input type="text" name="question_{{ question.id }}" placeholder="Your answer" required />
+          {% elif question.question_type == 'match' %}
+            {% for pair in question.pairs.all %}
+              <div class="matching-pair">
+                {{ pair.left_item }} → <br />
+                <select name="pair_{{ pair.id }}" required>
+                  <option value="">Select</option>
+                  {% for right in question.pairs.all %}
+                    <option value="{{ right.right_item }}">{{ right.right_item }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-success">Submit Answers</button>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+
+{% block title %}User Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    .user-management-container {
+        margin-top: 20px;
+    }
+    
+    .page-header {
+        background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+        color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .page-header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0;
+    }
+    
+    /* Filter Section */
+    .filter-section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .filter-form {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: end;
+    }
+    
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    .filter-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #444;
+    }
+    
+    .filter-select, .search-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+    
+    .search-input:focus, .filter-select:focus {
+        border-color: #4a6fa5;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+    }
+    
+    /* Users Table */
+    .users-table-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    .table-header {
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid #eaeaea;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .table-header h2 {
+        color: #4a6fa5;
+        font-size: 1.3rem;
+    }
+    
+    .users-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .users-table th,
+    .users-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eaeaea;
+    }
+    
+    .users-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #495057;
+        cursor: pointer;
+    }
+    
+    .users-table th:hover {
+        background-color: #e9ecef;
+    }
+    
+    .users-table tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    /* User Avatar */
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #4a6fa5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 500;
+        margin-right: 0.75rem;
+    }
+    
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+    
+    .user-name {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+    
+    .user-email {
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    /* Status Badges */
+    .status-badge {
+        display: inline-block;
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .status-active {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .status-inactive {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+    
+    .role-badge {
+        display: inline-block;
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .role-admin {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+    
+    .role-teacher {
+        background-color: #fff3e0;
+        color: #f57c00;
+    }
+    
+    .role-student {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+    
+    .btn-view {
+        background-color: #4a6fa5;
+        color: white;
+    }
+    
+    .btn-view:hover {
+        background-color: #3a5a8a;
+    }
+    
+    .btn-edit {
+        background-color: #fd7e14;
+        color: white;
+    }
+    
+    .btn-edit:hover {
+        background-color: #e66a00;
+    }
+    
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #ccc;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .filter-form {
+            flex-direction: column;
+        }
+        
+        .filter-group {
+            min-width: 100%;
+        }
+        
+        .users-table {
+            display: block;
+            overflow-x: auto;
+        }
+        
+        .user-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .user-avatar {
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="user-management-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>User Management</h1>
+            <span>Total Users: {{ users.count }}</span>
+        </div>
+        
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="GET" class="filter-form">
+                <div class="filter-group">
+                    <label for="search">Search Users</label>
+                    <input type="text" name="search" id="search" class="search-input" 
+                           placeholder="Search by name or email..." value="{{ search_query }}">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="role">Filter by Role</label>
+                    <select name="role" id="role" class="filter-select">
+                        <option value="">All Roles</option>
+                        <option value="admin" {% if role_filter == 'admin' %}selected{% endif %}>Administrators</option>
+                        <option value="teacher" {% if role_filter == 'teacher' %}selected{% endif %}>Teachers</option>
+                        <option value="student" {% if role_filter == 'student' %}selected{% endif %}>Students</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <button type="submit" class="btn btn-view">Apply Filters</button>
+                    <a href="{% url 'user_list' %}" class="btn" style="background-color: #6c757d; color: white; margin-left: 10px;">Clear</a>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Users Table -->
+        <div class="users-table-container">
+            <div class="table-header">
+                <h2>All Users</h2>
+            </div>
+            
+            {% if users %}
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Join Date</th>
+                        <th>Last Login</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    {{ user.get_full_name|default:user.username|first|upper }}
+                                </div>
+                                <div>
+                                    <div class="user-name">{{ user.get_full_name|default:user.username }}</div>
+                                    <div class="user-email">{{ user.email }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="role-badge role-{{ user.role }}">
+                                {{ user.get_role_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge {% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </td>
+                        <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                        <td>
+                            {% if user.last_login %}
+                                {{ user.last_login|date:"M d, Y" }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{% url 'user_detail' user.id %}" class="btn btn-view">View</a>
+                                <a href="{% url 'user_edit' user.id %}" class="btn btn-edit">Edit</a>
+                                <a href="{% url 'user_delete' user.id %}" class="btn btn-delete">Delete</a>
+                                   {% if user.role == 'student' %}
+            <a href="{% url 'progress_report_by_id' user.id %}" class="btn btn-success">Progress Report</a>
+          {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <div>👥</div>
+                <h3>No users found</h3>
+                <p>
+                    {% if search_query or role_filter %}
+                    Try adjusting your search or filters to see more results.
+                    {% else %}
+                    There are no users in the system yet.
+                    {% endif %}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

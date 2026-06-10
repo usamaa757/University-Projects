@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}
+  Assignments
+{% endblock %}
+
+{% block content %}
+  <div class="assignments-page">
+    <div class="page-header">
+      <h2 class="page-title">📚 Assignments</h2>
+      <p class="page-subtitle">View and manage your assignments here.</p>
+      {% if user.role == 'teacher' %}
+        <a href="{% url 'create_assignment' %}" class="btn btn-primary">Create</a>
+      {% endif %}
+    </div>
+
+    <div class="table-wrapper">
+      <table class="styled-table">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            {% if user.role == 'student' %}
+              <th>Marks</th>
+            {% endif %}
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if user.role == 'student' %}
+            {% for sub in submissions %}
+              {% with assignment=sub.assignment %}
+                <tr>
+                  <td>{{ assignment.title }}</td>
+                  <td>{{ assignment.due_date|date:'M d, Y' }}</td>
+                  <td>
+                    {% if assignment.due_date < today %}
+                      <span class="status overdue">Expired</span>
+                    {% else %}
+                      <span class="status success">Open</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if sub.marks %}
+                      {{ sub.marks }} / {{ sub.assignment.total_marks }}
+                    {% else %}
+                      Not graded yet
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if assignment.due_date < today %}
+                      <a href="{{ sub.file.url }}" class="btn btn-secondary btn-sm" download>Download</a>
+                    {% else %}
+                      <a href="{% url 'submit_assignment' assignment.id %}" class="btn btn-primary btn-sm">Submit</a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endwith %}
+            {% empty %}
+              <tr>
+                <td colspan="5" class="empty-row">No assignments found.</td>
+              </tr>
+            {% endfor %}
+          {% elif user.role == 'teacher' %}
+            {% for assignment in assignments %}
+              <tr>
+                <td>{{ assignment.title }}</td>
+                <td>{{ assignment.due_date|date:'M d, Y' }}</td>
+                <td>
+                  {% if assignment.due_date < today %}
+                    <span class="status overdue">Expired</span>
+                  {% else %}
+                    <span class="status success">Open</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if assignment.due_date < today %}
+                    <span class="status overdue">Closed</span>
+                  {% else %}
+                    <a href="{% url 'edit_assignment' assignment.id %}" class="btn btn-edit">✏️ Edit</a>
+                    <a href="{% url 'view_submissions' assignment.id %}" class="btn btn-view">📂 View</a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="4" class="empty-row">No assignments created yet.</td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

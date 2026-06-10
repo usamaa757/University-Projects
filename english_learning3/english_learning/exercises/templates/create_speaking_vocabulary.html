@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+  Manage Speaking Exercises
+{% endblock %}
+
+{% block content %}
+  <div class="speaking-exercises-page">
+    <!-- Header -->
+    <div class="page-header">
+      <h2 class="page-title">🎤 Manage Speaking Exercises</h2>
+      <p class="page-subtitle">Add, review, and organize speaking practice exercises for your students.</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <form method="POST" class="styled-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">➕ Add Exercise</button>
+      </form>
+    </div>
+
+    <!-- Exercises List -->
+    <div class="exercise-list">
+      {% for ex in exercises %}
+        <div class="exercise-card">
+          <p class="exercise-text">{{ ex.text }}</p>
+          <p class="exercise-timestamp">Created on: {{ ex.created_at|date:'M d, Y H:i' }}</p>
+        </div>
+      {% empty %}
+        <p class="empty-msg">No exercises yet. Start by adding one above.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

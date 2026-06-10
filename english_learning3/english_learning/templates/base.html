@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        English Learning App
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    {% block extra_css %}
+
+    {% endblock %}
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header>
+      <div class="container">
+        {% if user.is_authenticated %}
+          {% if user.is_superuser %}
+            <a href="{% url 'admin_dashboard' %}"><h1 class="logo">English Learning App</h1></a>
+          {% elif user.role == 'teacher' %}
+            <a href="{% url 'teacher_dashboard' %}"><h1 class="logo">English Learning App</h1></a>
+          {% else %}
+            <a href="{% url 'student_dashboard' %}"><h1 class="logo">English Learning App</h1></a>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'index' %}"><h1 class="logo">English Learning App</h1></a>
+        {% endif %}
+
+        <nav>
+          <ul>
+            {% if user.is_authenticated %}
+              {% if user.is_superuser %}
+                <!-- Admin Navbar -->
+
+                <li>
+                  <a href="{% url 'user_list' %}">Manage Users</a>
+                </li>
+              {% elif user.role == 'teacher' %}
+                <!-- Teacher Navbar -->
+
+                <li>
+                  <a href="{% url 'student_list' %}">Students</a>
+                </li>
+                <li>
+                  <a href="{% url 'assignment_list' %}">View Assignment</a>
+                </li>
+                <li>
+                  <a href="{% url 'lesson_list' %}">Lessons</a>
+                </li>
+                <li>
+                  <a href="{% url 'quiz_list' %}">Quizzes</a>
+                </li>
+              {% elif user.role == 'student' %}
+                <!-- Student Navbar -->
+
+                <li>
+                  <a href="{% url 'room_list' %}">Chats</a>
+                </li>
+                <li>
+                  <a href="{% url 'assignment_list' %}">Assignments</a>
+                </li>
+                <li>
+                  <a href="{% url 'quiz_list' %}">Quizzes</a>
+                </li>
+                <li>
+                  <a href="{% url 'progress_report' %}">Progress</a>
+                </li>
+              {% endif %}
+
+              <li>
+                <form action="{% url 'logout' %}" method="post" class="logout-form-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+              </li>
+            {% else %}
+              <li>
+                <a href="{% url 'login' %}">Login</a>
+              </li>
+              <li>
+                <a href="{% url 'register' %}">Register</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!-- Main Content -->
+    <main>
+      {% block content %}
+
+      {% endblock %}
+    </main>
+    <!-- Floating Quick Action Button -->
+    {% if user.is_authenticated and user.role != 'admin' %}
+      <div class="quick-action">
+        <a href="" class="fab-btn" title="Fab Button">➕</a>
+        <div class="fab-menu">
+          {% if user.role == 'teacher' %}
+            <!-- Live Sessions -->
+            <a href="{% url 'create_live_session' %}" class="fab-btn">🎥 Create Live Session</a>
+            <a href="{% url 'live_session_list' %}">📺 Live Session List</a>
+
+            <!-- Speaking Exercises -->
+            <a href="{% url 'create_speaking_vocabulary' %}">🗣️ Create Speaking Exercise</a>
+            <a href="{% url 'speaking_exercise_list' %}">📄 Speaking Exercise List</a>
+
+            <!-- Lessons -->
+            <a href="{% url 'create_lesson' %}">📘 Create Lesson</a>
+            <a href="{% url 'lesson_list' %}">📖 Lesson List</a>
+
+            <!-- Assignments -->
+            <a href="{% url 'create_assignment' %}">📂 Create Assignment</a>
+            <a href="{% url 'assignment_list' %}">🗂️ Assignment List</a>
+
+            <!-- Quizzes -->
+            <a href="{% url 'create_quiz' %}">📝 Create Quiz</a>
+            <a href="{% url 'quiz_list' %}">📊 Quiz List</a>
+          {% elif user.role == 'student' %}
+            <!-- Dashboard -->
+            <a href="{% url 'student_dashboard' %}" class="fab-btn">🏠 Dashboard</a>
+
+            <!-- Assignments -->
+            <a href="{% url 'assignment_list' %}">📂 My Assignments</a>
+
+            <!-- Lessons -->
+            <a href="{% url 'lesson_list' %}">📖 Lessons</a>
+
+            <!-- Quizzes -->
+            <a href="{% url 'quiz_list' %}">📝 Quizzes</a>
+
+            <!-- Live Sessions -->
+            <a href="{% url 'live_session_list' %}">📺 Live Sessions</a>
+
+            <!-- Speaking Exercises -->
+            <a href="{% url 'speaking_exercise_list' %}">🗣️ Speaking Exercises</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+    <!-- Footer -->
+    <footer>
+      <p>&copy; {{ year|default:2025 }} MyPlatform. All rights reserved.</p>
+    </footer>
+
+    {% block extra_js %}
+
+    {% endblock %}
+  </body>
+</html>

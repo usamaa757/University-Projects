@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="speaking-container">
+    <h2>🎤 Speaking Practice</h2>
+
+    <div class="exercise-text">
+      <strong>Sentence to practice:</strong> {{ exercise.text }}
+    </div>
+
+    <div style="text-align:center; margin: 15px 0;">
+      <button id="start" class="btn-record btn-start">🎙️ Start Recording</button>
+      <button id="stop" class="btn-record btn-stop">⏹️ Stop</button>
+    </div>
+
+    <div class="audio-preview">
+      <audio id="player" controls></audio>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="speaking-form">
+      {% csrf_token %}
+      <input type="file" name="audio_file" id="audioFile" hidden />
+      <button type="submit" class="btn btn-primary">✅ Check Pronunciation</button>
+    </form>
+
+    {% if transcript %}
+      <div class="score-card">
+        <h3>✅ Your Results</h3>
+        <p>
+          <strong>Pronunciation Score:</strong> {{ pronunciation_score }}%
+        </p>
+        <p>
+          <strong>Matching Score:</strong> {{ matching_score }}%
+        </p>
+        <p>
+          <strong>Your Answer:</strong> {{ transcript }}
+        </p>
+        <p>
+          <strong>Expected:</strong> {{ exercise.text }}
+        </p>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    let mediaRecorder
+    let audioChunks = []
+    
+    const startBtn = document.getElementById('start')
+    const stopBtn = document.getElementById('stop')
+    const audioFileInput = document.getElementById('audioFile')
+    const player = document.getElementById('player')
+    
+    startBtn.onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        mediaRecorder = new MediaRecorder(stream)
+    
+        audioChunks = []
+    
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunks.push(event.data)
+          }
+        }
+    
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' })
+          const file = new File([audioBlob], 'speech.wav', { type: 'audio/wav' })
+    
+          // Assign to hidden input
+          const dataTransfer = new DataTransfer()
+          dataTransfer.items.add(file)
+          audioFileInput.files = dataTransfer.files
+    
+          // Preview audio
+          player.src = URL.createObjectURL(audioBlob)
+        }
+    
+        mediaRecorder.start()
+      } catch (err) {
+        console.error('Mic access error:', err)
+        alert('Microphone access denied or not available.')
+      }
+    }
+    
+    stopBtn.onclick = () => {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop()
+      }
+    }
+  </script>
+{% endblock %}

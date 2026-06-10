@@ -1,0 +1,310 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    {% if is_admin %}
+      <h2 class="text-primary">📊 All Reviews Analysis Dashboard</h2>
+    {% else %}
+      <h2 class="text-primary">📊 My Reviews Analysis</h2>
+    {% endif %}
+    <div>
+      {% if is_admin %}
+        <a href="{% url 'product_ranking' %}" class="btn btn-outline-primary">View Product Ranking</a>
+        <a href="{% url 'fake_reviews' %}" class="btn btn-outline-danger">View Fake Reviews</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Sentiment Summary Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="card border-success shadow-sm">
+        <div class="card-body text-center">
+          <i class="bi bi-emoji-smile fs-1 text-success"></i>
+          <h3 class="text-success mt-2">{{ positive_reviews|length }}</h3>
+          <p class="fw-bold text-success">Positive Reviews</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-secondary shadow-sm">
+        <div class="card-body text-center">
+          <i class="bi bi-emoji-neutral fs-1 text-secondary"></i>
+          <h3 class="text-secondary mt-2">{{ neutral_reviews|length }}</h3>
+          <p class="fw-bold text-secondary">Neutral Reviews</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-danger shadow-sm">
+        <div class="card-body text-center">
+          <i class="bi bi-emoji-frown fs-1 text-danger"></i>
+          <h3 class="text-danger mt-2">{{ negative_reviews|length }}</h3>
+          <p class="fw-bold text-danger">Negative Reviews</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <ul class="nav nav-tabs mb-4" id="reviewTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+        All Reviews ({{ all_reviews|length }})
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link text-success" data-bs-toggle="tab" data-bs-target="#positive" type="button" role="tab">
+        ✅ Positive ({{ positive_reviews|length }})
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#neutral" type="button" role="tab">
+        😐 Neutral ({{ neutral_reviews|length }})
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link text-danger" data-bs-toggle="tab" data-bs-target="#negative" type="button" role="tab">
+        ❌ Negative ({{ negative_reviews|length }})
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    
+    <!-- All Reviews Tab -->
+    <div class="tab-pane fade  mb-3  show active" id="all" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-bodyp-0">
+          <table class="table table-hover table-bordered m-0">
+            <thead class="table-primary">
+              <tr>
+                <th>Product</th>
+                <th>User</th>
+                <th>Review</th>
+                <th>Rating</th>
+                <th>Sentiment</th>
+                <th>Score</th>
+                <th>IP Address</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for review in all_reviews %}
+              <tr>
+                <td>{{ review.product.name }}</td>
+                <td>{{ review.user.username }}</td>
+                <td class="text-start">{{ review.comment|truncatechars:100 }}</td>
+                <td class="text-center">
+                  {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}
+                  {% endfor %}
+                  <br>
+                  <small>({{ review.rating }}/5)</small>
+                </td>
+                <td>
+                  {% if review.sentiment == 'positive' %}
+                    <span class="badge bg-success fs-6 p-2">✅ Positive</span>
+                  {% elif review.sentiment == 'negative' %}
+                    <span class="badge bg-danger fs-6 p-2">❌ Negative</span>
+                  {% else %}
+                    <span class="badge bg-secondary fs-6 p-2">😐 Neutral</span>
+                  {% endif %}
+                </td>
+                <td class="text-center">
+                  {% if review.sentiment == 'positive' %}
+                    <span class="badge bg-success" style="font-size: 14px;">
+                      +{{ review.sentiment_score|floatformat:3 }}
+                    </span>
+                  {% elif review.sentiment == 'negative' %}
+                    <span class="badge bg-danger" style="font-size: 14px;">
+                      {{ review.sentiment_score|floatformat:3 }}
+                    </span>
+                  {% else %}
+                    <span class="badge bg-secondary" style="font-size: 14px;">
+                      {{ review.sentiment_score|floatformat:3 }}
+                    </span>
+                  {% endif %}
+                  <br>
+                  <small class="text-muted">(-1 to +1)</small>
+                </td>
+                <td><small>{{ review.ip_address|default:"Not tracked" }}</small></td>
+                <td><small>{{ review.created_at|date:'d M Y, H:i' }}</small></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="8" class="text-center">No reviews found</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Positive Reviews Tab -->
+    <div class="tab-pane fade" id="positive" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <table class="table table-hover table-bordered m-0">
+            <thead class="table-success">
+              <tr>
+                <th>Product</th>
+                <th>User</th>
+                <th>Review</th>
+                <th>Rating</th>
+                <th>Sentiment</th>
+                <th>Score</th>
+                <th>IP Address</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for review in positive_reviews %}
+              <tr>
+                <td>{{ review.product.name }}</td>
+                <td>{{ review.user.username }}</td>
+                <td class="text-start">{{ review.comment|truncatechars:100 }}</td>
+                <td class="text-center">
+                  {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}
+                  {% endfor %}
+                  <br>
+                  <small>({{ review.rating }}/5)</small>
+                </td>
+                <td>
+                  <span class="badge bg-success fs-6 p-2">✅ Positive</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-success" style="font-size: 14px;">
+                    +{{ review.sentiment_score|floatformat:3 }}
+                  </span>
+                  <br>
+                  <small class="text-muted">(-1 to +1)</small>
+                </td>
+                <td><small>{{ review.ip_address|default:"Not tracked" }}</small></td>
+                <td><small>{{ review.created_at|date:'d M Y, H:i' }}</small></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="8" class="text-center">No positive reviews found</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Neutral Reviews Tab -->
+    <div class="tab-pane fade" id="neutral" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <table class="table table-hover table-bordered m-0">
+            <thead class="table-secondary">
+              <tr>
+                <th>Product</th>
+                <th>User</th>
+                <th>Review</th>
+                <th>Rating</th>
+                <th>Sentiment</th>
+                <th>Score</th>
+                <th>IP Address</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for review in neutral_reviews %}
+              <tr>
+                <td>{{ review.product.name }}</td>
+                <td>{{ review.user.username }}</td>
+                <td class="text-start">{{ review.comment|truncatechars:100 }}</td>
+                <td class="text-center">
+                  {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}
+                  {% endfor %}
+                  <br>
+                  <small>({{ review.rating }}/5)</small>
+                </td>
+                <td>
+                  <span class="badge bg-secondary fs-6 p-2">😐 Neutral</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-secondary" style="font-size: 14px;">
+                    {{ review.sentiment_score|floatformat:3 }}
+                  </span>
+                  <br>
+                  <small class="text-muted">(-1 to +1)</small>
+                </td>
+                <td><small>{{ review.ip_address|default:"Not tracked" }}</small></td>
+                <td><small>{{ review.created_at|date:'d M Y, H:i' }}</small></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="8" class="text-center">No neutral reviews found</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Negative Reviews Tab -->
+    <div class="tab-pane fade" id="negative" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <table class="table table-hover table-bordered m-0">
+            <thead class="table-danger">
+              <tr>
+                <th>Product</th>
+                <th>User</th>
+                <th>Review</th>
+                <th>Rating</th>
+                <th>Sentiment</th>
+                <th>Score</th>
+                <th>IP Address</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for review in negative_reviews %}
+              <tr>
+                <td>{{ review.product.name }}</td>
+                <td>{{ review.user.username }}</td>
+                <td class="text-start">{{ review.comment|truncatechars:100 }}</td>
+                <td class="text-center">
+                  {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}
+                  {% endfor %}
+                  <br>
+                  <small>({{ review.rating }}/5)</small>
+                </td>
+                <td>
+                  <span class="badge bg-danger fs-6 p-2">❌ Negative</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-danger" style="font-size: 14px;">
+                    {{ review.sentiment_score|floatformat:3 }}
+                  </span>
+                  <br>
+                  <small class="text-muted">(-1 to +1)</small>
+                </td>
+                <td><small>{{ review.ip_address|default:"Not tracked" }}</small></td>
+                <td><small>{{ review.created_at|date:'d M Y, H:i' }}</small></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="8" class="text-center">No negative reviews found</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

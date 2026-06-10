@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+  Quiz Result
+{% endblock %}
+
+{% block content %}
+  <div class="quiz-result-page">
+    <div class="result-card">
+      <h1 class="quiz-title">📊 Result for {{ quiz.title }}</h1>
+
+      <div class="score-section">
+        <p class="score-label">Your Score</p>
+        <p class="score-value">{{ result.score }} / {{ result.total }}</p>
+        {% if passed %}
+          <p class="score-feedback success">🎉 Well done! You passed.</p>
+        {% else %}
+          <p class="score-feedback fail">⚠️ Keep practicing! You can improve.</p>
+        {% endif %}
+      </div>
+
+      <a href="{% url 'quiz_list' %}" class="btn btn-primary">Back to Quizzes</a>
+    </div>
+  </div>
+{% endblock %}

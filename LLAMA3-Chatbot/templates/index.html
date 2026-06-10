@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with LLaMA 3</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="user-info">
+                <div class="user-avatar">{{ user.name[0]|upper }}</div>
+                <div class="user-name">{{ user.name }}</div>
+                <div class="user-email">{{ user.email }}</div>
+            </div>
+            
+            <button class="new-chat-btn" onclick="startNewChat()">
+                + New Chat
+            </button>
+            
+            <div class="history-section">
+                <h3>Recent Chats</h3>
+                <div id="chat-history"></div>
+            </div>
+            
+            <a href="/analytics" class="nav-link">📊 Analytics Dashboard</a>
+            <a href="/logout" class="nav-link logout">🚪 Logout</a>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>🤖 LLaMA 3 Assistant</h2>
+                <div class="status" id="status">
+                    <span class="status-dot"></span> Checking...
+                </div>
+            </div>
+            
+            <div class="messages-container" id="messages">
+                <div class="welcome-message">
+                    <h3>Welcome! 👋</h3>
+                    <p>I'm LLaMA 3, powered by Groq's lightning-fast LPU. Ask me anything!</p>
+                    <div class="example-questions">
+                        <button onclick="askExample('What is machine learning?')">🤔 What is ML?</button>
+                        <button onclick="askExample('Write a Python function to reverse a string')">💻 Python code</button>
+                        <button onclick="askExample('Explain quantum computing simply')">⚛️ Quantum computing</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <textarea 
+                    id="user-input" 
+                    placeholder="Type your message here... (Press Enter to send)"
+                    rows="2"
+                ></textarea>
+                <button id="send-btn" onclick="sendMessage()">
+                    Send →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Feedback Panel -->
+        <div id="feedback-panel" class="feedback-panel" style="display: none;">
+            <h3>Rate this response</h3>
+            <div class="rating-stars">
+                <span onclick="setRating(1)">⭐</span>
+                <span onclick="setRating(2)">⭐</span>
+                <span onclick="setRating(3)">⭐</span>
+                <span onclick="setRating(4)">⭐</span>
+                <span onclick="setRating(5)">⭐</span>
+            </div>
+            <div class="feedback-options">
+                <label>Was this response correct?</label>
+                <select id="correctness">
+                    <option value="correct">✅ Correct</option>
+                    <option value="partially">🔄 Partially correct</option>
+                    <option value="incorrect">❌ Incorrect</option>
+                </select>
+            </div>
+            <div class="feedback-options">
+                <label>Response length:</label>
+                <select id="response-length">
+                    <option value="too_short">Too short</option>
+                    <option value="just_right">Just right</option>
+                    <option value="too_long">Too long</option>
+                </select>
+            </div>
+            <textarea id="feedback-comment" placeholder="Additional comments (optional)..." rows="3"></textarea>
+            <div class="feedback-buttons">
+                <button onclick="submitFeedback()">Submit Feedback</button>
+                <button class="skip" onclick="closeFeedback()">Skip</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentSessionId = null;
+        let currentMessageId = null;
+        let currentRating = 0;
+        
+        // Load chat history
+        async function loadChatHistory() {
+            const response = await fetch('/api/chat/history');
+            const data = await response.json();
+            
+            const historyDiv = document.getElementById('chat-history');
+            historyDiv.innerHTML = '';
+            
+            if (data.sessions && data.sessions.length > 0) {
+                data.sessions.forEach(session => {
+                    const sessionDiv = document.createElement('div');
+                    sessionDiv.className = 'history-item';
+                    const date = new Date(session[1]);
+                    sessionDiv.innerHTML = `
+                        <div class="session-date">${date.toLocaleDateString()}</div>
+                        <div class="session-info">${session[2]} messages</div>
+                    `;
+                    sessionDiv.onclick = () => loadSession(session[0]);
+                    historyDiv.appendChild(sessionDiv);
+                });
+            } else {
+                historyDiv.innerHTML = '<div class="no-history">No chat history yet</div>';
+            }
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('/api/chat/send', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        message: message,
+                        session_id: currentSessionId
+                    })
+                });
+                
+                const data = await response.json();
+                hideTypingIndicator();
+                
+                if (data.response) {
+                    addMessage(data.response, 'assistant', data.message_id);
+                    currentSessionId = data.session_id;
+                    currentMessageId = data.message_id;
+                    showFeedbackPanel();
+                    loadChatHistory(); // Refresh history
+                }
+            } catch (error) {
+                hideTypingIndicator();
+                addMessage('Error: Unable to get response. Check if server is running.', 'assistant');
+                console.error('Error:', error);
+            }
+        }
+        
+        function addMessage(text, role, messageId = null) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">${escapeHtml(text)}</div>
+                <div class="message-time">${timestamp}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('messages');
+            const indicator = document.createElement('div');
+            indicator.id = 'typing-indicator';
+            indicator.className = 'message assistant';
+            indicator.innerHTML = '<div class="typing"><span>●</span><span>●</span><span>●</span> LLaMA 3 is thinking...</div>';
+            messagesContainer.appendChild(indicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+        
+        function showFeedbackPanel() {
+            document.getElementById('feedback-panel').style.display = 'block';
+        }
+        
+        function closeFeedback() {
+            document.getElementById('feedback-panel').style.display = 'none';
+            currentRating = 0;
+        }
+        
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('.rating-stars span');
+            stars.forEach((star, index) => {
+                star.style.opacity = index < rating ? '1' : '0.3';
+            });
+        }
+        
+        async function submitFeedback() {
+            const correctness = document.getElementById('correctness').value;
+            const responseLength = document.getElementById('response-length').value;
+            const comment = document.getElementById('feedback-comment').value;
+            
+            if (currentRating === 0) {
+                alert('Please rate the response (1-5 stars)');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/chat/feedback', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        message_id: currentMessageId,
+                        rating: currentRating,
+                        correctness: correctness,
+                        response_length: responseLength,
+                        comment: comment
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Thank you for your feedback! ❤️');
+                    closeFeedback();
+                    document.getElementById('feedback-comment').value = '';
+                    currentRating = 0;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        function startNewChat() {
+            currentSessionId = null;
+            document.getElementById('messages').innerHTML = `
+                <div class="welcome-message">
+                    <h3>Welcome! 👋</h3>
+                    <p>I'm LLaMA 3, powered by Groq's lightning-fast LPU. Ask me anything!</p>
+                    <div class="example-questions">
+                        <button onclick="askExample('What is machine learning?')">🤔 What is ML?</button>
+                        <button onclick="askExample('Write a Python function to reverse a string')">💻 Python code</button>
+                        <button onclick="askExample('Explain quantum computing simply')">⚛️ Quantum computing</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function askExample(question) {
+            document.getElementById('user-input').value = question;
+            sendMessage();
+        }
+        
+        function loadSession(sessionId) {
+            currentSessionId = sessionId;
+            startNewChat();
+            addMessage("Loading previous conversation...", 'assistant');
+            // In production, load actual messages from API
+        }
+        
+        async function checkStatus() {
+            try {
+                const response = await fetch('/api/system/status');
+                const data = await response.json();
+                const statusDiv = document.getElementById('status');
+                
+                if (data.groq_api) {
+                    statusDiv.innerHTML = '<span class="status-dot online"></span> LLaMA 3 Ready (Groq)';
+                } else {
+                    statusDiv.innerHTML = '<span class="status-dot offline"></span> API Key Missing';
+                }
+            } catch (error) {
+                document.getElementById('status').innerHTML = '<span class="status-dot offline"></span> Server Offline';
+            }
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Event listeners
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Initialize
+        loadChatHistory();
+        checkStatus();
+        setInterval(checkStatus, 30000);
+    </script>
+</body>
+</html>

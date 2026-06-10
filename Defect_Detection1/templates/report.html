@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="report-container">
+
+  <!-- Report Header -->
+  <div class="report-header">
+    <h2>Automated Defect Detection Report</h2>
+    <p class="lead">Structural Integrity Analysis</p>
+    <div class="report-info">
+      <div><strong>Report ID:</strong> #{{ analysis.id }}</div>
+      <div><strong>Generated:</strong> {{ current_time.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+    </div>
+  </div>
+
+  <!-- Analysis Summary -->
+  <div class="summary-section">
+    <!-- Analysis Information -->
+    <div class="summary-card">
+      <h5>Analysis Information</h5>
+      <table>
+        <tr><th>Filename:</th><td>{{ analysis.filename }}</td></tr>
+        <tr><th>Analysis Date:</th><td>{{ analysis.analysis_date.strftime('%Y-%m-%d %H:%M:%S') }}</td></tr>
+        <tr>
+          <th>Image Dimensions:</th>
+          {% if report.get('original_shape') %}
+            <td>{{ report['original_shape'][1] }} × {{ report['original_shape'][0] }} pixels</td>
+          {% else %}
+            <td>N/A</td>
+          {% endif %}
+        </tr>
+        <tr><th>Analysis Duration:</th><td>{{ report.get('processing_time', 'N/A') }}</td></tr>
+      </table>
+    </div>
+
+    <!-- Defect Summary -->
+    <div class="summary-card">
+      <h5>Defect Summary</h5>
+      <table>
+        <tr>
+          <th>Total Defects:</th>
+          <td><span class="badge 
+            {% if report.get('defect_count',0) == 0 %}success
+            {% elif report.get('defect_count',0) <= 3 %}warning
+            {% else %}danger{% endif %}">
+            {{ report.get('defect_count',0) }}
+          </span></td>
+        </tr>
+        <tr>
+          <th>Status:</th>
+          <td>
+            {% if report.get('defect_count',0) == 0 %}
+              <span class="badge success">PASS - No Defects</span>
+            {% elif report.get('defect_count',0) <= 3 %}
+              <span class="badge warning">WARNING - Minor Defects</span>
+            {% else %}
+              <span class="badge danger">CRITICAL - Major Defects</span>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th>Detection Methods:</th>
+          <td>
+            {% set breakdown = report.get('detection_breakdown', {}) %}
+            {% if breakdown %}
+              Classical: {{ breakdown.get('classical',0) }},
+              YOLO: {{ breakdown.get('yolo',0) }},
+              Custom: {{ breakdown.get('custom',0) }}
+            {% else %}
+              Classical Image Processing
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Defect Type Breakdown -->
+  <div class="defect-breakdown">
+    <h5>Defect Type Breakdown</h5>
+    <div class="defect-cards">
+      {% for defect_type, count in report.get('counts', {}).items() %}
+      <div class="defect-card">
+        <h4>{{ count }}</h4>
+        <p>{{ defect_type|title }} Defects</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Visual Analysis -->
+  <div class="visual-analysis">
+    <h5>Visual Analysis</h5>
+    <div class="visual-row">
+      <div class="visual-col">
+        <h6>Original Image</h6>
+        <img src="{{ url_for('static', filename='uploads/' + analysis.original_path) }}" class="thumbnail">
+        <p>Original captured image</p>
+      </div>
+      <div class="visual-col">
+        <h6>Processed Image with Defects</h6>
+        {% if analysis.processed_path %}
+            <img src="{{ url_for('static', filename='uploads/' + analysis.processed_path) }}" class="thumbnail">
+        {% else %}
+            <p class="text-danger">No processed image available</p>
+        {% endif %}
+        <p>Defects highlighted:
+          <span class="defect-classical">■ Classical</span>,
+          <span class="defect-yolo">■ YOLO</span>,
+          <span class="defect-custom">■ Custom</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Defect Table -->
+  {% if report.get('defects') %}
+  <div class="defect-table">
+    <h5>Detailed Defect Analysis</h5>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Defect Type</th><th>Detection Method</th>
+          <th>Confidence</th><th>Location</th><th>Area</th><th>Severity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for defect in report['defects'] %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><span class="badge secondary">{{ defect.type|title }}</span></td>
+          <td>
+            {% if defect.get('method') %}{{ defect.method }}
+            {% else %}
+              {% if defect.get('confidence') %}<span class="badge success">YOLO</span>
+              {% else %}<span class="badge danger">Classical</span>{% endif %}
+            {% endif %}
+          </td>
+          <td>{{ '%.2f'|format(defect.get('confidence',0)) if defect.get('confidence') else 'N/A' }}</td>
+          <td>
+            {% if defect.get('bbox') %}({{ defect.bbox.x }}, {{ defect.bbox.y }})
+            {% else %}Contour-based{% endif %}
+          </td>
+          <td>{{ defect.get('area','N/A') }} px²</td>
+          <td>
+            {% set severity = defect.get('severity','medium') %}
+            <span class="badge 
+              {% if severity=='low' %}success
+              {% elif severity=='medium' %}warning
+              {% else %}danger{% endif %}">
+              {{ severity|title }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  <!-- Recommendations -->
+  <div class="recommendations">
+    <h5>Recommendations & Next Steps</h5>
+    {% if report.get('defect_count',0) == 0 %}
+      <div class="alert success">
+        <h6>No Action Required</h6>
+        <p>The analyzed surface shows no visible defects. Regular monitoring is recommended.</p>
+      </div>
+    {% elif report.get('defect_count',0) <= 3 %}
+      <div class="alert warning">
+        <h6>Monitor Closely</h6>
+        <ul>
+          <li>Schedule visual inspection within 30 days</li>
+          <li>Monitor defect progression</li>
+          <li>Consider preventive maintenance</li>
+        </ul>
+      </div>
+    {% else %}
+      <div class="alert danger">
+        <h6>Immediate Action Required</h6>
+        <ul>
+          <li>Schedule immediate physical inspection</li>
+          <li>Consider temporary shutdown if safety critical</li>
+          <li>Plan for repair and maintenance</li>
+          <li>Document all findings for regulatory compliance</li>
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- ⭐⭐ DOWNLOAD BUTTON INSERTED HERE ⭐⭐ -->
+  <div style="text-align:center; margin: 30px 0;">
+    <a href="{{ url_for('download_report', analysis_id=analysis.id) }}"
+       class="btn btn-primary btn-lg">
+       Download PDF Report
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <div class="report-footer">
+    <div>
+      <h6>Disclaimer</h6>
+      <p>This report is generated by automated defect detection system. For critical applications, always verify with physical inspection.</p>
+    </div>
+    <div>
+      <h6>Generated By</h6>
+      <p>
+        Automated Defect Detection System<br>
+        {{ current_user.username }}<br>
+        {{ current_time.strftime('%Y-%m-%d %H:%M:%S') }}
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

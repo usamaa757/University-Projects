@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="card shadow">
+      <div class="card-header bg-dark text-white text-center">
+        <h4>Destination List</h4>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered mt-3 shadow-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if messages %}
+              <tr>
+                <td colspan="6">
+                  {% for message in messages %}
+                    <div class="text-success">{{ message }}</div>
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endif %}
+
+            {% for destination in destinations %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+
+                <!-- Photo column -->
+                <td>
+                  {% if destination.image %}
+                    <img src="{{ destination.image.url }}" alt="{{ destination.name }}" width="100" class="img-thumbnail" />
+                  {% else %}
+                    <span class="text-muted">No image</span>
+                  {% endif %}
+                </td>
+
+                <td>{{ destination.name }}</td>
+                <td>{{ destination.location }}</td>
+                <td>{{ destination.description|truncatewords:15 }}</td>
+                <td>
+                  {% if user.is_authenticated and not user.is_superuser and not user.is_staff %}
+                    <a href="{% url 'create_review' destination.id %}" class="btn btn-success btn-sm">Write Review</a>
+                    <a href="{% url 'upload_photos' destination.id %}" class="btn btn-secondary btn-sm">Upload Photos</a>
+                  {% endif %}
+                  <a href="{% url 'view_reviews' destination.id %}" class="btn btn-sm btn-primary">Reviews</a>
+                  <a href="{% url 'view_photos' destination.id %}" class="btn btn-sm btn-info">Photos</a>
+                  {% if user.is_authenticated and user.is_superuser %}
+                    <a href="{% url 'edit_destination' destination.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'delete_destination' destination.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

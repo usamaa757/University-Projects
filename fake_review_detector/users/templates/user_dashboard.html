@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  Dashboard - {{ user.username }}
+{% endblock %}
+
+{% block content %}
+  <!-- Welcome Banner -->
+  <section class="bg-light py-5 border-bottom shadow-sm">
+    <div class="container text-center">
+      <h2 class="display-6"><i class="bi bi-person-circle text-primary me-2"></i>Welcome, <strong>{{ user.username }}</strong></h2>
+      <p class="text-muted">Discover products and help others by sharing your honest reviews!</p>
+    </div>
+  </section>
+
+  <!-- Products Available -->
+  <section class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-semibold"><i class="bi bi-box-seam-fill text-success me-2"></i>Products Available for Review</h4>
+      <span class="text-muted small"><i class="bi bi-list-ul me-1"></i>Total: {{ products|length }}</span>
+    </div>
+
+    <div class="row g-4">
+      {% for product in products %}
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title text-primary"><i class="bi bi-bag-fill me-1"></i>{{ product.name }}</h5>
+              <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+            </div>
+            <div class="card-footer bg-white border-0 text-end">
+              <a href="{% url 'add_review' product.id %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-chat-left-dots-fill me-1"></i>Post a Review</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Fake Review Alert Section -->
+  {% if fake_reviews %}
+    <section class="container mt-5">
+      <div class="alert alert-danger border-0 shadow-sm rounded-3 p-4">
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-exclamation-triangle-fill fs-4 text-warning me-3"></i>
+          <div>
+            <h5 class="mb-1 text-danger">⚠️ Fake Review Alert</h5>
+            <p class="mb-0 text-muted small">
+              Reviews from your IP <code>{{ ip_address }}</code> were flagged as suspicious.
+            </p>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for review in fake_reviews %}
+            <li class="list-group-item bg-light border-start border-4 border-danger">
+              <strong><i class="bi bi-box-seam-fill text-danger me-1"></i>Product:</strong>
+              <span class="text-dark">{{ review.product.name }}</span><br />
+              <strong><i class="bi bi-chat-left-quote-fill text-secondary me-1"></i>Comment:</strong>
+              <em class="text-muted">"{{ review.comment }}"</em>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

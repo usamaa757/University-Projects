@@ -1,0 +1,33 @@
+<!-- destination_detail.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card mb-4">
+      {% if destination.image %}
+        <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" style="max-height: 300px; object-fit: cover;" />
+      {% endif %}
+      <div class="card-body">
+        <h3 class="card-title">{{ destination.name }}</h3>
+        <h5 class="text-muted">{{ destination.location }}</h5>
+        <p>{{ destination.description }}</p>
+      </div>
+    </div>
+
+    <h4 class="mt-4">User Reviews</h4>
+    {% if reviews %}
+      {% for review in reviews %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <strong>{{ review.user.username }}</strong> -
+            <span class="text-warning">{{ review.rating }} ★</span>
+            <p class="mb-1">{{ review.comment }}</p>
+            <small class="text-muted">{{ review.created_at|date:'d M, Y' }}</small>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No reviews yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

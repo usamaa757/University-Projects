@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+{% block extra_css %}
+  <style>
+    .hero {
+      padding: 80px 0;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .hero-content {
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--gray);
+      margin-bottom: 30px;
+      max-width: 90%;
+    }
+    .hero-image {
+      flex: 1;
+      text-align: center;
+    }
+    .hero-image img {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .features {
+      padding: 80px 0;
+      background-color: white;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--dark);
+      margin-bottom: 15px;
+    }
+    .section-title p {
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .feature-card {
+      background-color: var(--light);
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      background-color: rgba(74, 110, 224, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .feature-icon i {
+      font-size: 30px;
+      color: var(--primary);
+    }
+    .feature-card h3 {
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    
+    .cta {
+      padding: 100px 0;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+    }
+    .cta h2 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+    }
+    .cta p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      opacity: 0.9;
+    }
+    .cta .btn {
+      background-color: white;
+      color: var(--primary);
+      font-size: 1.1rem;
+      padding: 15px 35px;
+    }
+    .cta .btn:hover {
+      background-color: var(--light);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Master English Through Gamified Learning</h1>
+        <p>Our self-paced web app helps learners improve grammar, vocabulary, writing, speaking, and listening with interactive lessons, gamified rewards, and real-world practice.</p>
+        <a href="{% url 'register' %}" class="btn btn-primary">Start Learning</a>
+        <a href="#features" class="btn btn-secondary" style="margin-left: 15px;">Explore Features</a>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Language Learning" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>Key Features of the Learning App</h2>
+        <p>Everything you need to succeed in English learning, from beginner to advanced levels.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <h3>Structured Lessons</h3>
+          <p>Content organized by proficiency levels (beginner to advanced) and categories like grammar, vocabulary, listening, and speaking.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <h3>Interactive Exercises</h3>
+          <p>Practice with grammar quizzes, speech recognition for pronunciation, essay writing, and listening comprehension.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <h3>Gamification</h3>
+          <p>Earn points, badges, and streaks to stay motivated, compete on leaderboards, and unlock achievements.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Progress Tracking</h3>
+          <p>Visualize your learning journey with dashboards, reports, and personalized feedback for improvement.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Collaboration</h3>
+          <p>Join live sessions with tutors, participate in discussion forums, and chat with peers for real practice.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-certificate"></i>
+          </div>
+          <h3>Certifications</h3>
+          <p>Get certificates upon completing courses and showcase your achievements.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2>Start Your English Learning Journey Today</h2>
+      <p>Join learners worldwide and achieve fluency with our interactive, gamified, and engaging platform.</p>
+      <a href="{% url 'register' %}" class="btn">Sign Up Free</a>
+    </div>
+  </section>
+
+  <script>
+    // Simple JavaScript for interactive elements
+    document.addEventListener('DOMContentLoaded', function () {
+      const ctaButton = document.querySelector('.cta .btn')
+    
+      ctaButton.addEventListener('mouseover', function () {
+        this.style.transform = 'translateY(-2px)'
+        this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)'
+      })
+    
+      ctaButton.addEventListener('mouseout', function () {
+        this.style.transform = 'translateY(0)'
+        this.style.boxShadow = 'none'
+      })
+    })
+  </script>
+{% endblock %}

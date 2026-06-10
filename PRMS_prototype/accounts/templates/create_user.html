@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container mt-4 round shadow border p-3" style="max-width: 600px;">
+    <h3 class="text-center">Create New User</h3>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="text {% if message == 'success' %}
+            
+            
+                   
+          text-success
+
+
+
+          {% else %}
+            
+            
+           
+          text-danger
+
+
+
+          {% endif %}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">{{ form.username.label_tag }}
+        {{ form.username }}</div>
+
+      <div class="mb-3">{{ form.email.label_tag }}
+        {{ form.email }}</div>
+
+      <div class="mb-3">{{ form.role.label_tag }}
+        {{ form.role }}</div>
+
+      <div class="mb-3">{{ form.password1.label_tag }}
+        {{ form.password1 }}</div>
+
+      <div class="mb-3">{{ form.password2.label_tag }}
+        {{ form.password2 }}</div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Create</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

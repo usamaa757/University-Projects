@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+
+  /* Textarea */
+  textarea {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    resize: vertical;
+    margin-bottom: 1rem;
+  }
+  
+  /* Feedback Cards */
+  .feedback-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .feedback-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .feedback-card p, .feedback-card div, .feedback-card li {
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .stats-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-weight: 600;
+  }
+
+  .stats-box div {
+    background: #f1f8ff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+  }
+
+  .success-msg {
+    color: #28a745;
+    font-weight: 600;
+  }
+
+  ul {
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin-bottom: 0.75rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="page-header">
+    <h2>📝 Writing Practice</h2>
+  </div>
+
+  <form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <label for="essay"><strong>Write your essay below:</strong></label>
+  <textarea name="essay" rows="10" placeholder="Write your essay here...">{{ essay }}</textarea>
+
+  <button type="submit" class="btn btn-primary">Submit Essay</button>
+</form>
+
+
+  {% if essay %}
+    <div class="feedback-card">
+      <h3>Corrected Essay:</h3>
+      <p>{{ corrected_text }}</p>
+    </div>
+
+    <div class="feedback-card">
+      <h3>🔎 Grammar & Spelling Feedback:</h3>
+      {% if matches %}
+        <ul>
+          {% for match in matches %}
+            <li>
+              <strong>Issue:</strong> {{ match.message }}<br>
+              <strong>Suggestion:</strong> 
+              {% if match.replacements %}
+                {{ match.replacements.0 }}{% if match.replacements|length > 1 %} (alternatives: {{ match.replacements|join:", " }}){% endif %}
+              {% else %}
+                No suggestion
+              {% endif %}
+              <br>
+              <em>Context:</em> {{ match.context }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="success-msg">✅ No issues found! Great job!</p>
+      {% endif %}
+    </div>
+
+    <div class="feedback-card">
+      <h3>📊 Readability Analysis:</h3>
+      <div class="stats-box">
+        <div>Flesch: {{ readability.flesch_reading_ease }}</div>
+        <div>Grade: {{ readability.grade_level }}</div>
+        <div>Words: {{ readability.word_count }}</div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

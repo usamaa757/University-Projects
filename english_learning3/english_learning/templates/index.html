@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% block content %}
+  <!-- Hero -->
+  <main>
+    <section class="container mt-2">
+      <div class="grid" style="grid-template-columns: 1fr 420px; gap: 2rem; align-items:center;">
+        <div>
+          <h1 class="page-title">Learn English with confidence — at your pace, with play.</h1>
+          <p class="subtitle" style="margin-top:0.5rem;">Gamified lessons, AI-powered pronunciation feedback, interactive videos, and live tutoring — tailored learning paths from beginner to advanced.</p>
+
+          <div style="margin-top:1.25rem; display:flex; gap:1rem; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="/register">Get Started — It's Free</a>
+            <a class="btn btn-outline" href="#features">Explore Features</a>
+          </div>
+
+          <ul style="margin-top:1.25rem; list-style:none; padding-left:0;">
+            <li style="margin-bottom:0.5rem;">
+              <strong>Personalized paths</strong> — courses adapt to your level and goals.
+            </li>
+            <li style="margin-bottom:0.5rem;">
+              <strong>Real speaking practice</strong> — pronunciation scoring and simulated dialogues.
+            </li>
+            <li style="margin-bottom:0.5rem;">
+              <strong>Engaging progress</strong> — points, badges, leaderboards.
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <!-- Simple visual card calling out quick stats -->
+          <div class="auth-card" style="padding:1.25rem;">
+            <h3 class="action-title">Quick Overview</h3>
+            <p class="action-description">Start small, build mastery. Track real improvements and celebrate milestones.</p>
+
+            <div class="stats-grid mt-1" style="grid-template-columns: repeat(3,1fr); gap:0.75rem;">
+              <div class="stat-card" style="flex-direction:column; align-items:flex-start;">
+                <div class="stat-value">120+</div>
+                <div class="stat-label">Lessons</div>
+              </div>
+              <div class="stat-card" style="flex-direction:column; align-items:flex-start;">
+                <div class="stat-value">95%</div>
+                <div class="stat-label">Avg. Completion</div>
+              </div>
+              <div class="stat-card" style="flex-direction:column; align-items:flex-start;">
+                <div class="stat-value">4.8</div>
+                <div class="stat-label">Tutor Rating</div>
+              </div>
+            </div>
+
+            <div style="margin-top:1rem;">
+              <a class="btn btn-success w-100" href="{% url 'register' %}">Create a free account</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="container mt-2">
+      <div class="dashboard-header text-center">
+        <h2 class="page-title">Core Features</h2>
+        <p class="subtitle">Everything you need to improve communication — speaking, writing, listening, and grammar.</p>
+      </div>
+
+      <div class="quick-actions">
+        <div class="action-card" aria-labelledby="f1">
+          <div class="action-icon">🎧</div>
+          <h3 id="f1" class="action-title">Listening & Video Scenarios</h3>
+          <p class="action-description">Contextual videos and audio clips with comprehension tasks — real-world listening practice.</p>
+        </div>
+
+        <div class="action-card" aria-labelledby="f2">
+          <div class="action-icon">🗣️</div>
+          <h3 id="f2" class="action-title">Speaking Practice</h3>
+          <p class="action-description">Speech recognition and pronunciation scoring, plus simulated dialogues with virtual characters.</p>
+        </div>
+
+        <div class="action-card" aria-labelledby="f3">
+          <div class="action-icon">✍️</div>
+          <h3 id="f3" class="action-title">Writing Corrections</h3>
+          <p class="action-description">Essay submissions with automated grammar and style feedback and teacher review options.</p>
+        </div>
+
+        <div class="action-card" aria-labelledby="f4">
+          <div class="action-icon">🧩</div>
+          <h3 id="f4" class="action-title">Interactive Quizzes</h3>
+          <p class="action-description">Adaptive grammar and vocabulary quizzes: MCQs, fill-in-the-blanks, matching and timed drills.</p>
+        </div>
+
+        <div class="action-card" aria-labelledby="f5">
+          <div class="action-icon">🏆</div>
+          <h3 id="f5" class="action-title">Gamification & Rewards</h3>
+          <p class="action-description">Points, badges, streaks and leaderboards to boost engagement and retention.</p>
+        </div>
+
+        <div class="action-card" aria-labelledby="f6">
+          <div class="action-icon">📊</div>
+          <h3 id="f6" class="action-title">Analytics & Progress</h3>
+          <p class="action-description">Dashboards and reports highlight weaknesses, show trends, and award completion certificates.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="container mt-2">
+      <div class="section-header">
+        <h2>How it works</h2>
+      </div>
+
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:1rem;">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>1. Quick Placement</h3>
+          </div>
+          <p>Start with a short assessment to place you at the right level and create a tailored learning path.</p>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>2. Skill Blocks</h3>
+          </div>
+          <p>Lessons grouped by skill (grammar, vocab, listening, speaking). Each block contains videos, interactive exercises, and speaking tasks.</p>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>3. Practice & Feedback</h3>
+          </div>
+          <p>Record speech for instant pronunciation scores, submit writing for automated feedback, and take quizzes to reinforce learning.</p>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>4. Social & Live</h3>
+          </div>
+          <p>Join live tutor sessions, practice with peers, post in discussion forums, and challenge friends on leaderboards.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard preview / Progress -->
+    <section class="container mt-2">
+      <div class="dashboard">
+        <div class="dashboard-header">
+          <h2 class="page-title">Your learning dashboard</h2>
+          <p class="subtitle">A single view to track time spent, skills improved, active streaks, and personalized suggestions.</p>
+        </div>
+
+        <div class="charts-section">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2>Skill Progress</h2>
+            </div>
+            <div class="chart-container">
+              <!-- Placeholder for chart (render via ChartJS in frontend) -->
+              <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#666;">Chart placeholder</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2>Recent Activity</h2>
+            </div>
+
+            <div class="recent-users">
+              <table class="users-table">
+                <thead>
+                  <tr>
+                    <th>Lesson</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Pronunciation: /θ/ vs /s/</td>
+                    <td>
+                      <span class="status-badge status-student">Completed</span>
+                    </td>
+                    <td>88%</td>
+                  </tr>
+                  <tr>
+                    <td>Listening: Job Interview</td>
+                    <td>
+                      <span class="status-badge status-student">In progress</span>
+                    </td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>Vocabulary: Travel</td>
+                    <td>
+                      <span class="status-badge status-student">Locked</span>
+                    </td>
+                    <td>—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- For Teachers / Admin CTA -->
+    <section id="teachers" class="container mt-2">
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap:1.25rem; align-items:center;">
+        <div>
+          <h2 class="page-title">For Teachers & Administrators</h2>
+          <p class="subtitle">Create lessons, assign work, run live sessions, and monitor class analytics.</p>
+          <ul style="margin-top:0.75rem;">
+            <li>Assignment manager & quick grading</li>
+            <li>Class-level analytics and progress reports</li>
+            <li>Invite students and manage roles</li>
+          </ul>
+          <div style="margin-top:1rem;">
+            <a class="btn btn-secondary" href="{% url 'register' %}">Join as Teacher</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="action-card">
+            <h3 class="action-title">Admin Panel</h3>
+            <p class="action-description">Manage content, users, and platform analytics from a powerful admin interface.</p>
+            <div style="margin-top:0.75rem;">
+              <a class="btn btn-outline btn-sm" href="/admin">Request Admin Access</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear()
+    // Smooth nav offset if header is sticky (optional enhancement)
+    ;(function () {
+      const headerHeight = document.querySelector('header')?.offsetHeight || 0
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault()
+          const target = document.querySelector(a.getAttribute('href'))
+          if (!target) return
+          const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 12
+          window.scrollTo({ top, behavior: 'smooth' })
+        })
+      })
+    })()
+  </script>
+{% endblock %}

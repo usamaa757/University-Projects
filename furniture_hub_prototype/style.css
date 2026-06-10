@@ -1,0 +1,272 @@
+   /* Global Reset */
+   * {
+       margin: 0;
+       padding: 0;
+       box-sizing: border-box;
+   }
+
+   body {
+       font-family: 'Segoe UI', sans-serif;
+   }
+
+   /* Navbar Styling */
+   .navbar {
+       background: #2E7D32;
+       padding: 15px 20px;
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+   }
+
+   .navbar .logo {
+       font-size: 22px;
+       font-weight: bold;
+       color: white;
+       text-decoration: none;
+   }
+
+   .navbar ul {
+       list-style: none;
+       display: flex;
+       margin: 0;
+       padding: 0;
+   }
+
+   .navbar ul li {
+       margin: 0 10px;
+   }
+
+   .navbar ul li a {
+       color: white;
+       text-decoration: none;
+       font-size: 16px;
+       padding: 8px 12px;
+       border-radius: 6px;
+       transition: background 0.3s;
+   }
+
+   .navbar ul li a:hover {
+       background: #4CAF50;
+   }
+
+   /* Mobile Responsive */
+   @media (max-width: 768px) {
+       .navbar {
+           flex-direction: column;
+           align-items: flex-start;
+       }
+
+       .navbar ul {
+           flex-direction: column;
+           width: 100%;
+       }
+
+       .navbar ul li {
+           width: 100%;
+           margin: 5px 0;
+       }
+
+       .navbar ul li a {
+           display: block;
+           width: 100%;
+       }
+   }
+
+   /* Registration Form Box */
+   .form-container {
+       background: #fff;
+       padding: 30px;
+       width: 350px;
+       margin: auto;
+       margin-top: 30px;
+       border-radius: 15px;
+       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+       text-align: center;
+       animation: fadeIn 0.6s ease-in-out;
+   }
+
+   h2,
+   h3,
+   h1 {
+       color: #2E7D32;
+       margin-bottom: 20px;
+   }
+
+   /* Input Fields */
+   form input,
+   form select,
+   form textarea {
+       width: 100%;
+       padding: 12px;
+       margin: 10px 0;
+       border: 1px solid #ddd;
+       border-radius: 8px;
+       transition: 0.3s;
+   }
+
+   form input:focus {
+       border-color: #4CAF50;
+       outline: none;
+       box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+   }
+
+   /* Button */
+   form button {
+       width: 100%;
+       padding: 12px;
+       background: #4CAF50;
+       border: none;
+       border-radius: 8px;
+       color: #fff;
+       font-size: 16px;
+       font-weight: bold;
+       cursor: pointer;
+       transition: 0.3s;
+   }
+
+   form button:hover {
+       background: #2E7D32;
+   }
+
+   /* Error Box */
+   .error-box {
+       background: #ffdddd;
+       color: #a94442;
+       padding: 10px;
+       margin-bottom: 15px;
+       border-radius: 8px;
+       border: 1px solid #f5c6cb;
+       text-align: left;
+   }
+
+   /* Success Box */
+   .success-box {
+       background: #dff0d8;
+       color: #3c763d;
+       padding: 10px;
+       margin-bottom: 15px;
+       border-radius: 8px;
+       border: 1px solid #c6f5ca;
+       text-align: left;
+   }
+
+   /* Link */
+   p {
+       margin-top: 15px;
+       font-size: 14px;
+   }
+
+   p a {
+       color: #2E7D32;
+       font-weight: bold;
+       text-decoration: none;
+   }
+
+   p a:hover {
+       text-decoration: underline;
+   }
+
+   /* Fade In Animation */
+   @keyframes fadeIn {
+       from {
+           opacity: 0;
+           transform: translateY(-20px);
+       }
+
+       to {
+           opacity: 1;
+           transform: translateY(0);
+       }
+   }
+
+
+   /* Dashboard */
+   .dashboard-container {
+       max-width: 800px;
+       margin: 40px auto;
+       background: #fff;
+       padding: 30px;
+       border-radius: 15px;
+       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+       text-align: center;
+       animation: fadeIn 0.6s ease-in-out;
+   }
+
+
+
+   .dashboard-container p {
+       font-size: 16px;
+       margin-bottom: 25px;
+   }
+
+   .dashboard-links {
+       display: flex;
+       justify-content: center;
+       gap: 20px;
+       flex-wrap: wrap;
+   }
+
+   .dashboard-links a {
+       display: inline-block;
+       background: #4CAF50;
+       color: #fff;
+       text-decoration: none;
+       padding: 15px 25px;
+       border-radius: 10px;
+       font-size: 16px;
+       transition: 0.3s;
+   }
+
+   .dashboard-links a:hover {
+       background: #2E7D32;
+   }
+
+   /*  List */
+   .container {
+       max-width: 900px;
+       margin: 30px auto;
+       background: #fff;
+       padding: 25px;
+       border-radius: 15px;
+       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+   }
+
+
+   /* management */
+   .admin-container {
+       max-width: 1100px;
+       margin: 30px auto;
+       background: #fff;
+       padding: 25px;
+       border-radius: 15px;
+       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+   }
+
+   table {
+       width: 100%;
+       border-collapse: collapse;
+       margin-top: 20px;
+   }
+
+   table th,
+   table td {
+       border: 1px solid #ddd;
+       padding: 12px;
+       text-align: center;
+   }
+
+   table th {
+       background: #4CAF50;
+       color: white;
+   }
+
+   .action-links a {
+       margin: 0 5px;
+       text-decoration: none;
+       color: #2E7D32;
+       font-weight: bold;
+   }
+
+   .action-links a:hover {
+       text-decoration: underline;
+   }

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+  Available Speaking Exercises
+{% endblock %}
+
+{% block content %}
+  <div class="speaking-exercises-page">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="page-title">🎤 Available Speaking Exercises</h2>
+      <p class="page-subtitle">Choose an exercise and start practicing your speaking skills.</p>
+    </div>
+
+    <!-- Exercises List -->
+    <div class="exercise-list">
+      {% for ex in exercises %}
+        <div class="exercise-card">
+          <p class="exercise-text">{{ ex.text }}</p>
+          {% if user.role == 'student' %}
+            <a href="{% url 'practice_speaking' ex.id %}" class="btn btn-primary btn-sm">🎤 Practice</a>
+          {% else %}
+            <a href="{% url 'delete_speaking_exercise' ex.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this exercise?');">🗑️ Delete</a>
+          {% endif %}
+        </div>
+      {% empty %}
+        <p class="empty-msg">No exercises yet. Please wait for your teacher to add some.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

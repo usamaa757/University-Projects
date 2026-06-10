@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-warning">Suspicious IP Addresses</h2>
+
+    {% if ips %}
+      <table class="table table-bordered table-hover mt-3">
+        <thead class="table-danger text-center">
+          <tr>
+            <th>IP Address</th>
+            <th>Fake Reviews Count</th>
+            <th>Detected At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ip in ips %}
+            <tr class="text-center">
+              <td>{{ ip.ip_address }}</td>
+              <td>{{ ip.fake_review_count }}</td>
+              <td>{{ ip.detected_at|date:'d M Y, H:i' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="alert alert-info">No suspicious IPs detected.</div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Report Lost Item{% endblock %}
+
+{% block content %}
+    <h1>Report Lost Item</h1>
+    
+    <form method="POST" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+        <div class="form-group">
+            <label for="title">Item Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="">Select Category</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Documents">Documents</option>
+                <option value="Keys">Keys</option>
+                <option value="Wallet/Purse">Wallet/Purse</option>
+                <option value="Phone">Phone</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Jewelry">Jewelry</option>
+                <option value="Bag/Backpack">Bag/Backpack</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Please provide detailed description of the item" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="location">Location where lost:</label>
+            <input type="text" id="location" name="location" placeholder="e.g., Central Park, Main Street, etc." required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date_lost">Date lost:</label>
+            <input type="date" id="date_lost" name="date_lost" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="image">Upload Image (optional):</label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+        
+        <button type="submit" class="btn btn-danger">Report Lost Item</button>
+    </form>
+{% endblock %}

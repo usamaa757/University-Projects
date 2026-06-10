@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <!-- Hero Section -->
+  <header class="hero text-center">
+    <div class="container">
+      <h1 class="display-4">Explore the Best Tourist Destinations</h1>
+      <p class="lead">Find the perfect places to visit according to the season</p>
+      <a href="#" class="btn btn-light btn-lg">Explore Now</a>
+    </div>
+  </header>
+
+  <!-- Destinations Section -->
+  <section class="container my-5">
+    <h2 class="text-center mb-4">Top Destinations</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?mountains" class="card-img-top" alt="Mountains" />
+          <div class="card-body">
+            <h5 class="card-title">Beautiful Mountains</h5>
+            <p class="card-text">Explore breathtaking mountain destinations.</p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?desert" class="card-img-top" alt="Desert" />
+          <div class="card-body">
+            <h5 class="card-title">Mysterious Deserts</h5>
+            <p class="card-text">Discover the beauty of vast deserts.</p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?city" class="card-img-top" alt="City" />
+          <div class="card-body">
+            <h5 class="card-title">Vibrant Cities</h5>
+            <p class="card-text">Experience the culture of urban cities.</p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-primary text-white text-center py-3">
+    <p class="mb-0">© 2025 Online Tourist Guide. All rights reserved.</p>
+  </footer>
+{% endblock %}

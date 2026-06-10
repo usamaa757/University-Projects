@@ -1,0 +1,391 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <style>
+    /* === STYLES REMAIN THE SAME === */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .welcome-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50px, -50px);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+      font-size: 24px;
+    }
+    .stat-content {
+      flex: 1;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .stat-trend {
+      font-size: 0.8rem;
+      margin-top: 5px;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    .dashboard-card {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+    .dashboard-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .dashboard-card h3 i {
+      margin-right: 10px;
+      color: var(--primary-color);
+    }
+    .dashboard-card p {
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .dashboard-card a {
+      display: inline-block;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+    .dashboard-card a:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+    .pending-items {
+      margin-top: 15px;
+    }
+    .pending-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: rgba(239, 68, 68, 0.05);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border-left: 3px solid #ef4444;
+    }
+    .pending-item i {
+      color: #ef4444;
+      margin-right: 10px;
+      font-size: 0.9rem;
+    }
+    .pending-text {
+      flex: 1;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .pending-due {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .progress-section {
+      margin-top: 15px;
+    }
+    .progress-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border-left: 3px solid #10b981;
+    }
+    .progress-item i {
+      color: #10b981;
+      margin-right: 10px;
+    }
+    .progress-text {
+      flex: 1;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .progress-value {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #10b981;
+    }
+    .session-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: rgba(59, 130, 246, 0.05);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border-left: 3px solid #3b82f6;
+    }
+    .session-time {
+      background: #3b82f6;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 12px;
+      min-width: 70px;
+      text-align: center;
+    }
+    .session-details {
+      flex: 1;
+    }
+    .session-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .session-host {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-secondary);
+    }
+    .empty-state i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--text-light);
+    }
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <!-- Welcome Card -->
+    <div class="welcome-card">
+      <h1>Welcome, {{ request.user.full_name }}!</h1>
+      <p>Continue your English learning journey. You have {{ pending_assignments.count }} assignments due soon.</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <!-- Enrolled Courses -->
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(79, 70, 229, 0.1); color: var(--primary-color);">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ enrolled_courses.count }}</div>
+          <div class="stat-label">Enrolled Courses</div>
+        </div>
+      </div>
+
+      <!-- Lessons -->
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ total_lessons }}</div>
+          <div class="stat-label">Lessons Available</div>
+        </div>
+      </div>
+
+      <!-- Pending Assignments -->
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+          <i class="fas fa-tasks"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ pending_assignments.count }}</div>
+          <div class="stat-label">Assignments Due</div>
+          <div class="stat-trend">{{ overdue_assignments }} overdue</div>
+        </div>
+      </div>
+
+      <!-- Overall Progress -->
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ overall_progress }}%</div>
+          <div class="stat-label">Overall Progress</div>
+          <div class="stat-trend">{{ average_score }}% avg score</div>
+        </div>
+      </div>
+
+      <!-- Gamification -->
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ total_points }}</div>
+          <div class="stat-label">Points</div>
+          <div class="stat-trend">Badges: {{ badge_count }}, Streak: {{ current_streak }} days</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="dashboard-grid">
+      <!-- Courses -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-book"></i> My Courses</h3>
+        <p>Continue learning from your enrolled courses.</p>
+        {% if enrolled_courses %}
+          <div class="progress-section">
+            {% for course in enrolled_courses|slice:':3' %}
+              <div class="progress-item">
+                <i class="fas fa-book-open"></i> <div class="progress-text">{{ course.title }} - {{ course.progress }}%</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <a href="{% url 'learning:course_list' %}">View All Courses →</a>
+      </div>
+
+      <!-- Learning Progress -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-chart-line"></i> Learning Progress</h3>
+        <div class="progress-section">
+          <div class="progress-item">
+            <i class="fas fa-question-circle"></i> <div class="progress-text">Quizzes Completed</div> <div class="progress-value">{{ quiz_progress.completed }}/{{ quiz_progress.total }}</div>
+          </div>
+          <div class="progress-item">
+            <i class="fas fa-pen"></i> <div class="progress-text">Writing Exercises</div> <div class="progress-value">{{ writing_progress.completed }}/{{ writing_progress.total }}</div>
+          </div>
+          <div class="progress-item">
+            <i class="fas fa-microphone"></i> <div class="progress-text">Speaking Exercises</div> <div class="progress-value">{{ speaking_progress.completed }}/{{ speaking_progress.total }}</div>
+          </div>
+        </div>
+        <a href="{% url 'learning:student_progress' %}">View Detailed Progress →</a>
+      </div>
+
+      <!-- Live Sessions -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-video"></i> Upcoming Sessions</h3>
+        {% if upcoming_sessions %}
+          <div class="pending-items">
+            {% for session in upcoming_sessions|slice:':2' %}
+              <div class="session-item">
+                <div class="session-time">{{ session.scheduled_at|time:'H:i' }}</div>
+                <div class="session-details">
+                  <div class="session-title">{{ session.title }}</div>
+                  <div class="session-host">by {{ session.host.username }}</div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state">
+            <i class="fas fa-calendar-times"></i><p>No upcoming sessions</p>
+          </div>
+        {% endif %}
+        <a href="{% url 'learning:live_sessions' %}">View All Sessions →</a>
+      </div>
+
+      <!-- Badges -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-award"></i> My Badges</h3>
+        {% if badges %}
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+            {% for badge in badges %}
+              <div style="background: #fbbf24; padding:10px 15px; border-radius:12px; color:white;">
+                <i class="fas fa-medal"></i> {{ badge.badge.name }}
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>No badges earned yet!</p>
+        {% endif %}
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+        {% if recent_submissions %}
+          <div class="pending-items">
+            {% for submission in recent_submissions %}
+              <div class="progress-item">
+                <i class="fas fa-{{ submission.icon }}"></i>
+                <div class="progress-text">{{ submission.title }}</div>
+                <div class="progress-value">{{ submission.score }}%</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i><p>No recent activity</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

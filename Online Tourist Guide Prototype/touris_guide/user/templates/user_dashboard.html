@@ -1,0 +1,127 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Welcome, {{ user.first_name }}!</h2>
+
+    <!-- User Profile Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Your Profile</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              <strong>Nationality:</strong> {{ user.nationality }}
+            </p>
+            <p>
+              <strong>City:</strong> {{ user.city }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p>
+              <strong>Age Range:</strong> {{ user.age_range }}
+            </p>
+            <p>
+              <strong>Preferred Travel Type:</strong> {{ user.preferred_travel_type }}
+            </p>
+          </div>
+        </div>
+        <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary mt-2">Edit Profile</a>
+      </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="row">
+      <!-- Upcoming Activities -->
+      <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Latest Activity</h5>
+          </div>
+          <div class="card-body">
+            {% if suggested_activities %}
+              {% for activity in suggested_activities %}
+                <div class="alert alert-info">
+                  <strong>{{ activity.title }}</strong> - {{ activity.description }}
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted">No suggested activities at the moment.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel Discounts -->
+      <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Hotel Discounts</h5>
+          </div>
+          <div class="card-body">
+            {% if hotel_discounts %}
+              {% for discount in hotel_discounts %}
+                <div class="alert alert-success">
+                  <strong>{{ discount.hotel_name }}</strong> - {{ discount.discount_details }}
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted">No available discounts.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggested Destinations -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-warning text-white">
+        <h5 class="mb-0">Suggested Destinations</h5>
+      </div>
+      <div class="card-body">
+        {% if suggested_destinations %}
+          <div class="row">
+            {% for destination in suggested_destinations %}
+              <div class="col-md-4 mb-3">
+                <div class="card">
+                  {% if destination.image %}
+                    <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" />
+                  {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title">{{ destination.name }}</h5>
+                    <p class="card-text">{{ destination.description }}</p>
+                    <p class="text-muted">
+                      <strong>Location:</strong> {{ destination.location }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted">No suggested destinations at the moment.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Travel Tips Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">Travel Tips</h5>
+      </div>
+      <div class="card-body">
+        {% if suggested_tips %}
+          <ul class="list-group">
+            {% for tip in suggested_tips %}
+              <li class="list-group-item">{{ tip.content }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No travel tips available at the moment.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
