@@ -16,7 +16,7 @@ import datetime
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
-stripe.api_key = "sk_test_51Rp9hg2KpCM2h0VE9FCSymAk4DjmDput8L2Uhlue0tILfKK6gq40OGtPKVOFGqGg82arqXmOhjU1ryJWwqUs6GiU008Pfz3Z5t"
+stripe.api_key = ""
 # ----------------------------------------
 # Colors & Style Config
 # ----------------------------------------
